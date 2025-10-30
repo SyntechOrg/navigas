@@ -1,4 +1,4 @@
-export const API_BASE = "http://localhost:1337";
+export const API_BASE = process.env.REACT_APP_API_URL;
 export const PAGE_SIZE = 9;
 export const IMAGE_FIELD = "Image";
 

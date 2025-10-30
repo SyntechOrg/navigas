@@ -95,7 +95,7 @@ export const fetchCars = async (
 
   return {
     cars,
-    pageCount: data.meta.pagination.pageCount || 1,
+    pageCount: data?.meta?.pagination.pageCount || 1,
   };
 };
 

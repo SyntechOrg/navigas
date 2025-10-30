@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback, memo } from "react";
 import axios from "axios";
 import qs from "qs";
-
-const API_BASE = process.env.REACT_APP_API_URL;
+import { API_BASE } from "../car/Constans";
+// const API_BASE = process.env.REACT_APP_API_URL;
 const PAGE_SIZE = 9;
 const Image = "Image";
 

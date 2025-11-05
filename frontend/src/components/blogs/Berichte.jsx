@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
-// Custom hook to detect mobile screens
 const useIsMobile = () => {
   const [isMobile, setIsMobile] = useState(false);
 

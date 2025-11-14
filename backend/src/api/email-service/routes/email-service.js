@@ -10,5 +10,13 @@ module.exports = {
         auth: false,
       },
     },
+    {
+      method: "POST",
+      path: "/email-service/subscribe",
+      handler: "email-service.subscribe",
+      config: {
+        auth: false,
+      },
+    },
   ],
 };

@@ -1,43 +1,93 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
   const [agreed, setAgreed] = useState(false);
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState({ message: "", type: "" });
+  const [isLoading, setIsLoading] = useState(false);
 
   const subscribe = async () => {
     if (!email) {
-      setStatus("Bitte geben Sie Ihre E-Mail-Adresse ein.");
+      setStatus({
+        message: "Bitte geben Sie Ihre E-Mail-Adresse ein.",
+        type: "error",
+      });
       return;
     }
     if (!agreed) {
-      setStatus("Bitte stimmen Sie der Datenschutzrichtlinie zu.");
+      setStatus({
+        message: "Bitte stimmen Sie der Datenschutzrichtlinie zu.",
+        type: "error",
+      });
       return;
     }
 
+    setIsLoading(true);
+    setStatus({ message: "", type: "" });
+
     try {
-      const response = await fetch("http://localhost:5000/subscribe", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
+      const response = await fetch(
+        "http://localhost:1337/api/email-service/subscribe",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: "Website Subscriber",
+            emailAdress: email,
+          }),
+        }
+      );
 
       const data = await response.json();
 
-      if (data.success) {
-        setStatus("Erfolgreich angemeldet!");
+      // Fixed: Check HTTP status code instead of data.success
+      if (response.ok) {
+        setStatus({
+          message: "✓ Erfolgreich angemeldet! Vielen Dank für Ihre Anmeldung.",
+          type: "success",
+        });
         setEmail("");
         setAgreed(false);
+
+        // Auto-dismiss after 5 seconds
+        setTimeout(() => {
+          setStatus({ message: "", type: "" });
+        }, 5000);
       } else {
-        setStatus("Fehler beim Anmelden. Bitte versuchen Sie es später.");
+        // Handle error response with fallback message
+        setStatus({
+          message:
+            data.message ||
+            data.error ||
+            "Fehler beim Anmelden. Bitte versuchen Sie es später.",
+          type: "error",
+        });
       }
     } catch (error) {
-      console.error(error);
-      setStatus("Fehler beim Anmelden. Bitte versuchen Sie es später.");
+      console.error("Subscribe error:", error);
+      setStatus({
+        message: "Fehler beim Anmelden. Bitte versuchen Sie es später.",
+        type: "error",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Helper function to get status styling
+  const getStatusStyles = () => {
+    switch (status.type) {
+      case "success":
+        return "text-green-400 bg-green-900/20 border-green-400/50";
+      case "error":
+        return "text-red-400 bg-red-900/20 border-red-400/50";
+      case "info":
+        return "text-blue-400 bg-blue-900/20 border-blue-400/50";
+      default:
+        return "text-[#E8EBF1]";
     }
   };
 
@@ -47,7 +97,6 @@ const Footer = () => {
 
       {/* Social Links */}
       <div className="flex flex-row items-center justify-around w-full bg-[#0847A4] text-xs md:text-sm text-white">
-        {/* Social links code remains unchanged */}
         <div className="px-full py-[40px] w-full">
           <a
             href="https://www.facebook.com/navigasmobility"
@@ -169,23 +218,31 @@ const Footer = () => {
                 <input
                   placeholder="Geben Sie Ihre E-Mail-Adresse ein"
                   type="email"
-                  className="text-[#8E8E8E] w-full bg-transparent focus:outline-none"
+                  className="text-[#8E8E8E] w-full bg-transparent focus:outline-none disabled:opacity-50"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  disabled={isLoading}
                 />
-                <img
-                  src="/images/shigjeta.svg"
-                  alt="submit"
+                <button
                   onClick={subscribe}
-                  style={{ cursor: "pointer" }}
-                />
+                  disabled={isLoading}
+                  className="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-110"
+                >
+                  {isLoading ? (
+                    <div className="w-6 h-6 border-2 border-[#2860B7] border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <img src="/images/shigjeta.svg" alt="submit" />
+                  )}
+                </button>
               </div>
+
               <div className="flex flex-row gap-2 mt-[20px] items-start">
                 <input
                   type="checkbox"
-                  className="cursor-pointer"
+                  className="cursor-pointer disabled:cursor-not-allowed"
                   checked={agreed}
                   onChange={() => setAgreed(!agreed)}
+                  disabled={isLoading}
                 />
                 <h1 className="text-[#8E8E8E] text-[12px]">
                   Ich stimme zu, dass die{" "}
@@ -198,8 +255,15 @@ const Footer = () => {
                   gilt.
                 </h1>
               </div>
-              {status && (
-                <p className="mt-2 text-sm text-[#E8EBF1]">{status}</p>
+
+              {/* Enhanced Status Message */}
+              {status.message && (
+                <div
+                  className={`mt-3 p-3 rounded-md text-sm border transition-all duration-300 ${getStatusStyles()}`}
+                  role="alert"
+                >
+                  {status.message}
+                </div>
               )}
             </div>
           </div>

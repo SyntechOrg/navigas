@@ -41,7 +41,7 @@ const KontaktInfo = () => {
 
           {/* Email Link with Hover Effect */}
           <a
-            href="mailto:contact@navigas-mobility.ch"
+            href="mailto:info@navigas-mobility.ch"
             className="flex flex-row items-start justify-start gap-4 group transition-all duration-300 hover:translate-x-2"
           >
             <div className="transition-transform duration-300 group-hover:scale-110">
@@ -52,7 +52,7 @@ const KontaktInfo = () => {
                 E-Mail
               </h2>
               <p className="text-[#010101] text-[18px] sm:text-[20px] group-hover:text-[#0847A4] transition-colors duration-300 break-all">
-                contact@navigas-mobility.ch
+                info@navigas-mobility.ch
               </p>
             </div>
           </a>

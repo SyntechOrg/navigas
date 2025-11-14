@@ -1,6 +1,64 @@
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 export default function KontaktSection() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    try {
+      const response = await fetch(
+        "http://localhost:1337/api/email-service/send",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSubmitStatus({
+          type: "success",
+          message: "Nachricht erfolgreich gesendet!",
+        });
+        setFormData({ name: "", email: "", phone: "", message: "" });
+      } else {
+        setSubmitStatus({
+          type: "error",
+          message: data.error || "Fehler beim Senden",
+        });
+      }
+    } catch (error) {
+      setSubmitStatus({
+        type: "error",
+        message: "Verbindungsfehler. Bitte erneut versuchen.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <section className="relative w-full">
       <img
@@ -17,48 +75,7 @@ export default function KontaktSection() {
 
       <div className="absolute inset-0">
         <div className="mx-auto flex h-full w-full container flex-col justify-center gap-10 p-6 md:p-10">
-          <div className="flex flex-row justify-between w-full items-center ">
-            {/* <motion.div
-              className="flex flex-col items-start"
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.7, ease: "easeOut" }}
-            >
-              <div className="flex flex-row items-center justify-start gap-2">
-                <div className="h-7 w-[4px] bg-[#0847A4]" />
-                <h1 className="text-[24px] font-semibold text-[#010101]">
-                  Öffnungszeiten
-                </h1>
-              </div>
-
-              <motion.div
-                className="mt-10 flex w-full flex-col font-semibold"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
-                {[
-                  { day: "Monday – Friday", time: "08:00 – 22:00" },
-                  { day: "Saturday", time: "09:00 – 23:00" },
-                  { day: "Sunday", time: "10:00 – 20:00" },
-                ].map((schedule, index) => (
-                  <motion.div
-                    key={index}
-                    className="flex flex-row items-center justify-between py-3 text-[15px] uppercase text-[#010101]"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-                  >
-                    <h1>{schedule.day}</h1>
-                    <h1>{schedule.time}</h1>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </motion.div> */}
-
+          <div className="flex flex-row justify-between w-full items-center">
             <motion.div
               className="flex flex-col lg:flex-row justify-between items-start lg:items-center w-full"
               initial={{ opacity: 0, x: 50 }}
@@ -67,7 +84,7 @@ export default function KontaktSection() {
               transition={{ duration: 0.7, ease: "easeOut" }}
             >
               <motion.div
-                className="mb-5 "
+                className="mb-5"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -107,7 +124,19 @@ export default function KontaktSection() {
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
           >
-            <form className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {submitStatus && (
+                <div
+                  className={`rounded-lg p-4 text-center ${
+                    submitStatus.type === "success"
+                      ? "bg-green-500/20 text-green-300"
+                      : "bg-red-500/20 text-red-300"
+                  }`}
+                >
+                  {submitStatus.message}
+                </div>
+              )}
+
               <motion.div
                 className="grid grid-cols-1 gap-5 md:grid-cols-3"
                 initial={{ opacity: 0 }}
@@ -118,18 +147,21 @@ export default function KontaktSection() {
                 {[
                   {
                     label: "Name",
+                    name: "name",
                     type: "text",
                     placeholder: "Geben Sie Ihren vollständigen Namen ein",
                     autoComplete: "name",
                   },
                   {
                     label: "Email Address",
+                    name: "email",
                     type: "email",
                     placeholder: "Geben Sie Ihre E‑Mail‑Adresse ein",
                     autoComplete: "email",
                   },
                   {
                     label: "Phone Number",
+                    name: "phone",
                     type: "tel",
                     placeholder: "Geben Sie Ihre Telefonnummer ein",
                     autoComplete: "tel",
@@ -141,9 +173,13 @@ export default function KontaktSection() {
                     </label>
                     <motion.input
                       type={field.type}
+                      name={field.name}
+                      value={formData[field.name]}
+                      onChange={handleChange}
                       placeholder={field.placeholder}
                       className="h-12 w-full rounded-xl px-4 text-white placeholder:text-white/50 placeholder:text-[12px] ring-1 ring-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 bg-transparent transition-all"
                       autoComplete={field.autoComplete}
+                      required
                       whileFocus={{ scale: 1.02 }}
                       transition={{ duration: 0.2 }}
                     />
@@ -162,9 +198,13 @@ export default function KontaktSection() {
                   Nachricht
                 </label>
                 <motion.textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
                   rows={6}
                   placeholder="Haben Sie besondere Wünsche?"
                   className="w-full rounded-xl p-4 text-white placeholder:text-white/50 ring-1 ring-white/10 placeholder:text-[12px] focus:outline-none focus:ring-2 focus:ring-white/30 bg-transparent transition-all"
+                  required
                   whileFocus={{ scale: 1.01 }}
                   transition={{ duration: 0.2 }}
                 />
@@ -179,15 +219,16 @@ export default function KontaktSection() {
               >
                 <motion.button
                   type="submit"
-                  className="w-full rounded-full bg-[#0847A4] py-4 tracking-[0.4em] text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/30"
+                  disabled={isSubmitting}
+                  className="w-full rounded-full bg-[#0847A4] py-4 tracking-[0.4em] text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/30 disabled:opacity-50 disabled:cursor-not-allowed"
                   whileHover={{
-                    backgroundColor: "#0A5AC2",
-                    scale: 1.02,
+                    backgroundColor: isSubmitting ? "#0847A4" : "#0A5AC2",
+                    scale: isSubmitting ? 1 : 1.02,
                   }}
-                  whileTap={{ scale: 0.98 }}
+                  whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
                   transition={{ duration: 0.2 }}
                 >
-                  SENDEN
+                  {isSubmitting ? "WIRD GESENDET..." : "SENDEN"}
                 </motion.button>
               </motion.div>
             </form>

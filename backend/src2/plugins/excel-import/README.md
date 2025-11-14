@@ -1,3 +1,0 @@
-# excel-import
-
-import excel

@@ -10,7 +10,7 @@ const HomeStart = () => {
         alt=""
       />
       <video
-        src="/images/videoNav.mov"
+        src="https://res.cloudinary.com/duwiosb7t/video/upload/v1762786278/videoNav_mvj5am.mov"
         autoPlay
         loop
         muted

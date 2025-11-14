@@ -12,7 +12,6 @@ const Header = () => {
     "/uberuns",
     "/firmenkunden",
     "/privatkunden",
-    "/faq",
     "/kontakt",
     "/flexRent",
     "/autoAboPro",

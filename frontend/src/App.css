@@ -95,3 +95,6 @@
   -webkit-backdrop-filter: var(--tw-backdrop-blur);
   backdrop-filter: var(--tw-backdrop-blur);
 }
+.swiper {
+  pointer-events: none;
+}

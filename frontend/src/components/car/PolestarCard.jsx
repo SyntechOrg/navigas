@@ -91,26 +91,33 @@ export default function PolestarCard({
     [termPricingOptions]
   );
 
-  const priceBreakdown = useMemo(() => {
-    const kmOpt = kmPricingOptions.find((o) => o.km === selectedKm) || {};
-    const termOpt =
-      termPricingOptions.find((o) => o.months === selectedTerm) || {};
-    return {
-      base: basePrice,
-      km: kmOpt.priceModifier || 0,
-      term: termOpt.priceModifier || 0,
-    };
-  }, [
-    selectedKm,
-    selectedTerm,
-    kmPricingOptions,
-    termPricingOptions,
-    basePrice,
-  ]);
+  // UPDATED: Fixed pricing lookup function (no calculations)
+  const getPriceForCombination = useCallback(
+    (term, km) => {
+      if (!carData?.pricing) {
+        console.warn("No pricing data available, using basePrice");
+        return basePrice;
+      }
 
+      const key = `${term}-${km}`;
+      const price = carData.pricing[key];
+
+      if (price === undefined || price === null) {
+        console.warn(
+          `No price found for combination: ${term} months, ${km} km`
+        );
+        return basePrice;
+      }
+
+      return Number(price);
+    },
+    [carData, basePrice]
+  );
+
+  // UPDATED: Direct lookup - no additions or calculations
   const finalPrice = useMemo(
-    () => priceBreakdown.base + priceBreakdown.km + priceBreakdown.term,
-    [priceBreakdown]
+    () => getPriceForCombination(selectedTerm, selectedKm),
+    [selectedTerm, selectedKm, getPriceForCombination]
   );
 
   const thumbnails = useMemo(() => {
@@ -162,6 +169,8 @@ export default function PolestarCard({
     const doc = new jsPDF("p", "mm", "a4");
     const w = doc.internal.pageSize.getWidth();
     const h = doc.internal.pageSize.getHeight();
+
+    // Header
     doc.setFillColor(8, 71, 164);
     doc.rect(0, 0, w, 30, "F");
     doc.setTextColor(255, 255, 255);
@@ -173,7 +182,10 @@ export default function PolestarCard({
     doc.text(subtitle, w / 2, 20, { align: "center" });
     doc.setFontSize(8);
     doc.text("Sofort verfügbar", w / 2, 26, { align: "center" });
+
     let y = 38;
+
+    // Image
     try {
       const data = await getImageBase64(gallery[0].src);
       const imgW = 120,
@@ -186,16 +198,20 @@ export default function PolestarCard({
     } catch {
       y += 45;
     }
+
+    // Configuration section
     doc.setFontSize(14).setFont(undefined, "bold").setTextColor(8, 71, 164);
     doc.text("Ihre Konfiguration", w / 2, y, { align: "center" });
     doc
       .setFillColor(243, 245, 250)
       .roundedRect(20, y + 3, w - 40, 32, 2, 2, "F");
     y += 20;
+
     doc.setFontSize(10).setFont(undefined, "normal").setTextColor(50, 50, 50);
     const left = 30,
       right = w / 2 + 5,
       off = 55;
+
     doc
       .text("Kilometer pro Jahr:", left, y)
       .setFont(undefined, "bold")
@@ -203,35 +219,28 @@ export default function PolestarCard({
       .text(`${selectedKm.toLocaleString("de-CH")} km`, left + off, y)
       .setFont(undefined, "normal")
       .setTextColor(50, 50, 50)
-      .text("Grundpreis:", left, y + 8)
+      .text("Monatlicher Preis:", left, y + 8)
       .setFont(undefined, "bold")
+      .setFontSize(11)
       .setTextColor(8, 71, 164)
-      .text(`CHF ${basePrice.toFixed(2)}`, left + off, y + 8);
+      .text(`CHF ${finalPrice.toFixed(2)}`, left + off, y + 8);
+
     doc
+      .setFontSize(10)
       .setFont(undefined, "normal")
       .setTextColor(50, 50, 50)
       .text("Vertragslaufzeit:", right, y)
       .setFont(undefined, "bold")
       .setTextColor(8, 71, 164)
-      .text(`${selectedTerm} Monate`, right + off, y)
-      .setFont(undefined, "normal")
-      .setTextColor(50, 50, 50)
-      .text("Monatlicher Preis:", right, y + 8)
-      .setFont(undefined, "bold")
-      .setFontSize(11)
-      .text(
-        finalPrice.toLocaleString("de-CH", {
-          style: "currency",
-          currency: "CHF",
-          minimumFractionDigits: 2,
-        }),
-        right + off,
-        y + 8
-      );
+      .text(`${selectedTerm} Monate`, right + off, y);
+
     y += 25;
+
+    // Technical specs
     doc.setFontSize(14).setFont(undefined, "bold").setTextColor(8, 71, 164);
     doc.text("Technische Daten", w / 2, y, { align: "center" });
     y += 8;
+
     const specs = [
       { label: "Schaltung", val: carData.Getriebe },
       { label: "Reichweite", val: carData.reichweite },
@@ -240,6 +249,7 @@ export default function PolestarCard({
       { label: "Türen", val: carData.turen },
       { label: "Treibstoff", val: carData.Treibstoff },
     ];
+
     const colW = (w - 40) / 3;
     let row = 0,
       col = 0;
@@ -265,7 +275,10 @@ export default function PolestarCard({
         row++;
       }
     });
+
     y += (row + 1) * 20 + 20;
+
+    // Footer
     const fy = h - 30;
     doc
       .setDrawColor(8, 71, 164)
@@ -274,17 +287,19 @@ export default function PolestarCard({
     doc
       .setFillColor(243, 245, 250)
       .roundedRect(15, fy + 3, w - 30, 22, 2, 2, "F");
+
     const date = new Date().toLocaleDateString("de-CH", {
       year: "numeric",
       month: "long",
       day: "numeric",
     });
+
     doc
       .setFontSize(8)
       .setTextColor(80, 80, 80)
       .setFont(undefined, "normal")
       .text(`Erstellt am ${date}`, 20, fy + 10)
-      .text("Alle Preise inkl. MwSt.", w / 2, fy + 10, { align: "center" })
+      .text(`Alle Preise ${taxLabel}`, w / 2, fy + 10, { align: "center" })
       .setFont(undefined, "bold")
       .setFontSize(9)
       .setTextColor(8, 71, 164)
@@ -295,6 +310,7 @@ export default function PolestarCard({
       .text("Ihr zuverlässiger Partner für Elektromobilität", w / 2, fy + 18, {
         align: "center",
       });
+
     doc.save(`${title.replace(/\s/g, "_")}_Datenblatt.pdf`);
   }, [
     title,
@@ -302,10 +318,10 @@ export default function PolestarCard({
     gallery,
     selectedKm,
     selectedTerm,
-    basePrice,
     finalPrice,
     carData,
     getImageBase64,
+    taxLabel,
   ]);
 
   return (

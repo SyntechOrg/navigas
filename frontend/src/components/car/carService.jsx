@@ -14,24 +14,75 @@ const normalizeEnumValue = (key, val) => {
   return val;
 };
 
+const PRICING_VARIABLE_MAP = {
+  PreisFurUnternehmen: { term: 24, km: 5000 },
+  firstVariable: { term: 24, km: 10000 },
+  secondVariable: { term: 24, km: 15000 },
+  thirdVariable: { term: 24, km: 20000 },
+  fourthVariable: { term: 24, km: 25000 },
+  fifthVariable: { term: 36, km: 5000 },
+  sixthVariable: { term: 36, km: 10000 },
+  seventhVariable: { term: 36, km: 15000 },
+  eighthVariable: { term: 36, km: 20000 },
+  ninthVariable: { term: 36, km: 25000 },
+  tenthVariable: { term: 48, km: 5000 },
+  eleventhVariable: { term: 48, km: 10000 },
+  twelfthVariable: { term: 48, km: 15000 },
+  thirteenthVariable: { term: 48, km: 20000 },
+  fourteenthVariable: { term: 48, km: 25000 },
+};
+
+export const transformStrapiPricing = (car) => {
+  const pricing = {};
+
+  Object.entries(PRICING_VARIABLE_MAP).forEach(([varName, { term, km }]) => {
+    if (car[varName] !== undefined && car[varName] !== null) {
+      const key = `${term}-${km}`;
+      pricing[key] = Number(car[varName]);
+    }
+  });
+
+  return pricing;
+};
+
+// UPDATED: Transform pricing to get available km and term options
 export const transformPricingOptions = (car) => {
   if (!car) return { kmOptions: [], termOptions: [] };
 
-  const kmOptions = [
-    { km: 5000, priceModifier: car.FuenftausendKilometer || 0 },
-    { km: 10000, priceModifier: car.ZehntausendKilometer || 0 },
-    { km: 15000, priceModifier: car.FuenfzehntausendKilometer || 0 },
-    { km: 20000, priceModifier: car.ZwanzigtausendKilometer || 0 },
-    { km: 25000, priceModifier: car.FuenfundzwanzigtausendKilometer || 0 },
-  ];
+  const pricing = car.pricing || transformStrapiPricing(car);
+  const keys = Object.keys(pricing);
 
-  const termOptions = [
-    { months: 24, priceModifier: car.VierundzwanzigMonate || 0 },
-    { months: 36, priceModifier: car.SechsunddreissigMonate || 0 },
-    { months: 48, priceModifier: car.AchtundvierzigMonate || 0 },
-  ];
+  if (keys.length === 0) {
+    // Fallback to default options if no pricing data
+    return {
+      kmOptions: [
+        { km: 5000 },
+        { km: 10000 },
+        { km: 15000 },
+        { km: 20000 },
+        { km: 25000 },
+      ],
+      termOptions: [{ months: 24 }, { months: 36 }, { months: 48 }],
+    };
+  }
 
-  return { kmOptions, termOptions };
+  const kmSet = new Set();
+  const termSet = new Set();
+
+  keys.forEach((key) => {
+    const [term, km] = key.split("-").map(Number);
+    termSet.add(term);
+    kmSet.add(km);
+  });
+
+  return {
+    kmOptions: Array.from(kmSet)
+      .sort((a, b) => a - b)
+      .map((km) => ({ km })),
+    termOptions: Array.from(termSet)
+      .sort((a, b) => a - b)
+      .map((months) => ({ months })),
+  };
 };
 
 export const getPrice = (car, pricingType = PRICING_TYPE.NORMAL) => {
@@ -78,6 +129,20 @@ export const fetchCars = async (
         "verbrauch",
         "preis",
         "PreisFurUnternehmen",
+        "firstVariable",
+        "secondVariable",
+        "thirdVariable",
+        "fourthVariable",
+        "fifthVariable",
+        "sixthVariable",
+        "seventhVariable",
+        "eighthVariable",
+        "ninthVariable",
+        "tenthVariable",
+        "eleventhVariable",
+        "twelfthVariable",
+        "thirteenthVariable",
+        "fourteenthVariable",
       ],
       populate: { [IMAGE_FIELD]: { fields: ["url", "formats"] } },
       filters: Object.keys(strapiFilters).length ? strapiFilters : undefined,
@@ -91,6 +156,7 @@ export const fetchCars = async (
     ...car,
     displayPrice: getPrice(car, pricingType),
     pricingType,
+    pricing: transformStrapiPricing(car), // ADDED: Transform pricing variables
   }));
 
   return {
@@ -101,7 +167,36 @@ export const fetchCars = async (
 
 export const fetchCarById = async (id, pricingType = PRICING_TYPE.NORMAL) => {
   const query = qs.stringify(
-    { populate: { [IMAGE_FIELD]: { fields: ["url", "formats"] } } },
+    {
+      populate: { [IMAGE_FIELD]: { fields: ["url", "formats"] } },
+      fields: [
+        "marke",
+        "modell",
+        "Getriebe",
+        "leistung",
+        "Treibstoff",
+        "verbrauch",
+        "preis",
+        "PreisFurUnternehmen",
+        "Fahrzeugart",
+        "reichweite",
+        "turen",
+        "firstVariable",
+        "secondVariable",
+        "thirdVariable",
+        "fourthVariable",
+        "fifthVariable",
+        "sixthVariable",
+        "seventhVariable",
+        "eighthVariable",
+        "ninthVariable",
+        "tenthVariable",
+        "eleventhVariable",
+        "twelfthVariable",
+        "thirteenthVariable",
+        "fourteenthVariable",
+      ],
+    },
     { encodeValuesOnly: true }
   );
 
@@ -112,5 +207,6 @@ export const fetchCarById = async (id, pricingType = PRICING_TYPE.NORMAL) => {
     ...normalized,
     displayPrice: getPrice(normalized, pricingType),
     pricingType,
+    pricing: transformStrapiPricing(normalized), // ADDED: Transform pricing variables
   };
 };

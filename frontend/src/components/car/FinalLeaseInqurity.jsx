@@ -27,7 +27,7 @@ const FinalLeaseInquiry = ({ car }) => {
     () => ({
       id: car?.id || 1,
       name: car?.name || "Fahrzeug",
-      image: car?.image || "/images/Image.png",
+      image: car?.image[0],
       kmPerYear: car?.kmPerYear || "0 km",
       duration: car?.duration || "0 Monate",
       price: car?.price || "0 CHF",

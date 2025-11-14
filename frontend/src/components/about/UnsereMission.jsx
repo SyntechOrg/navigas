@@ -62,7 +62,7 @@ const UnsereMission = () => {
             whileHover={{ scale: 1.03 }}
           >
             <video
-              src="/images/Video7.mov"
+              src="https://res.cloudinary.com/duwiosb7t/video/upload/v1762786267/Video7_sbfvri.mov"
               alt=""
               autoPlay
               loop

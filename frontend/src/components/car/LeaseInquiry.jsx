@@ -423,7 +423,7 @@ export default function LeaseInquiry({ car }) {
 
               <div className="mt-10">
                 <img
-                  src={car?.imageUrls || car?.img || "/images/car.png"}
+                  src={car?.img}
                   alt={car?.name || "Fahrzeug"}
                   className="w-full rounded-xl object-cover"
                   onError={handleImageError}

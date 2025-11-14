@@ -4,7 +4,7 @@ const Video = () => {
   return (
     <div className="w-full h-screen overflow-hidden">
       <video
-        src="/images/videoNav.mp4"
+        src="https://res.cloudinary.com/duwiosb7t/video/upload/v1762786278/videoNav_g5gwuz.mp4"
         autoPlay
         muted
         loop

@@ -81,7 +81,7 @@ const Car = () => {
   return (
     <div className="w-full relative mt-[100px]">
       <video
-        src="/images/videoNav2.mp4"
+        src="https://res.cloudinary.com/duwiosb7t/video/upload/v1762786272/videoNav2_rsjybk.mp4"
         autoPlay
         loop
         muted

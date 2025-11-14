@@ -432,7 +432,7 @@ const Deinem = () => {
             loop
             preload="metadata"
             poster="/images/faqVideo-thumbnail.png"
-            src="/images/faqVideo1.mp4"
+            src="https://res.cloudinary.com/duwiosb7t/video/upload/v1762786296/faqVideo1_laxwqk.mp4"
             className="rounded-b-2xl"
             onClick={handleToggle}
           />

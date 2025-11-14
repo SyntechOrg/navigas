@@ -27,6 +27,7 @@ const CarInfo = () => {
         setLoading(true);
         setError(null);
         const data = await fetchCarById(id, pricingType);
+        // No need to transform - fetchCarById already includes pricing object
         setCar(data);
       } catch (e) {
         console.error("Failed to fetch car:", e);

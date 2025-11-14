@@ -71,7 +71,7 @@ const Footer = () => {
           {/* Location & Contact */}
           <div className="flex flex-col items-center md:items-start gap-5">
             <a
-              href="https://www.google.com/maps/place/Navigas+Services+GmbH/"
+              href="https://www.google.com/maps/place/Navigas+Services+GmbH/data=!4m2!3m1!1s0x0:0xf5db510a1153c7fd?sa=X&ved=1t:2428&ictx=111"
               target="_blank"
               rel="noopener noreferrer"
               className="group"

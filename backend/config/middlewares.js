@@ -18,7 +18,7 @@ module.exports = [
   {
     name: "strapi::cors",
     config: {
-      origin: ["https://navigas.vercel.app", "http://localhost:3000"],
+      origin: ["https://navigas.syn-tech.ch", "http://localhost:3000"],
       methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
       headers: ["Content-Type", "Authorization", "Origin", "Accept"],
       keepHeaderOnError: true,

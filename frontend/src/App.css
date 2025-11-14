@@ -79,14 +79,27 @@
 
 .slide img {
   flex: 0 0 auto;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
+
+.swiper {
+  pointer-events: none;
+}
+
+.swiper-wrapper{
+  transition-timing-function : linear;
+}
+
 
 @keyframes scroll {
   from {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   to {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 

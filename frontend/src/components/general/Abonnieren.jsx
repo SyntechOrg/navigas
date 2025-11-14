@@ -20,7 +20,7 @@ function Abonnieren() {
                     type="email"
                     placeholder="Geben Sie Ihre E-Mail Adresse ein"
                     required
-                    className=" flex-1 pl-4 py-3 w-full lg:w-[500px] border-b border-white text-[14px] sm:text-[16px] lg:text-[17px] text-black placeholder-white focus:outline-none"
+                    className=" flex-1 pl-4 py-3 w-full lg:w-[500px] border-b border-white text-[14px] sm:text-[16px] lg:text-[17px] text-white placeholder-white focus:outline-none"
                   />
                 </div>
                 <div className="flex flex-row items-center justify-start gap-1">

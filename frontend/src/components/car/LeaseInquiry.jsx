@@ -8,10 +8,12 @@ import React, {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import emailjs from "@emailjs/browser";
+import { PRICING_TYPE } from "./Constans";
 
 const INITIAL_FORM_STATE = {
   firstName: "",
   lastName: "",
+  companyName: "",
   email: "",
   phone: "",
   textarea: "",
@@ -132,6 +134,9 @@ export default function LeaseInquiry({ car }) {
 
   const errors = useMemo(() => {
     const e = {};
+    if (car?.pricingType === PRICING_TYPE.COMPANY && !form.companyName.trim()) {
+      e.companyName = "Firmenname ist erforderlich.";
+    }
     if (!form.firstName.trim()) e.firstName = "Vorname ist erforderlich.";
     if (!form.lastName.trim()) e.lastName = "Name ist erforderlich.";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim() || ""))
@@ -163,16 +168,19 @@ export default function LeaseInquiry({ car }) {
       try {
         const baseTemplateParams = {
           from_name: `${form.firstName} ${form.lastName}`,
+          company_name: form.companyName || "Privat",
           client_email: form.email,
           phone: form.phone,
           message: form.textarea || "Keine Bemerkungen",
           car_name: car.name,
           km_per_year: car.kmPerYear,
           term_months: car.termMonths,
-          price: displayPrice.toLocaleString("de-CH", {
+          price: `${displayPrice.toLocaleString("de-CH", {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
-          }),
+          })} CHF${
+            car.extraPreisAutos ? " + Initialpauschale von CHF 199" : ""
+          }`,
         };
 
         const [companyResponse, clientResponse] = await Promise.all([
@@ -202,6 +210,7 @@ export default function LeaseInquiry({ car }) {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
               })} CHF`,
+              extraPreisAutos: car.extraPreisAutos,
             },
           },
         });
@@ -294,6 +303,18 @@ export default function LeaseInquiry({ car }) {
             </h3>
 
             <div className="mt-5 flex flex-col items-center gap-7">
+              {car?.pricingType === PRICING_TYPE.COMPANY && (
+                <div className="w-full">
+                  <Input
+                    label="Firmenname"
+                    required
+                    value={form.companyName}
+                    onChange={handleChange("companyName")}
+                    placeholder="Ihr Firmenname"
+                    error={errors.companyName}
+                  />
+                </div>
+              )}
               <div className="flex md:flex-row flex-col items-center w-full gap-3">
                 <Input
                   label="Vorname"
@@ -418,6 +439,11 @@ export default function LeaseInquiry({ car }) {
                       "Preis auf Anfrage"
                     )}
                   </h1>
+                  {car?.extraPreisAutos && (
+                    <p className="text-[12px] text-[#0847A4] font-medium ml-2">
+                      * zzgl. Initialpauschale von CHF 199
+                    </p>
+                  )}
                 </div>
               </div>
 

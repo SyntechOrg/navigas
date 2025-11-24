@@ -434,6 +434,11 @@ export default function PolestarCard({
               <img src="/images/pdf.svg" alt="" className="mr-3" />
               Datenblatt PDF
             </button>
+            {carData?.extraPreisAutos && (
+              <div className="mt-4 text-[14px] text-[#0847A4] font-medium">
+                * zzgl. Initialpauschale von CHF 199
+              </div>
+            )}
           </div>
         </div>
       </div>

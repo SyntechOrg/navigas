@@ -169,6 +169,8 @@ const Deinem = () => {
             "Wie werden Schäden oder Kratzer bei der Rückgabe bewertet?",
           answer:
             "Normale Gebrauchsspuren sind selbstverständlich kein Problem. Nur übermässige Schäden oder fehlende Teile werden bei der Fahrzeugrückgabe gemäss den vereinbarten Bewertungsrichtlinien verrechnet. Alle Details finden Sie in unserem Leitfaden zur Fahrzeugrückgabe (PDF).",
+          button: " Download Fahrzeugrückgabe (PDF) ",
+          pdfUrl: "/Leitfaden Fahrzeugrückgabe Navigas Mobility.pdf",
         },
         {
           id: "diebstahl",
@@ -541,6 +543,18 @@ const Deinem = () => {
                     {item.answer}
                     {item.answer1}
                   </div>
+                  {item.button && (
+                    <a
+                      href={item.pdfUrl || "#"} // Use pdfUrl from your data item
+                      download // Triggers the browser download behavior
+                      className="inline-block px-6 pb-6 text-blue-600 hover:text-black transition-colors cursor-pointer"
+                      onClick={(e) => {
+                        if (!item.pdfUrl) e.preventDefault(); // Prevent nav if no URL
+                      }}
+                    >
+                      {item.button}
+                    </a>
+                  )}
                   {item.id === "versicherung" && (
                     <div>
                       <ul className="list-disc list-inside text-gray-600 px-6 pb-6">

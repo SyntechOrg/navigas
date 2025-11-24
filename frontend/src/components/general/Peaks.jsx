@@ -10,7 +10,8 @@ const Peaks = () => {
       subtitle: "& Peaks",
       description:
         "Mit Navigas FlexRent überbrücken Sie kurzfristige Engpässe in Ihrer Firmenflotte unkompliziert und flexibel. Egal ob bei Auftragsspitzen, Fahrzeugausfällen oder saisonalen Projekten. Wir liefern Ihnen innert 48 Stunden das passende Fahrzeug, inklusive Versicherung, Wartung und Service.",
-      cta: "Let's get started!",
+      cta: "Download Factsheet",
+      pdfUrl: "/FlexRent Factsheet Navigas Mobility.pdf",
     },
     {
       id: 2,
@@ -19,7 +20,8 @@ const Peaks = () => {
       subtitle: "Mitarbeitende",
       description:
         "Statten Sie temporäre oder neue Mitarbeitende schnell und ohne langfristige Bindung mit einem Firmenfahrzeug aus. Navigas FlexRent bietet Ihnen All-Inclusive-Lösungen für Mietdauern von 1 bis 24 Monaten. Ideal bei befristeten Einsätzen, Vertretungen oder Startprojekten.",
-      cta: "Let's get started!",
+      cta: "Download Factsheet",
+      pdfUrl: "/FlexRent Factsheet Navigas Mobility.pdf",
     },
     {
       id: 3,
@@ -28,7 +30,8 @@ const Peaks = () => {
       subtitle: "testen",
       description:
         "Erleben Sie Elektromobilität im Alltag, ohne langfristige Verpflichtung. Mit Navigas FlexRent können Firmen Elektro- und Hybridfahrzeuge flexibel testen und Erfahrungen sammeln, bevor sie sich für eine langfristige Flottenstrategie entscheiden. Nachhaltig, modern und rundum sorglos.",
-      cta: "Let's get started!",
+      cta: "Download Factsheet",
+      pdfUrl: "/FlexRent Factsheet Navigas Mobility.pdf",
     },
   ];
 
@@ -89,8 +92,10 @@ const Peaks = () => {
                 {item.description}
               </motion.p>
 
-              <motion.p
-                className="text-sm md:text-base text-[#020106] uppercase font-semibold cursor-pointer group"
+              <motion.a
+                href={item.pdfUrl} // Link to the specific PDF
+                download // Triggers download instead of opening
+                className="text-sm md:text-base text-[#020106] uppercase font-semibold cursor-pointer group flex items-center"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -105,7 +110,7 @@ const Peaks = () => {
                 >
                   →
                 </motion.span>
-              </motion.p>
+              </motion.a>
             </motion.div>
           </div>
         );

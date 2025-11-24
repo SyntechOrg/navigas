@@ -44,11 +44,11 @@ const partners = [
 
 const LogoSlider = () => {
   return (
-    <div className="bg-white md:py-25 py-15 rounded-xl w-full max-w-[1920px] mx-auto">
+    <div className="bg-white md:py-25 py-15 rounded-xl w-full  mx-auto">
       <Swiper
         modules={[Autoplay, FreeMode]}
-        spaceBetween={50}
-        slidesPerView={3}
+        spaceBetween={30} // Reduced from 50 to fit 5 items better
+        slidesPerView={5} // Default set to 5
         loop={true}
         freeMode={{
           enabled: true,
@@ -64,16 +64,23 @@ const LogoSlider = () => {
           320: {
             slidesPerView: 1,
           },
-          768: {
+          640: {
             slidesPerView: 2,
           },
           1024: {
             slidesPerView: 3,
           },
+          1280: {
+            slidesPerView: 4,
+          },
+          1536: {
+            slidesPerView: 5, // Shows 5 cars on large screens
+          },
         }}
       >
         {partners.map((logo, i) => (
-          <SwiperSlide key={i} className="flex flex-col items-center px-20">
+          // Changed px-20 to px-4 so images aren't too small
+          <SwiperSlide key={i} className="flex flex-col items-center px-4">
             <img
               className="h-auto w-auto object-contain"
               src={logo.src}

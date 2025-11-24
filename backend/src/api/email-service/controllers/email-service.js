@@ -100,29 +100,54 @@ ${message}
           const resp = await fetch(brevoUrl, {
             method: "POST",
             headers: {
+              Accept: "application/json",
               "Content-Type": "application/json",
               "api-key": brevoApiKey,
             },
             body: JSON.stringify(payload),
           });
 
+          let respBodyText = null;
+          let respBodyJson = null;
+          try {
+            respBodyText = await resp.text();
+            respBodyJson = respBodyText ? JSON.parse(respBodyText) : null;
+          } catch (parseErr) {
+            // keep respBodyText for logging
+          }
+
+          // Log listIds used for debugging
+          strapi.log.info(
+            `Brevo request: email=${email}, listIds=${JSON.stringify(listIds)}, updateEnabled=true`
+          );
+
           if (resp.ok) {
             strapi.log.info(
-              `Brevo: contact ${email} created/updated (status ${resp.status}).`
+              `Brevo: contact ${email} created/updated (status ${resp.status}). Response: ${respBodyText}`
             );
           } else {
-            const body = await resp.text();
-            // If contact already exists, Brevo may return 400/409; treat as success for subscribe
+            // Treat certain statuses as informational (contact exists)
             if (resp.status === 400 || resp.status === 409) {
-              strapi.log.info(`Brevo contact status ${resp.status}: ${body}`);
+              strapi.log.info(
+                `Brevo contact status ${resp.status}: ${respBodyText}`
+              );
             } else {
               strapi.log.error(
-                `Brevo contact creation failed: ${resp.status} ${body}`
+                `Brevo contact creation failed: ${resp.status} ${respBodyText}`
               );
             }
           }
+
+          // Attach Brevo diagnostics to response when running in non-production or for troubleshooting
+          ctx.state = ctx.state || {};
+          ctx.state.brevo = {
+            status: resp.status,
+            body: respBodyJson || respBodyText,
+          };
         } catch (brevoErr) {
           strapi.log.error("Brevo request failed:", brevoErr);
+          ctx.state = ctx.state || {};
+          ctx.state.brevo = { error: String(brevoErr) };
         }
       }
 

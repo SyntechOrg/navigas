@@ -24,11 +24,13 @@ const useIsMobile = () => {
 
 const TopKategorien = () => {
   const isMobile = useIsMobile();
+  // Dynamically choose motion or standard HTML elements
   const MotionDiv = isMobile ? "div" : motion.div;
   const MotionH1 = isMobile ? "h1" : motion.h1;
   const MotionP = isMobile ? "p" : motion.p;
   const MotionImg = isMobile ? "img" : motion.img;
-  const MotionButton = isMobile ? "button" : motion.button;
+  // We use motion.a for the main button to keep animations while using anchor tag features
+  const MotionA = isMobile ? "a" : motion.a;
 
   const categories = [
     {
@@ -38,6 +40,7 @@ const TopKategorien = () => {
       price: "699 CHF/Monat - ab 12 Monate",
       tag: "Beispielkategorie",
       download: "Details im Factsheet (download)",
+      pdfUrl: "/pdfs/kleinwagen-factsheet.pdf", // Added PDF URL
     },
     {
       id: 2,
@@ -46,6 +49,7 @@ const TopKategorien = () => {
       price: "699 CHF/Monat - ab 12 Monate",
       tag: "Beispielkategorie",
       download: "Details im Factsheet (download)",
+      pdfUrl: "/pdfs/mittelklasse-factsheet.pdf", // Added PDF URL
     },
     {
       id: 3,
@@ -54,6 +58,7 @@ const TopKategorien = () => {
       price: "699 CHF/Monat - ab 12 Monate",
       tag: "Beispielkategorie",
       download: "Details im Factsheet (download)",
+      pdfUrl: "/pdfs/luxusklasse-factsheet.pdf", // Added PDF URL
     },
   ];
 
@@ -166,7 +171,15 @@ const TopKategorien = () => {
                 >
                   <h1>{item.tag}</h1>
                   <img src="/images/dot.svg" alt="" />
-                  <h1>{item.download}</h1>
+                  {/* CHANGED: Made the download text clickable */}
+                  <a
+                    href={item.pdfUrl}
+                    download
+                    className="hover:text-white transition-colors underline decoration-transparent hover:decoration-white"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {item.download}
+                  </a>
                 </MotionDiv>
               </MotionDiv>
             ))}
@@ -181,23 +194,24 @@ const TopKategorien = () => {
               transition: { duration: 0.6, delay: 0.4 },
             })}
           >
-            <a href="/firmenKunden">
-              <MotionButton
-                className="text-[#0453C8] bg-white px-6 py-3 rounded-2xl shadow-md transition-all duration-300"
-                {...(!isMobile && {
-                  whileHover: {
-                    scale: 1.05,
-                    backgroundColor: "#0453C8",
-                    color: "#ffffff",
-                    boxShadow: "0 10px 30px rgba(4, 83, 200, 0.3)",
-                  },
-                  whileTap: { scale: 0.95 },
-                  transition: { type: "spring", stiffness: 300, damping: 20 },
-                })}
-              >
-                Factsheet herunterladen
-              </MotionButton>
-            </a>
+            {/* CHANGED: Button -> MotionA (Anchor tag) for download */}
+            <MotionA
+              href="/FlexRent Factsheet Navigas Mobility.pdf" // Main download link
+              download // Triggers download
+              className="text-[#0453C8] bg-white px-6 py-3 rounded-2xl shadow-md transition-all duration-300 inline-block text-center cursor-pointer"
+              {...(!isMobile && {
+                whileHover: {
+                  scale: 1.05,
+                  backgroundColor: "#0453C8",
+                  color: "#ffffff",
+                  boxShadow: "0 10px 30px rgba(4, 83, 200, 0.3)",
+                },
+                whileTap: { scale: 0.95 },
+                transition: { type: "spring", stiffness: 300, damping: 20 },
+              })}
+            >
+              Factsheet herunterladen
+            </MotionA>
           </MotionDiv>
         </div>
       </div>

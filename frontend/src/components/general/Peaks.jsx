@@ -11,7 +11,7 @@ const Peaks = () => {
       description:
         "Mit Navigas FlexRent überbrücken Sie kurzfristige Engpässe in Ihrer Firmenflotte unkompliziert und flexibel. Egal ob bei Auftragsspitzen, Fahrzeugausfällen oder saisonalen Projekten. Wir liefern Ihnen innert 48 Stunden das passende Fahrzeug, inklusive Versicherung, Wartung und Service.",
       cta: "Download Factsheet",
-      pdfUrl: "/FlexRent Factsheet Navigas Mobility.pdf",
+      pdfUrl: "/FlexRentFactsheetNavigasMobility.pdf",
     },
     {
       id: 2,
@@ -21,7 +21,7 @@ const Peaks = () => {
       description:
         "Statten Sie temporäre oder neue Mitarbeitende schnell und ohne langfristige Bindung mit einem Firmenfahrzeug aus. Navigas FlexRent bietet Ihnen All-Inclusive-Lösungen für Mietdauern von 1 bis 24 Monaten. Ideal bei befristeten Einsätzen, Vertretungen oder Startprojekten.",
       cta: "Download Factsheet",
-      pdfUrl: "/FlexRent Factsheet Navigas Mobility.pdf",
+      pdfUrl: "/FlexRentFactsheetNavigasMobility.pdf",
     },
     {
       id: 3,
@@ -31,7 +31,7 @@ const Peaks = () => {
       description:
         "Erleben Sie Elektromobilität im Alltag, ohne langfristige Verpflichtung. Mit Navigas FlexRent können Firmen Elektro- und Hybridfahrzeuge flexibel testen und Erfahrungen sammeln, bevor sie sich für eine langfristige Flottenstrategie entscheiden. Nachhaltig, modern und rundum sorglos.",
       cta: "Download Factsheet",
-      pdfUrl: "/FlexRent Factsheet Navigas Mobility.pdf",
+      pdfUrl: "/FlexRentFactsheetNavigasMobility.pdf",
     },
   ];
 

@@ -1,87 +1,70 @@
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-
-// Custom hook to detect mobile screens
-const useIsMobile = () => {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const mql = window.matchMedia("(max-width: 767px)");
-
-    const onChange = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    mql.addEventListener("change", onChange);
-    setIsMobile(window.innerWidth < 768);
-
-    return () => mql.removeEventListener("change", onChange);
-  }, []);
-
-  return isMobile;
-};
+import { Link, useNavigate } from "react-router-dom";
+import { PRICING_TYPE } from "../car/Constans";
 
 const TopKategorien = () => {
-  const isMobile = useIsMobile();
-  // Dynamically choose motion or standard HTML elements
-  const MotionDiv = isMobile ? "div" : motion.div;
-  const MotionH1 = isMobile ? "h1" : motion.h1;
-  const MotionP = isMobile ? "p" : motion.p;
-  const MotionImg = isMobile ? "img" : motion.img;
-  // We use motion.a for the main button to keep animations while using anchor tag features
-  const MotionA = isMobile ? "a" : motion.a;
+  const [featuredCars, setFeaturedCars] = useState([]);
+  const navigate = useNavigate();
 
-  const categories = [
-    {
-      id: 1,
-      image: "/images/container1.png",
-      category: "kleinwagen",
-      price: "699 CHF/Monat - ab 12 Monate",
-      tag: "Beispielkategorie",
-      download: "Details im Factsheet (download)",
-      pdfUrl: "/pdfs/kleinwagen-factsheet.pdf", // Added PDF URL
-    },
-    {
-      id: 2,
-      image: "/images/container1.png",
-      category: "kleinwagen",
-      price: "699 CHF/Monat - ab 12 Monate",
-      tag: "Beispielkategorie",
-      download: "Details im Factsheet (download)",
-      pdfUrl: "/pdfs/mittelklasse-factsheet.pdf", // Added PDF URL
-    },
-    {
-      id: 3,
-      image: "/images/container1.png",
-      category: "kleinwagen",
-      price: "699 CHF/Monat - ab 12 Monate",
-      tag: "Beispielkategorie",
-      download: "Details im Factsheet (download)",
-      pdfUrl: "/pdfs/luxusklasse-factsheet.pdf", // Added PDF URL
-    },
-  ];
+  useEffect(() => {
+    // FIX FOR 400 ERROR:
+    // 1. Changed 'car' to 'cars' (Plural) because you switched to "One-to-Many".
+    // 2. Simplified the query to just "populate everything inside cars" to ensure it works.
+    const query = new URLSearchParams({
+      "populate[cars][populate][Image][populate]": "*", 
+    });
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
+    fetch(`https://navigas-strapi.syn-tech.ch/api/top-kategorien?${query.toString()}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Status ${response.status}: Check if field is named 'car' or 'cars'`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.data) {
+          // Check for 'cars' (plural) first, then fallback to 'car'
+          const carsData = data.data.cars || data.data.car || [];
+          setFeaturedCars(Array.isArray(carsData) ? carsData : [carsData]);
+        }
+      })
+      .catch((error) => console.error("Error fetching featured cars:", error));
+  }, []);
+
+  const handleCardClick = (car) => {
+    const id = car.documentId || car.id;
+    if (!id) return;
+
+    navigate(`/api/cars/${id}?pricing=${PRICING_TYPE.NORMAL}`);
   };
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-      },
-    },
+  const getOptimizedImageUrl = (car) => {
+    let img = car.Image;
+
+    if (!img) return "/images/container1.png";
+
+    // Handle if it's an array (Multiple Media)
+    if (Array.isArray(img)) {
+      if (img.length === 0) return "/images/container1.png";
+      img = img[0];
+    }
+
+    let targetUrl = img.url;
+    
+    // Use optimized formats if available
+    if (img.formats) {
+      if (img.formats.medium?.url) targetUrl = img.formats.medium.url;
+      else if (img.formats.small?.url) targetUrl = img.formats.small.url;
+      else if (img.formats.thumbnail?.url) targetUrl = img.formats.thumbnail.url;
+    }
+
+    if (!targetUrl) return "/images/container1.png";
+
+    if (targetUrl.startsWith("/")) {
+      return `https://navigas-strapi.syn-tech.ch${targetUrl}`;
+    }
+
+    return targetUrl;
   };
 
   return (
@@ -93,126 +76,48 @@ const TopKategorien = () => {
       />
       <div className="flex items-center justify-center md:py-25 py-20">
         <div className="container mx-auto px-4 md:px-6">
-          <MotionH1
-            className="text-3xl md:text-4xl lg:text-[54px] font-semibold text-white text-center mb-6 md:mb-8 lg:mb-10"
-            {...(!isMobile && {
-              initial: { opacity: 0, y: -30 },
-              whileInView: { opacity: 1, y: 0 },
-              viewport: { once: true },
-              transition: { duration: 0.7, ease: "easeOut" },
-            })}
-          >
-            Top-Kategorien
-          </MotionH1>
+          <h1 className="text-3xl md:text-4xl lg:text-[54px] font-semibold text-white text-center mb-6 md:mb-8 lg:mb-10">
+            Top-Fahrzeuge
+          </h1>
 
-          <MotionDiv
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10"
-            {...(!isMobile && {
-              variants: containerVariants,
-              initial: "hidden",
-              whileInView: "visible",
-              viewport: { once: true, amount: 0.2 },
-            })}
-          >
-            {categories.map((item, index) => (
-              <MotionDiv
-                key={item.id}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
+            {featuredCars.map((car) => (
+              <div
+                key={car.id || Math.random()}
                 className="flex flex-col justify-between items-start gap-2 md:gap-[10px] cursor-pointer"
-                {...(!isMobile && {
-                  variants: cardVariants,
-                  whileHover: { y: -10 },
-                  transition: { duration: 0.3 },
-                })}
+               
               >
-                <div className="overflow-hidden rounded-lg w-full">
-                  <MotionImg
-                    src={item.image}
-                    alt=""
-                    className="w-full"
-                    {...(!isMobile && {
-                      whileHover: { scale: 1.1 },
-                      transition: { duration: 0.4 },
-                    })}
+                <div  onClick={() => handleCardClick(car)} className="overflow-hidden rounded-md w-full aspect-video bg-white flex items-center justify-center">
+
+                  <img
+                    src={getOptimizedImageUrl(car)}
+                    alt={car.marke || "Car"}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-[80%] h-[80%] object-cover hover:scale-110 transition-transform duration-300"
                   />
                 </div>
 
-                <MotionH1
-                  className="uppercase text-xs md:text-[14px] text-white"
-                  {...(!isMobile && {
-                    initial: { opacity: 0 },
-                    whileInView: { opacity: 1 },
-                    viewport: { once: true },
-                    transition: { duration: 0.4, delay: 0.3 },
-                  })}
-                >
-                  {item.category}
-                </MotionH1>
+                <h1 className="uppercase text-xs md:text-[14px] text-white">
+                  {car.Fahrzeugart}
+                </h1>
 
-                <MotionP
-                  className="font-bold text-base md:text-lg lg:text-[20px] text-white"
-                  {...(!isMobile && {
-                    initial: { opacity: 0 },
-                    whileInView: { opacity: 1 },
-                    viewport: { once: true },
-                    transition: { duration: 0.4, delay: 0.4 },
-                  })}
-                >
-                  {item.price}
-                </MotionP>
+                <p className="font-bold text-base md:text-lg lg:text-[20px] text-white">
+                  {car.preis} CHF/Monat
+                </p>
 
-                <MotionDiv
-                  className="text-[#B0CCF8] text-xs md:text-[14px] flex flex-row items-center justify-start gap-2 flex-wrap"
-                  {...(!isMobile && {
-                    initial: { opacity: 0 },
-                    whileInView: { opacity: 1 },
-                    viewport: { once: true },
-                    transition: { duration: 0.4, delay: 0.5 },
-                  })}
-                >
-                  <h1>{item.tag}</h1>
+                <div className="text-[#B0CCF8] text-xs md:text-[14px] flex flex-row items-center justify-start gap-2 flex-wrap">
+                  <h1>{car.marke}</h1>
                   <img src="/images/dot.svg" alt="" />
-                  {/* CHANGED: Made the download text clickable */}
-                  <a
-                    href={item.pdfUrl}
-                    download
-                    className="hover:text-white transition-colors underline decoration-transparent hover:decoration-white"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    {item.download}
+                  <a href="/FlexRentFactsheetNavigasMobility.pdf" target="_blank"  download>
+                  <span  className="text-gray-400 hover:text-white transition-all duration-300">
+                    Details im Factsheet (Download PDF)
+                  </span>
                   </a>
-                </MotionDiv>
-              </MotionDiv>
+                </div>
+              </div>
             ))}
-          </MotionDiv>
-
-          <MotionDiv
-            className="flex flex-row items-center justify-center p-10"
-            {...(!isMobile && {
-              initial: { opacity: 0, y: 30 },
-              whileInView: { opacity: 1, y: 0 },
-              viewport: { once: true },
-              transition: { duration: 0.6, delay: 0.4 },
-            })}
-          >
-            {/* CHANGED: Button -> MotionA (Anchor tag) for download */}
-            <MotionA
-              href="/FlexRent Factsheet Navigas Mobility.pdf" // Main download link
-              download // Triggers download
-              className="text-[#0453C8] bg-white px-6 py-3 rounded-2xl shadow-md transition-all duration-300 inline-block text-center cursor-pointer"
-              {...(!isMobile && {
-                whileHover: {
-                  scale: 1.05,
-                  backgroundColor: "#0453C8",
-                  color: "#ffffff",
-                  boxShadow: "0 10px 30px rgba(4, 83, 200, 0.3)",
-                },
-                whileTap: { scale: 0.95 },
-                transition: { type: "spring", stiffness: 300, damping: 20 },
-              })}
-            >
-              Factsheet herunterladen
-            </MotionA>
-          </MotionDiv>
+          </div>
         </div>
       </div>
     </div>

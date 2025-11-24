@@ -241,6 +241,41 @@ export const fetchCarById = async (id, pricingType = PRICING_TYPE.NORMAL) => {
     ...normalized,
     displayPrice: getPrice(normalized, pricingType),
     pricingType,
-    pricing: transformStrapiPricing(normalized, pricingType), // ADDED: Transform pricing variables
+    pricing: transformStrapiPricing(normalized, pricingType),
   };
+};
+
+export const fetchTopCategories = async () => {
+  const query = qs.stringify(
+    {
+      populate: {
+        car: {
+          populate: {
+            [IMAGE_FIELD]: { fields: ["url", "formats"] },
+          },
+        },
+      },
+    },
+    { encodeValuesOnly: true }
+  );
+
+  try {
+    // Assuming the single type is named 'top-kategorie'. 
+    // If it has a different name, please update the endpoint.
+    const { data } = await axios.get(`${API_BASE}/api/top-kategorie?${query}`);
+    
+    // The 'car' relation in a single type is usually in data.data.attributes.car
+    const carData = data?.data?.attributes?.car?.data;
+    
+    if (!carData) return [];
+
+    return normalizeCarData(carData).map((car) => ({
+      ...car,
+      displayPrice: getPrice(car), // Use default pricing
+      pricing: transformStrapiPricing(car),
+    }));
+  } catch (error) {
+    console.error("Error fetching top categories:", error);
+    return [];
+  }
 };

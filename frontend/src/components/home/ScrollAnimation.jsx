@@ -65,7 +65,7 @@ const ScrollAnimation = () => {
       <div className="grid lg:min-h-screen grid-cols-1 lg:grid-cols-2 items-center bg-white lg:sticky lg:top-0 lg:z-[999]">
         <img
           className="w-full h-auto lg:max-h-screen lg:h-full object-cover"
-          src="/images/losfahren.png"
+          src="/images/losfahren@2x.png"
           srcSet="/images/losfahren.png 1x, /images/losfahren@2x.png 2x, /images/losfahren@3x.png 3x"
           sizes="(max-width: 768px) 100vw, 50vw"
           alt="Losfahren"

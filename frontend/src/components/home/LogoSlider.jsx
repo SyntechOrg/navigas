@@ -4,12 +4,42 @@ import "swiper/css";
 import "swiper/css/free-mode";
 
 const partners = [
-  { src: "/images/car1.png", alt: "Partner 1" },
-  { src: "/images/car2.png", alt: "Partner 2" },
-  { src: "/images/car3.png", alt: "Partner 3" },
-  { src: "/images/car1.png", alt: "Partner 1" },
-  { src: "/images/car2.png", alt: "Partner 2" },
-  { src: "/images/car3.png", alt: "Partner 3" },
+  {
+    src: "/images/car1.png",
+    alt: "Partner 1",
+    model: "BMW X3",
+    price: "Ab 899 CHF/Monat",
+  },
+  {
+    src: "/images/car2.png",
+    alt: "Partner 2",
+    model: "Audi A4",
+    price: "Ab 799 CHF/Monat",
+  },
+  {
+    src: "/images/car3.png",
+    alt: "Partner 3",
+    model: "Mercedes C-Klasse",
+    price: "Ab 899 CHF/Monat",
+  },
+  {
+    src: "/images/car1.png",
+    alt: "Partner 1",
+    model: "BMW X3",
+    price: "Ab 899 CHF/Monat",
+  },
+  {
+    src: "/images/car2.png",
+    alt: "Partner 2",
+    model: "Audi A4",
+    price: "Ab 799 CHF/Monat",
+  },
+  {
+    src: "/images/car3.png",
+    alt: "Partner 3",
+    model: "Mercedes C-Klasse",
+    price: "Ab 899 CHF/Monat",
+  },
 ];
 
 const LogoSlider = () => {
@@ -49,6 +79,10 @@ const LogoSlider = () => {
               src={logo.src}
               alt={logo.alt}
             />
+            {/* <h1 className="text-center text-[20px] font-bold mb-2">
+              {logo.model}
+            </h1>
+            <p className="text-center">{logo.price}</p> */}
           </SwiperSlide>
         ))}
       </Swiper>

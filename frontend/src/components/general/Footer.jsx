@@ -28,7 +28,7 @@ const Footer = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:1337/api/email-service/subscribe",
+        "https://navigas-strapi.syn-tech.ch/api/email-service/subscribe",
         {
           method: "POST",
           headers: {
@@ -196,8 +196,8 @@ const Footer = () => {
             <h1 className="font-semibold">Schnellzugriffe</h1>
             {[
               { to: "/privatkunden", text: "Privatkunden" },
-              { to: "/autoAboPro", text: "Auto Abo Pro" },
-              { to: "/flexrent", text: "Flex Rent" },
+              { to: "/autoAboPro", text: "Auto Abo Pro (business)" },
+              { to: "/flexrent", text: "Flex Rent (business)" },
               { to: "/uberuns", text: "Über Uns" },
               { to: "/faq", text: "FAQ" },
               { to: "/kontakt", text: "Kontakt" },

@@ -84,7 +84,7 @@ const TopKategorien = () => {
       <img
         src="/images/topBg.png"
         alt=""
-        className="w-full xl:h-auto object-cover absolute -z-1 h-full"
+        className="w-full object-cover absolute -z-1 h-full"
       />
       <div className="flex items-center justify-center md:py-25 py-20">
         <div className="container mx-auto px-4 md:px-6">

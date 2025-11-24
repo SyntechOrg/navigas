@@ -23,7 +23,7 @@ const Customer = () => {
       />
       {/* <HoverCategories2 /> */}
       <Effizienz />
-      <LogoSlider />
+      {/* <LogoSlider /> */}
 
       <div className="container mx-auto mt-30">
         {" "}

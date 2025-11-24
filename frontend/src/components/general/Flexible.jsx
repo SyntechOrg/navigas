@@ -4,25 +4,25 @@ import { motion } from "framer-motion";
 const Flexible = () => {
   const features = [
     {
-      image: "/images/bg1.png",
+      image: "/images/bg1.svg",
       title: "Flexible Laufzeiten",
       description: "1-24 Monate, flexibel anpassbar an Ihren Bedarf.",
     },
     {
-      image: "/images/bg2.png",
+      image: "/images/bg2.svg",
       title: "Schnelle Verfügbarkeit",
       description: "Keine langen Wartezeiten, einsteigen und losfahren.",
     },
     {
-      image: "/images/bg3.png",
+      image: "/images/bg3.svg",
       title: "Fahrzeugtausch moglich",
       description: "Modell wechseln, wenn sich der Einsatz ändert.",
     },
     {
-      image: "/images/bg4.png",
+      image: "/images/bg4.svg",
       title: "Lieferung",
       description:
-        "SatzbauIhr wird innerhalb 48 Stunden an ihren Wunschort geliefert",
+        "Das Fahrzeug wird innerhalb 48 Stunden an ihren Wunschort geliefert.",
     },
   ];
 
@@ -60,7 +60,7 @@ const Flexible = () => {
         {features.map((feature, index) => (
           <motion.div
             key={index}
-            className="flex flex-col items-start justify-between gap-[18px] py-[40px] px-[30px] bg-white rounded-xl cursor-pointer"
+            className="flex flex-col items-center justify-between gap-[18px] py-[40px] px-[30px] bg-white rounded-xl cursor-pointer"
             variants={itemVariants}
             whileHover={{
               y: -12,
@@ -75,10 +75,12 @@ const Flexible = () => {
               whileHover={{ scale: 1.1, rotate: 5 }}
               transition={{ type: "spring", stiffness: 300, damping: 15 }}
             />
-            <h1 className="text-[#010101] font-semibold text-[20px]">
+            <h1 className="text-[#010101] font-semibold text-center text-[20px]">
               {feature.title}
             </h1>
-            <p className="text-[#494B4E] font-medium">{feature.description}</p>
+            <p className="text-[#494B4E] text-center font-medium">
+              {feature.description}
+            </p>
           </motion.div>
         ))}
       </motion.div>

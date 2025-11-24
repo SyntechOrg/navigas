@@ -13,7 +13,7 @@ const AboutStart2 = ({ src, mobileSrc, title, paragraph }) => {
         <h1 className="text-white text-center z-[99] lg:text-[80px] md:text-[64px] text-[32px] font-medium">
           {title}
         </h1>
-        <p className="text-center font-semibold text-white text-[16px] mt-10 md:text-[20px] z-[99]">
+        <p className="text-center font-medium text-white text-[16px] mt-10 md:text-[24px] z-[99]">
           {paragraph}
         </p>
       </div>

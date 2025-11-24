@@ -14,13 +14,13 @@ const Dabei = () => {
           className="hidden md:block w-full h-auto"
         />
         <img
-          src="/images/car-mobile.webp"
+          src="/images/veturat.png"
           alt="Auto Abo Pro Mobile"
           className="block md:hidden w-full h-auto"
         />
       </div>
 
-      <div className="flex flex-row justify-center -mt-17 md:-mt-25">
+      <div className="flex flex-row justify-center mt-5 md:-mt-25">
         <a href="/privatkunden">
           <button
             className="rounded-xl bg-gradient-to-r text-[14px] md:text-[16px] from-[#0847A4] to-[#0a6fff] px-10 py-4 text-white

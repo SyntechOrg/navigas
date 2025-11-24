@@ -237,14 +237,14 @@ export default function KontaktSection() {
                     autoComplete: "name",
                   },
                   {
-                    label: "Email Address",
+                    label: "E-Mail-Adresse",
                     name: "emailAddress",
                     type: "email",
                     placeholder: "Geben Sie Ihre E‑Mail‑Adresse ein",
                     autoComplete: "email",
                   },
                   {
-                    label: "Phone Number",
+                    label: "Telefonnummer",
                     name: "phoneNumber",
                     type: "tel",
                     placeholder: "Geben Sie Ihre Telefonnummer ein",

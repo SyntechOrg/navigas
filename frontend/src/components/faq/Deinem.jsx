@@ -389,7 +389,7 @@ const Deinem = () => {
       <div className="container mx-auto flex flex-col-reverse lg:flex-row items-center justify-between gap-10 lg:gap-[90px] px-4 lg:px-0">
         <div className="flex flex-col items-start justify-between gap-6 lg:gap-[40px] w-full lg:w-1/2 mb-10 lg:mb-0">
           <h1 className="text-[#0847A4] text-3xl sm:text-4xl lg:text-[48px] font-semibold leading-tight mt-10 lg:mt-0">
-            Häufige Fragen zu <br /> deinem Auto Abo
+            Häufige Fragen zu <br /> Ihrem Auto Abo
           </h1>
           <p className="text-sm sm:text-base">
             Hier findest du Antworten auf alle Fragen rund um dein Navigas Auto
@@ -426,13 +426,13 @@ const Deinem = () => {
           </div>
         </div>
 
-        <div className="relative w-full   lg:w-1/2 ">
+        <div className="relative w-full lg:w-1/2 ">
           <video
             ref={videoRef}
             loop
             preload="metadata"
             poster="/images/faqVideo-thumbnail.png"
-            src="https://res.cloudinary.com/duwiosb7t/video/upload/v1762786296/faqVideo1_laxwqk.mp4"
+            src="/videos/faqVideo.mp4"
             className="rounded-b-2xl"
             onClick={handleToggle}
           />

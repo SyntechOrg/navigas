@@ -10,6 +10,28 @@ const Unverbindlich = () => {
     dauer: "",
     nachricht: "",
   });
+  // Add this to your state variables
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  // Add this helper to handle selection
+  const handleCategorySelect = (category) => {
+    setFormData((prev) => ({ ...prev, kategorie: category }));
+    setIsDropdownOpen(false);
+  };
+
+  const categories = [
+    "Kleinwagen",
+    "Kompakt Classic",
+    "Kompakt Premium",
+    "Kombi Classic",
+    "Elektro Classic",
+    "Nutzfahrzeug Kompakt",
+    "SUV Classic",
+    "Nutzfahrzeug",
+    "Elektro Premium",
+    "Kombi Premium",
+    "SUV Premium",
+  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,10 +65,10 @@ const Unverbindlich = () => {
             <div>
               <p className="text-[20px] text-white/30 mb-1">E-Mail</p>
               <a
-                href="mailto:contact@navigas-mobility.ch"
+                href="mailto:info@navigas-mobility.ch"
                 className="text-xl md:text-2xl text-white  hover:underline"
               >
-                contact@navigas-mobility.ch
+                info@navigas-mobility.ch
               </a>
             </div>
             <div>
@@ -124,19 +146,58 @@ const Unverbindlich = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
+              <div className="relative">
                 <label className="block text-white text-sm mb-2">
                   Kategorie
                 </label>
-                <input
-                  type="text"
-                  name="kategorie"
-                  value={formData.kategorie}
-                  onChange={handleChange}
-                  placeholder="Fahrzeugkategorie"
-                  className="w-full px-4 py-3  border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 transition-colors"
-                />
+
+                {/* Main Button */}
+                <button
+                  type="button"
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="w-full px-4 py-3 text-left border border-white/10 rounded-lg text-white bg-[#0847A4] hover:bg-[#0a52be] focus:outline-none focus:border-blue-400 transition-colors flex justify-between items-center"
+                >
+                  <span
+                    className={
+                      formData.kategorie ? "text-white" : "text-gray-400"
+                    }
+                  >
+                    {formData.kategorie || "Fahrzeugkategorie wählen"}
+                  </span>
+                  {/* Custom Arrow Icon */}
+                  <svg
+                    className={`w-5 h-5 text-white transition-transform duration-200 ${
+                      isDropdownOpen ? "rotate-180" : ""
+                    }`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+
+                {/* Dropdown Menu */}
+                {isDropdownOpen && (
+                  <div className="absolute z-50 w-full mt-2 bg-[#003380] border border-white/10 rounded-lg shadow-xl max-h-60 overflow-y-auto">
+                    {categories.map((cat) => (
+                      <div
+                        key={cat}
+                        onClick={() => handleCategorySelect(cat)}
+                        className="px-4 py-3 text-white hover:bg-[#0847A4] cursor-pointer transition-colors border-b border-white/5 last:border-none"
+                      >
+                        {cat}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
+
               <div>
                 <label className="block text-white text-sm mb-2">Dauer</label>
                 <input

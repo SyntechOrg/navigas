@@ -116,8 +116,7 @@ const UnsereMission = () => {
           transition={{ duration: 0.7, delay: 0.4 }}
         >
           DIE MISSION VON NAVIGAS: <br />
-          DEN AUTOBESITZ REVOLUTIONIEREN <br /> DURCH FLEXIBLE DIGITALE
-          MOBILITÄT
+          EINFACHE MOBILITÄT FÜR EIN NEUES FAHRERLEBNIS
         </motion.h1>
       </motion.div>
     </div>

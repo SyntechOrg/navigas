@@ -59,7 +59,7 @@ const Subscribe = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:1337/api/email-service/subscribe",
+        "https://navigas-strapi.syn-tech.ch/api/email-service/subscribe",
         {
           method: "POST",
           headers: {

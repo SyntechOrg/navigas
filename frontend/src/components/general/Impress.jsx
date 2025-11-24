@@ -58,9 +58,7 @@ const Impress = () => {
           {/* Additional Info Grid */}
           <div className="grid md:grid-cols-3 gap-8">
             <div className="bg-white/5 rounded-xl p-6 border border-white/5 hover:border-[#2860B7]/30 transition-all duration-300">
-              <h3 className="text-lg font-medium text-white mb-3">
-                Geschäftsleitung
-              </h3>
+              <h3 className="text-lg font-medium text-white mb-3"></h3>
               <p className="text-[#E8EBF1] text-base leading-relaxed">
                 Diana und Mehmet von Burg
               </p>

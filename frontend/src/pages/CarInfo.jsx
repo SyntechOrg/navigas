@@ -63,6 +63,7 @@ const CarInfo = () => {
         modell: car.modell,
         imageUrls: car.imageUrls,
         pricingType,
+        extraPreisAutos: car.extraPreisAutos,
       };
       navigate("/reserve-car", { state: { car: state } });
     },

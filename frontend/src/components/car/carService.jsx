@@ -32,15 +32,45 @@ const PRICING_VARIABLE_MAP = {
   fourteenthVariable: { term: 48, km: 25000 },
 };
 
-export const transformStrapiPricing = (car) => {
+export const transformStrapiPricing = (car, pricingType = PRICING_TYPE.NORMAL) => {
   const pricing = {};
 
   Object.entries(PRICING_VARIABLE_MAP).forEach(([varName, { term, km }]) => {
+    // If specific company price field
+    if (varName === "PreisFurUnternehmen") {
+      // Only include if we are in company mode
+      if (pricingType === PRICING_TYPE.COMPANY && car[varName]) {
+        const key = `${term}-${km}`;
+        // User requested to apply 8.1% discount on this field as well
+        pricing[key] = Math.round(Number(car[varName]) * (1 - 0.081));
+      }
+      return;
+    }
+
+    // For other variables
     if (car[varName] !== undefined && car[varName] !== null) {
       const key = `${term}-${km}`;
-      pricing[key] = Number(car[varName]);
+      let val = Number(car[varName]);
+
+      // If company mode, apply 8.1% reduction to standard variable prices
+      if (pricingType === PRICING_TYPE.COMPANY) {
+        val = Math.round(val * (1 - 0.081));
+      }
+
+      pricing[key] = val;
     }
   });
+
+  // Ensure base configuration (24-5000) is represented in pricing
+  // This handles the case where we are in COMPANY mode, but no explicit company price (PreisFurUnternehmen) exists.
+  // We calculate the reduced base price and insert it as the 24-5000 option.
+  // This ensures PolestarCard can find it in the pricing map.
+  if (pricingType === PRICING_TYPE.COMPANY && !pricing["24-5000"]) {
+    const basePrice = parseInt(car.preis) || 0;
+    if (basePrice > 0) {
+      pricing["24-5000"] = Math.round(basePrice * (1 - 0.081));
+    }
+  }
 
   return pricing;
 };
@@ -87,7 +117,9 @@ export const transformPricingOptions = (car) => {
 
 export const getPrice = (car, pricingType = PRICING_TYPE.NORMAL) => {
   if (pricingType === PRICING_TYPE.COMPANY) {
-    return parseInt(car.PreisFurUnternehmen || car.preis) || 0;
+    // User requested to apply 8.1% discount even if PreisFurUnternehmen is set
+    const base = parseInt(car.PreisFurUnternehmen) || parseInt(car.preis) || 0;
+    return Math.round(base * (1 - 0.081));
   }
   return parseInt(car.preis) || 0;
 };
@@ -143,6 +175,7 @@ export const fetchCars = async (
         "twelfthVariable",
         "thirteenthVariable",
         "fourteenthVariable",
+        "extraPreisAutos",
       ],
       populate: { [IMAGE_FIELD]: { fields: ["url", "formats"] } },
       filters: Object.keys(strapiFilters).length ? strapiFilters : undefined,
@@ -156,7 +189,7 @@ export const fetchCars = async (
     ...car,
     displayPrice: getPrice(car, pricingType),
     pricingType,
-    pricing: transformStrapiPricing(car), // ADDED: Transform pricing variables
+    pricing: transformStrapiPricing(car, pricingType), // ADDED: Transform pricing variables
   }));
 
   return {
@@ -195,6 +228,7 @@ export const fetchCarById = async (id, pricingType = PRICING_TYPE.NORMAL) => {
         "twelfthVariable",
         "thirteenthVariable",
         "fourteenthVariable",
+        "extraPreisAutos",
       ],
     },
     { encodeValuesOnly: true }
@@ -207,6 +241,6 @@ export const fetchCarById = async (id, pricingType = PRICING_TYPE.NORMAL) => {
     ...normalized,
     displayPrice: getPrice(normalized, pricingType),
     pricingType,
-    pricing: transformStrapiPricing(normalized), // ADDED: Transform pricing variables
+    pricing: transformStrapiPricing(normalized, pricingType), // ADDED: Transform pricing variables
   };
 };

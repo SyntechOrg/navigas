@@ -50,8 +50,8 @@ export const CarCard = memo(({ car, pricingType = PRICING_TYPE.NORMAL }) => {
             <p className="text-white text-[10px]">
               pro Monat{" "}
               {pricingType === PRICING_TYPE.NORMAL
-                ? "exkl. MwSt."
-                : "inkl. MwSt."}
+                ? "inkl. MwSt."
+                : "exkl. MwSt."}
             </p>
           </motion.div>
         </div>

@@ -142,6 +142,7 @@ const CarList = ({ refreshTrigger }) => {
             "leistung",
             "kraftstoff",
             "verbrauch",
+            "beschreibung",
             "updatedAt",
             "Autokategorien",
             "Fahrzeugtypen",

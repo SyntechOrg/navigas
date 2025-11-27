@@ -68,10 +68,26 @@ export default function PolestarCard({
   pricingType = PRICING_TYPE.NORMAL,
 }) {
   const [imageIndex, setImageIndex] = useState(0);
-  const [selectedKm, setSelectedKm] = useState(kmPricingOptions[0]?.km || 5000);
-  const [selectedTerm, setSelectedTerm] = useState(
-    termPricingOptions[0]?.months || 24
+
+  // Helper to find default or fallback
+  const getDefaultKm = useCallback(
+    () =>
+      kmPricingOptions.some((o) => o.km === 5000)
+        ? 5000
+        : kmPricingOptions[0]?.km || 5000,
+    [kmPricingOptions]
   );
+
+  const getDefaultTerm = useCallback(
+    () =>
+      termPricingOptions.some((o) => o.months === 48)
+        ? 48
+        : termPricingOptions[0]?.months || 24,
+    [termPricingOptions]
+  );
+
+  const [selectedKm, setSelectedKm] = useState(getDefaultKm);
+  const [selectedTerm, setSelectedTerm] = useState(getDefaultTerm);
 
   const imagesKey = useMemo(() => images.map((i) => i.src).join(","), [images]);
   const gallery = useMemo(
@@ -80,16 +96,18 @@ export default function PolestarCard({
   );
 
   useEffect(() => setImageIndex(0), [imagesKey]);
-  useEffect(
-    () => kmPricingOptions.length && setSelectedKm(kmPricingOptions[0].km),
-    [kmPricingOptions]
-  );
-  useEffect(
-    () =>
-      termPricingOptions.length &&
-      setSelectedTerm(termPricingOptions[0].months),
-    [termPricingOptions]
-  );
+
+  useEffect(() => {
+    if (kmPricingOptions.length) {
+      setSelectedKm(getDefaultKm());
+    }
+  }, [kmPricingOptions, getDefaultKm]);
+
+  useEffect(() => {
+    if (termPricingOptions.length) {
+      setSelectedTerm(getDefaultTerm());
+    }
+  }, [termPricingOptions, getDefaultTerm]);
 
   // UPDATED: Fixed pricing lookup function (no calculations)
   const getPriceForCombination = useCallback(
@@ -237,46 +255,60 @@ export default function PolestarCard({
     y += 25;
 
     // Technical specs
-    doc.setFontSize(14).setFont(undefined, "bold").setTextColor(8, 71, 164);
-    doc.text("Technische Daten", w / 2, y, { align: "center" });
-    y += 8;
-
     const specs = [
       { label: "Schaltung", val: carData.Getriebe },
       { label: "Reichweite", val: carData.reichweite },
-      { label: "Leistung", val: `${carData.leistung} PS` },
-      { label: "Verbrauch", val: `${carData.verbrauch} L/100km` },
+      { label: "Leistung", val: carData.leistung ? `${carData.leistung} PS` : null },
+      { label: "Verbrauch", val: carData.verbrauch ? `${carData.verbrauch} L/100km` : null },
       { label: "Türen", val: carData.turen },
       { label: "Treibstoff", val: carData.Treibstoff },
-    ];
+    ].filter((s) => s.val && s.val !== "N/A");
 
-    const colW = (w - 40) / 3;
-    let row = 0,
-      col = 0;
-    specs.forEach((s) => {
-      const x = 20 + col * colW,
-        yy = y + row * 20;
-      doc
-        .setFillColor(255, 255, 255)
-        .setDrawColor(220, 220, 220)
-        .setLineWidth(0.1)
-        .roundedRect(x, yy, colW - 5, 16, 1, 1, "FD")
-        .setFontSize(9)
-        .setTextColor(100, 100, 100)
-        .setFont(undefined, "normal")
-        .text(s.label, x + 3, yy + 6)
-        .setFontSize(10)
-        .setTextColor(0, 0, 0)
-        .setFont(undefined, "bold")
-        .text(s.val || "N/A", x + 3, yy + 12);
-      col++;
-      if (col === 3) {
+    if (specs.length > 0) {
+      doc.setFontSize(14).setFont(undefined, "bold").setTextColor(8, 71, 164);
+      doc.text("Technische Daten", w / 2, y, { align: "center" });
+      y += 8;
+
+      const colW = (w - 40) / 3;
+      let row = 0,
         col = 0;
-        row++;
-      }
-    });
+      specs.forEach((s) => {
+        const x = 20 + col * colW,
+          yy = y + row * 20;
+        doc
+          .setFillColor(255, 255, 255)
+          .setDrawColor(220, 220, 220)
+          .setLineWidth(0.1)
+          .roundedRect(x, yy, colW - 5, 16, 1, 1, "FD")
+          .setFontSize(9)
+          .setTextColor(100, 100, 100)
+          .setFont(undefined, "normal")
+          .text(s.label, x + 3, yy + 6)
+          .setFontSize(10)
+          .setTextColor(0, 0, 0)
+          .setFont(undefined, "bold")
+          .text(s.val, x + 3, yy + 12);
+        col++;
+        if (col === 3) {
+          col = 0;
+          row++;
+        }
+      });
 
-    y += (row + 1) * 20 + 20;
+      y += (Math.ceil(specs.length / 3)) * 20 + 20;
+    }
+
+    // Beschreibung (Description)
+    if (carData.beschreibung) {
+      doc.setFontSize(14).setFont(undefined, "bold").setTextColor(8, 71, 164);
+      doc.text("Beschreibung", w / 2, y, { align: "center" });
+      y += 8;
+
+      doc.setFontSize(10).setFont(undefined, "normal").setTextColor(50, 50, 50);
+      const descLines = doc.splitTextToSize(carData.beschreibung, w - 40);
+      doc.text(descLines, 20, y);
+      y += descLines.length * 5 + 20;
+    }
 
     // Footer
     const fy = h - 30;
@@ -298,18 +330,18 @@ export default function PolestarCard({
       .setFontSize(8)
       .setTextColor(80, 80, 80)
       .setFont(undefined, "normal")
-      .text(`Erstellt am ${date}`, 20, fy + 10)
-      .text(`Alle Preise ${taxLabel}`, w / 2, fy + 10, { align: "center" })
+      .text(`Erstellt am ${date}`, 20, fy + 15)
+      .text(`Alle Preise ${taxLabel}`, w / 2, fy + 15, { align: "center" })
       .setFont(undefined, "bold")
       .setFontSize(9)
       .setTextColor(8, 71, 164)
-      .text("www.ihrewebsite.ch", w - 20, fy + 10, { align: "right" })
+      .text("www.navigas-mobility.ch", w - 20, fy + 15, { align: "right" })
       .setFont(undefined, "italic")
       .setFontSize(7)
       .setTextColor(120, 120, 120)
-      .text("Ihr zuverlässiger Partner für Elektromobilität", w / 2, fy + 18, {
-        align: "center",
-      });
+      // .text("Ihr zuverlässiger Partner für Elektromobilität", w / 2, fy + 18, {
+      //   align: "center",
+      // });
 
     doc.save(`${title.replace(/\s/g, "_")}_Datenblatt.pdf`);
   }, [

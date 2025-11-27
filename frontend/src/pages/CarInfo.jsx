@@ -75,46 +75,47 @@ const CarInfo = () => {
       {
         icon: <img src="/images/fahrzeug1.svg" />,
         label: "Schaltung",
-        value: car?.Getriebe || "N/A",
+        value: car?.Getriebe,
       },
       {
         icon: <img src="/images/fahrzeug2.svg" />,
         label: "Reichweite",
-        value: car?.reichweite || "N/A",
+        value: car?.reichweite,
+      },
+      {
+        icon: <img src="/images/fahrzeug2.svg" />,
+        label: "CO₂-Kategorie",
+        value: car?.COKategorie,
       },
       {
         icon: <img src="/images/fahrzeug4.svg" />,
         label: "Leistung",
-        value: car?.leistung ? `${car.leistung} PS` : "N/A",
+        value: car?.leistung ? `${car.leistung} PS` : null,
       },
       {
         icon: <img src="/images/fahrzeug6.svg" />,
         label: "Verbrauch",
-        value: car?.verbrauch ? `${car.verbrauch} L/100km` : "N/A",
+        value: car?.verbrauch ? `${car.verbrauch} L/100km` : null,
       },
       {
         icon: <img src="/images/fahrzeug7.svg" />,
         label: "Türen",
-        value: car?.turen || "N/A",
+        value: car?.turen,
       },
       {
         icon: <img src="/images/fahrzeug8.svg" />,
         label: "Treibstoff",
-        value: car?.Treibstoff || "N/A",
+        value: car?.Treibstoff,
       },
-    ],
+    ].filter(item => item.value && item.value !== "N/A"),
     [car]
   );
 
+  console.log(car);
+
   const description = useMemo(
     () =>
-      car
-        ? `Der ${car.marke} ${car.modell} ist ein ${
-            car.Fahrzeugart || "Fahrzeug"
-          } mit ${car.Getriebe} Getriebe. Mit einer Leistung von ${
-            car.leistung
-          } PS und einem Verbrauch von ${car.verbrauch} L/100km.`
-        : "",
+      car?.beschreibung || "",
     [car]
   );
 

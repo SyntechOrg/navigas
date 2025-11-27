@@ -23,7 +23,7 @@ export const CarCard = memo(({ car, pricingType = PRICING_TYPE.NORMAL }) => {
       whileHover={{ y: -8 }}
     >
       <motion.div
-        className="bg-[#0A1424] rounded-xl shadow-lg overflow-hidden transition"
+        className="bg-[#0A1424] rounded-xl  shadow-2xl overflow-hidden transition"
         whileHover={{ boxShadow: "0 20px 40px rgba(0, 0, 0, 0.4)" }}
         transition={{ duration: 0.3 }}
       >
@@ -37,23 +37,6 @@ export const CarCard = memo(({ car, pricingType = PRICING_TYPE.NORMAL }) => {
             whileHover={{ scale: 1.1 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
           />
-          <motion.div
-            className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex items-end gap-1 w-[90%]"
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <h1 className="text-white font-medium text-[24px] tracking-[2px]">
-              {car.displayPrice}
-            </h1>
-            <p className="text-white text-[10px]">
-              pro Monat{" "}
-              {pricingType === PRICING_TYPE.NORMAL
-                ? "inkl. MwSt."
-                : "exkl. MwSt."}
-            </p>
-          </motion.div>
         </div>
         <motion.div
           className="py-5 border-b border-[#152032] w-[90%] mx-auto flex flex-col gap-2"
@@ -62,13 +45,24 @@ export const CarCard = memo(({ car, pricingType = PRICING_TYPE.NORMAL }) => {
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.3 }}
         >
-          <h1 className="text-white font-medium text-[20px] truncate">
+          <div className="flex flex-row items-center gap-2">
+            <h1 className="text-white font-medium text-[20px] tracking-[2px]">
+              {car.displayPrice + " CHF"}
+            </h1>
+            <p className="text-white text-[10px]">
+              pro Monat{" "}
+              {pricingType === PRICING_TYPE.NORMAL
+                ? "inkl. MwSt."
+                : "exkl. MwSt."}
+            </p>
+          </div>
+          <h1 className="text-white font-medium text-[15px] truncate">
             {car.marke} {car.modell}
           </h1>
           <h1 className="text-[#C0C0C1] text-[14px]">{car.Getriebe}</h1>
         </motion.div>
         <motion.div
-          className="py-5 w-[80%] mx-auto flex justify-between"
+          className="py-3 w-[80%] mx-auto flex justify-between"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -89,6 +83,7 @@ export const CarCard = memo(({ car, pricingType = PRICING_TYPE.NORMAL }) => {
               <motion.img
                 src={stat.icon}
                 alt=""
+                className="w-7"
                 whileHover={{ scale: 1.15, rotate: 5 }}
                 transition={{ type: "spring", stiffness: 300 }}
               />

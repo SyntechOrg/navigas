@@ -9,8 +9,8 @@ export const PRICING_TYPE = {
 
 export const FILTER_OPTIONS = {
   fahrzeugart: ["Kleinwagen", "Kompakt", "Mittelklasse", "SUV", "Premium"],
-  treibstoff: ["Elektrisch", "Hybrid", "Gas"],
-  getriebe: ["Automatik", "Handschaltung", "Allrad (4x4)"],
+  treibstoff: ["Elektrisch", "Hybrid", "Benzin"],
+  getriebe: ["Automatik", "Handschaltung"],
 };
 
 export const UI_TO_SCHEMA_KEY = {

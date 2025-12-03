@@ -175,11 +175,9 @@ const FinalLeaseInquiry = ({ car }) => {
               <h1 className="text-[#010101] text-[18px] sm:text-[20px] lg:text-[22px] font-semibold">
                 {vehicle.price}
               </h1>
-              {vehicle.extraPreisAutos && (
-                <p className="text-[12px] text-[#0847A4] font-medium mt-1">
-                  * zzgl. Initialpauschale von CHF 199
-                </p>
-              )}
+              <p className="text-[12px] text-[#0847A4] font-medium mt-1">
+                {vehicle.extraPreisAutos}
+              </p>
             </div>
           </div>
         </div>

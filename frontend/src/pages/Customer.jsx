@@ -9,13 +9,13 @@ import Funktioniert from "../components/costumer/Funktioniert";
 import Nachrichten from "../components/about/Nachrichten";
 import Effizienz2 from "../components/costumer/Effizienz2";
 import ScrollToTop from "../components/general/ScrollToTop";
-import AboutStart2 from "../components/about/AboutStart2";
+import AboutStart3 from "../components/about/AboutStart3";
 
 const Customer = () => {
   return (
     <div>
       <ScrollToTop />
-      <AboutStart2
+      <AboutStart3
         src="/images/autoBg.png"
         title="Auto Abo Pro"
         paragraph="Mit Navigas bleiben Sie und Ihr Unternehmen jederzeit mobil, ohne langfristige Verpflichtungen"

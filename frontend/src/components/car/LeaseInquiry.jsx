@@ -439,11 +439,9 @@ export default function LeaseInquiry({ car }) {
                       "Preis auf Anfrage"
                     )}
                   </h1>
-                  {car?.extraPreisAutos && (
-                    <p className="text-[12px] text-[#0847A4] font-medium ml-2">
-                      * zzgl. Initialpauschale von CHF 199
-                    </p>
-                  )}
+                  <p className="text-[12px] text-[#0847A4] font-medium ml-2">
+                    {car?.extraPreisAutos}
+                  </p>
                 </div>
               </div>
 

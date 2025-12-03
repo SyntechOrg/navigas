@@ -246,39 +246,10 @@ const Deinem = () => {
           id: "kuendigung",
           question: "Kann ich die Vertragszeit verlängern?",
           answer:
-            "Ja, Sie können die Laufzeit Ihres Auto Abos im letzten Vertragsjahr unkompliziert verlängern. Melden Sie sich dafür einfach per E-Mail an info@navigas-mobility.ch.",
+            "Ja, Sie können die Laufzeit Ihres Auto Abos im letzten Vertragsjahr unkompliziert verlängern. Melden Sie sich dafür einfach per E-Mail an [info@navigas-mobility.ch](mailto:info@navigas-mobility.ch).",
         },
-        // {
-        //   id: "kuendigung2",
-        //   question: "Wie funktioniert die Fahrzeugrückgabe?",
-        //   answer:
-        //     "Am Ende der Laufzeit wird dein Fahrzeug von einem unabhängigen Sachverständigen überprüft. Die Bewertung erfolgt nach den Richtlinien unseres Leitfadens für Fahrzeugrückgaben, damit alles fair und transparent abläuft.",
-        // },
       ],
     },
-    // "kontakt-support": {
-    //   title: "Kontakt & Support",
-    //   questions: [
-    //     {
-    //       id: "kontakt",
-    //       question: "An wen kann ich mich bei Fragen wenden?",
-    //       answer:
-    //         "Unser Team steht dir persönlich telefonisch, per E-Mail oder über das Kontaktformular zur Verfügung, wir helfen dir gerne weiter.",
-    //     },
-    //     {
-    //       id: "oeffnungszeiten",
-    //       question: "Wie erreiche ich den Pannenservice?",
-    //       answer:
-    //         "Bitte melde dich unter der Telefonnummer 041 748 37 73. Unsere Assistance ist 24 Stunden am Tag, 7 Tage die Woche für dich erreichbar, europaweit und ohne Zusatzkosten.",
-    //     },
-    //     {
-    //       id: "oeffnungszeiten2",
-    //       question: "Ich habe keine Antwort gefunden, was tun?",
-    //       answer:
-    //         "Kein Problem! Schreib uns einfach an [info@navigas-mobility.ch](mailto:info@navigas-mobility.ch), oder nutze das Kontaktformular. Wir melden uns schnellstmöglich bei dir.",
-    //     },
-    //   ],
-    // },
   };
 
   const tabs = [
@@ -307,7 +278,6 @@ const Deinem = () => {
       id: "laufzeit-kuendigung",
       label: "Laufzeit, Kündigung & Rückgabe",
     },
-    // { id: "kontakt-support", label: "Kontakt & Support" },
   ];
 
   // Filter questions based on search query
@@ -353,6 +323,9 @@ const Deinem = () => {
     setSearchQuery("");
     setIsSearchActive(false);
 
+    // --- FIX: SCROLLING REMOVED ---
+    // This block was causing the page to scroll/jump when clicking tabs
+    /* 
     if (event.target && tabsRef.current) {
       const button = event.target.closest("button");
       if (button) {
@@ -363,6 +336,7 @@ const Deinem = () => {
         });
       }
     }
+    */
   };
 
   const handleSearchChange = (e) => {
@@ -375,7 +349,9 @@ const Deinem = () => {
     e.preventDefault();
     setIsSearchActive(true);
 
-    // Scroll to results section
+    // --- OPTIONAL: SEARCH SCROLLING DISABLED ---
+    // Uncomment this if you WANT the page to scroll to results after search
+    /*
     setTimeout(() => {
       if (resultsRef.current) {
         resultsRef.current.scrollIntoView({
@@ -384,6 +360,7 @@ const Deinem = () => {
         });
       }
     }, 100);
+    */
   };
 
   return (

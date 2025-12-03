@@ -16,16 +16,12 @@ export const CarCard = memo(({ car, pricingType = PRICING_TYPE.NORMAL }) => {
     <motion.div
       className="p-2 cursor-pointer"
       onClick={handleClick}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.5 }}
+      initial={{ opacity: 1, y: 0 }}
       whileHover={{ y: -8 }}
+      transition={{ duration: 0.2 }}
     >
-      <motion.div
-        className="bg-[#0A1424] rounded-xl  shadow-2xl overflow-hidden transition"
-        whileHover={{ boxShadow: "0 20px 40px rgba(0, 0, 0, 0.4)" }}
-        transition={{ duration: 0.3 }}
+      <div
+        className="bg-[#0A1424] rounded-xl  shadow-2xl overflow-hidden transition hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)]"
       >
         <div className="relative overflow-hidden">
           <motion.img
@@ -38,12 +34,8 @@ export const CarCard = memo(({ car, pricingType = PRICING_TYPE.NORMAL }) => {
             transition={{ duration: 0.4, ease: "easeOut" }}
           />
         </div>
-        <motion.div
+        <div
           className="py-5 border-b border-[#152032] w-[90%] mx-auto flex flex-col gap-2"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.3 }}
         >
           <div className="flex flex-row items-center gap-2">
             <h1 className="text-white font-medium text-[20px] tracking-[2px]">
@@ -60,37 +52,29 @@ export const CarCard = memo(({ car, pricingType = PRICING_TYPE.NORMAL }) => {
             {car.marke} {car.modell}
           </h1>
           <h1 className="text-[#C0C0C1] text-[14px]">{car.Getriebe}</h1>
-        </motion.div>
-        <motion.div
+        </div>
+        <div
           className="py-3 w-[80%] mx-auto flex justify-between"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.4 }}
         >
           {[
             { icon: "/images/psIcon.svg", text: `${car.leistung} PS` },
             { icon: "/images/pumpIcon.svg", text: car.Treibstoff },
             { icon: "/images/typeIcon.svg", text: `${car.Getriebe} ` },
           ].map((stat, index) => (
-            <motion.div
+            <div
               key={index}
-              className="flex flex-col-reverse items-center gap-2"
-              whileHover={{ y: -4 }}
-              transition={{ duration: 0.2 }}
+              className="flex flex-col-reverse items-center gap-2 transition-transform hover:-translate-y-1"
             >
               <p className="text-[#C0C0C1] text-[12px]">{stat.text}</p>
-              <motion.img
+              <img
                 src={stat.icon}
                 alt=""
-                className="w-7"
-                whileHover={{ scale: 1.15, rotate: 5 }}
-                transition={{ type: "spring", stiffness: 300 }}
+                className="w-7 transition-transform hover:scale-115 hover:rotate-6"
               />
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
     </motion.div>
   );
 });

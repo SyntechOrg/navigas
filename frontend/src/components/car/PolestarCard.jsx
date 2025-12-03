@@ -258,8 +258,14 @@ export default function PolestarCard({
     const specs = [
       { label: "Schaltung", val: carData.Getriebe },
       { label: "Reichweite", val: carData.reichweite },
-      { label: "Leistung", val: carData.leistung ? `${carData.leistung} PS` : null },
-      { label: "Verbrauch", val: carData.verbrauch ? `${carData.verbrauch} L/100km` : null },
+      {
+        label: "Leistung",
+        val: carData.leistung ? `${carData.leistung} PS` : null,
+      },
+      {
+        label: "Verbrauch",
+        val: carData.verbrauch ? `${carData.verbrauch} L/100km` : null,
+      },
       { label: "Türen", val: carData.turen },
       { label: "Treibstoff", val: carData.Treibstoff },
     ].filter((s) => s.val && s.val !== "N/A");
@@ -295,7 +301,7 @@ export default function PolestarCard({
         }
       });
 
-      y += (Math.ceil(specs.length / 3)) * 20 + 20;
+      y += Math.ceil(specs.length / 3) * 20 + 20;
     }
 
     // Beschreibung (Description)
@@ -338,10 +344,10 @@ export default function PolestarCard({
       .text("www.navigas-mobility.ch", w - 20, fy + 15, { align: "right" })
       .setFont(undefined, "italic")
       .setFontSize(7)
-      .setTextColor(120, 120, 120)
-      // .text("Ihr zuverlässiger Partner für Elektromobilität", w / 2, fy + 18, {
-      //   align: "center",
-      // });
+      .setTextColor(120, 120, 120);
+    // .text("Ihr zuverlässiger Partner für Elektromobilität", w / 2, fy + 18, {
+    //   align: "center",
+    // });
 
     doc.save(`${title.replace(/\s/g, "_")}_Datenblatt.pdf`);
   }, [
@@ -364,7 +370,10 @@ export default function PolestarCard({
             <div className="relative md:cols-span-2">
               <div className="aspect-[5/3] overflow-hidden rounded-lg bg-gray-100">
                 <ImageWithFallback
-                  src={gallery[imageIndex].src}
+                  src={
+                    gallery[imageIndex].formats?.large?.url ||
+                    gallery[imageIndex].src
+                  }
                   alt={gallery[imageIndex].alt}
                   className="h-full w-full object-cover"
                 />

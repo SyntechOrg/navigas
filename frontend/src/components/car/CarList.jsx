@@ -48,6 +48,12 @@ export const CarList = ({ filters, pricingType = PRICING_TYPE.NORMAL }) => {
     } catch (e) {
       if (!controller.signal.aborted) {
         console.error("Failed to fetch cars:", e);
+        if (e.response && e.response.data) {
+          console.error(
+            "Strapi Error details:",
+            JSON.stringify(e.response.data, null, 2)
+          );
+        }
         setCars([]);
         setPageCount(1);
       }

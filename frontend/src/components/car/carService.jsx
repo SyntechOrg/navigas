@@ -32,7 +32,10 @@ const PRICING_VARIABLE_MAP = {
   fourteenthVariable: { term: 48, km: 25000 },
 };
 
-export const transformStrapiPricing = (car, pricingType = PRICING_TYPE.NORMAL) => {
+export const transformStrapiPricing = (
+  car,
+  pricingType = PRICING_TYPE.NORMAL
+) => {
   const pricing = {};
 
   Object.entries(PRICING_VARIABLE_MAP).forEach(([varName, { term, km }]) => {
@@ -42,7 +45,7 @@ export const transformStrapiPricing = (car, pricingType = PRICING_TYPE.NORMAL) =
       if (pricingType === PRICING_TYPE.COMPANY && car[varName]) {
         const key = `${term}-${km}`;
         // User requested to apply 8.1% discount on this field as well
-        pricing[key] = Math.round(Number(car[varName]) * (1 - 0.081));
+        pricing[key] = Math.round(Number(car[varName]) / 1.081);
       }
       return;
     }
@@ -54,7 +57,7 @@ export const transformStrapiPricing = (car, pricingType = PRICING_TYPE.NORMAL) =
 
       // If company mode, apply 8.1% reduction to standard variable prices
       if (pricingType === PRICING_TYPE.COMPANY) {
-        val = Math.round(val * (1 - 0.081));
+        val = Math.round(val / 1.081);
       }
 
       pricing[key] = val;
@@ -68,7 +71,7 @@ export const transformStrapiPricing = (car, pricingType = PRICING_TYPE.NORMAL) =
   if (pricingType === PRICING_TYPE.COMPANY && !pricing["24-5000"]) {
     const basePrice = parseInt(car.preis) || 0;
     if (basePrice > 0) {
-      pricing["24-5000"] = Math.round(basePrice * (1 - 0.081));
+      pricing["24-5000"] = Math.round(basePrice / 1.081);
     }
   }
 
@@ -119,7 +122,7 @@ export const getPrice = (car, pricingType = PRICING_TYPE.NORMAL) => {
   if (pricingType === PRICING_TYPE.COMPANY) {
     // User requested to apply 8.1% discount even if PreisFurUnternehmen is set
     const base = parseInt(car.PreisFurUnternehmen) || parseInt(car.preis) || 0;
-    return Math.round(base * (1 - 0.081));
+    return Math.round(base / 1.081);
   }
   return parseInt(car.preis) || 0;
 };
@@ -152,33 +155,33 @@ export const fetchCars = async (
     {
       pagination: { page, pageSize: PAGE_SIZE, withCount: true },
       sort: ["updatedAt:desc"],
-      fields: [
-        "marke",
-        "modell",
-        "Getriebe",
-        "leistung",
-        "COKategorie",
-        "Treibstoff",
-        "verbrauch",
-        "beschreibung",
-        "preis",
-        "PreisFurUnternehmen",
-        "firstVariable",
-        "secondVariable",
-        "thirdVariable",
-        "fourthVariable",
-        "fifthVariable",
-        "sixthVariable",
-        "seventhVariable",
-        "eighthVariable",
-        "ninthVariable",
-        "tenthVariable",
-        "eleventhVariable",
-        "twelfthVariable",
-        "thirteenthVariable",
-        "fourteenthVariable",
-        "extraPreisAutos",
-      ],
+      // fields: [
+      //   "marke",
+      //   "modell",
+      //   "Getriebe",
+      //   "leistung",
+      //   "COKategorie",
+      //   "Treibstoff",
+      //   "verbrauch",
+      //   "beschreibung",
+      //   "preis",
+      //   "PreisFurUnternehmen",
+      //   "firstVariable",
+      //   "secondVariable",
+      //   "thirdVariable",
+      //   "fourthVariable",
+      //   "fifthVariable",
+      //   "sixthVariable",
+      //   "seventhVariable",
+      //   "eighthVariable",
+      //   "ninthVariable",
+      //   "tenthVariable",
+      //   "eleventhVariable",
+      //   "twelfthVariable",
+      //   "thirteenthVariable",
+      //   "fourteenthVariable",
+      //   "extraPreisAutos",
+      // ],
       populate: { [IMAGE_FIELD]: { fields: ["url", "formats"] } },
       filters: Object.keys(strapiFilters).length ? strapiFilters : undefined,
     },
@@ -204,36 +207,36 @@ export const fetchCarById = async (id, pricingType = PRICING_TYPE.NORMAL) => {
   const query = qs.stringify(
     {
       populate: { [IMAGE_FIELD]: { fields: ["url", "formats"] } },
-      fields: [
-        "marke",
-        "modell",
-        "Getriebe",
-        "leistung",
-        "Treibstoff",
-        "verbrauch",
-        "COKategorie",
-        "beschreibung",
-        "preis",
-        "PreisFurUnternehmen",
-        "Fahrzeugart",
-        "reichweite",
-        "turen",
-        "firstVariable",
-        "secondVariable",
-        "thirdVariable",
-        "fourthVariable",
-        "fifthVariable",
-        "sixthVariable",
-        "seventhVariable",
-        "eighthVariable",
-        "ninthVariable",
-        "tenthVariable",
-        "eleventhVariable",
-        "twelfthVariable",
-        "thirteenthVariable",
-        "fourteenthVariable",
-        "extraPreisAutos",
-      ],
+      // fields: [
+      //   "marke",
+      //   "modell",
+      //   "Getriebe",
+      //   "leistung",
+      //   "Treibstoff",
+      //   "verbrauch",
+      //   "COKategorie",
+      //   "beschreibung",
+      //   "preis",
+      //   "PreisFurUnternehmen",
+      //   "Fahrzeugart",
+      //   "reichweite",
+      //   "turen",
+      //   "firstVariable",
+      //   "secondVariable",
+      //   "thirdVariable",
+      //   "fourthVariable",
+      //   "fifthVariable",
+      //   "sixthVariable",
+      //   "seventhVariable",
+      //   "eighthVariable",
+      //   "ninthVariable",
+      //   "tenthVariable",
+      //   "eleventhVariable",
+      //   "twelfthVariable",
+      //   "thirteenthVariable",
+      //   "fourteenthVariable",
+      //   "extraPreisAutos",
+      // ],
     },
     { encodeValuesOnly: true }
   );
@@ -264,13 +267,13 @@ export const fetchTopCategories = async () => {
   );
 
   try {
-    // Assuming the single type is named 'top-kategorie'. 
+    // Assuming the single type is named 'top-kategorie'.
     // If it has a different name, please update the endpoint.
     const { data } = await axios.get(`${API_BASE}/api/top-kategorie?${query}`);
-    
+
     // The 'car' relation in a single type is usually in data.data.attributes.car
     const carData = data?.data?.attributes?.car?.data;
-    
+
     if (!carData) return [];
 
     return normalizeCarData(carData).map((car) => ({

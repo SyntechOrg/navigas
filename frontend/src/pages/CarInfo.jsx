@@ -6,6 +6,7 @@ import {
   fetchCarById,
   transformPricingOptions,
 } from "../components/car/carService";
+import { toAbsolute, pickBestUrl } from "../components/car/ImageHelpers";
 import { PRICING_TYPE } from "../components/car/Constans";
 import AboutStart from "../components/about/AboutStart";
 import Abonnieren from "../components/general/Abonnieren";
@@ -39,14 +40,47 @@ const CarInfo = () => {
     if (id) load();
   }, [id, pricingType]);
 
-  const images = useMemo(
-    () =>
+  const images = useMemo(() => {
+    // Try to use the raw Image array (or object with data) to preserve formats
+    const rawImages = car?.Image;
+    if (rawImages) {
+      const files = Array.isArray(rawImages)
+        ? rawImages
+        : Array.isArray(rawImages.data)
+        ? rawImages.data
+        : [];
+
+      if (files.length > 0) {
+        return files.map((img, i) => {
+          // Handle both flat and nested attributes structure
+          const attrs = img.attributes || img;
+          const formats = attrs.formats || {};
+          
+          const processFormat = (fmt) =>
+            fmt ? { ...fmt, url: toAbsolute(fmt.url) } : null;
+
+          return {
+            src: pickBestUrl(img),
+            alt: `${car.marke} ${car.modell} - View ${i + 1}`,
+            formats: {
+              large: processFormat(formats.large),
+              medium: processFormat(formats.medium),
+              small: processFormat(formats.small),
+              thumbnail: processFormat(formats.thumbnail),
+            },
+          };
+        });
+      }
+    }
+
+    // Fallback if Image field is missing or empty
+    return (
       car?.imageUrls?.map((url, i) => ({
         src: url,
         alt: `${car.marke} ${car.modell} - View ${i + 1}`,
-      })) || [],
-    [car]
-  );
+      })) || []
+    );
+  }, [car]);
 
   const pricingOpts = useMemo(() => transformPricingOptions(car), [car]);
 

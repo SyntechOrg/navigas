@@ -304,6 +304,46 @@ export default function PolestarCard({
       y += Math.ceil(specs.length / 3) * 20 + 20;
     }
 
+    // ========== NEW: Ausstattungen Section ==========
+    if (carData.ausstattungen && carData.ausstattungen.length > 0) {
+      doc.setFontSize(14).setFont(undefined, "bold").setTextColor(8, 71, 164);
+      doc.text("Ausstattung", w / 2, y, { align: "center" });
+      y += 10;
+
+      carData.ausstattungen.forEach((group, groupIndex) => {
+        // Check if we need a new page
+        if (y > h - 60) {
+          doc.addPage();
+          y = 20;
+        }
+
+        // Group title (e.g., "Evolution", "Techno")
+        doc.setFontSize(12).setFont(undefined, "bold").setTextColor(8, 71, 164);
+        doc.text(group.Title, 20, y);
+        y += 6;
+
+        // Bullet points
+        if (group.items && group.items.length > 0) {
+          doc
+            .setFontSize(10)
+            .setFont(undefined, "normal")
+            .setTextColor(50, 50, 50);
+
+          group.items.forEach((item) => {
+            // Wrap text if it's too long
+            const lines = doc.splitTextToSize("• " + item.text, w - 40);
+            doc.text(lines, 25, y);
+            y += lines.length * 5;
+          });
+        }
+
+        y += 5; // Space before next group
+      });
+
+      y += 8; // Space after all groups
+    }
+    // ========== END: Ausstattungen Section ==========
+
     // Beschreibung (Description)
     if (carData.beschreibung) {
       doc.setFontSize(14).setFont(undefined, "bold").setTextColor(8, 71, 164);
@@ -345,9 +385,6 @@ export default function PolestarCard({
       .setFont(undefined, "italic")
       .setFontSize(7)
       .setTextColor(120, 120, 120);
-    // .text("Ihr zuverlässiger Partner für Elektromobilität", w / 2, fy + 18, {
-    //   align: "center",
-    // });
 
     doc.save(`${title.replace(/\s/g, "_")}_Datenblatt.pdf`);
   }, [

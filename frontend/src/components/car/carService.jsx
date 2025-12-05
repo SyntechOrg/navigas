@@ -206,37 +206,16 @@ export const fetchCars = async (
 export const fetchCarById = async (id, pricingType = PRICING_TYPE.NORMAL) => {
   const query = qs.stringify(
     {
-      populate: { [IMAGE_FIELD]: { fields: ["url", "formats"] } },
-      // fields: [
-      //   "marke",
-      //   "modell",
-      //   "Getriebe",
-      //   "leistung",
-      //   "Treibstoff",
-      //   "verbrauch",
-      //   "COKategorie",
-      //   "beschreibung",
-      //   "preis",
-      //   "PreisFurUnternehmen",
-      //   "Fahrzeugart",
-      //   "reichweite",
-      //   "turen",
-      //   "firstVariable",
-      //   "secondVariable",
-      //   "thirdVariable",
-      //   "fourthVariable",
-      //   "fifthVariable",
-      //   "sixthVariable",
-      //   "seventhVariable",
-      //   "eighthVariable",
-      //   "ninthVariable",
-      //   "tenthVariable",
-      //   "eleventhVariable",
-      //   "twelfthVariable",
-      //   "thirteenthVariable",
-      //   "fourteenthVariable",
-      //   "extraPreisAutos",
-      // ],
+      populate: {
+        [IMAGE_FIELD]: { fields: ["url", "formats"] },
+        ausstattungen: {
+          populate: {
+            items: {
+              populate: true,
+            },
+          },
+        },
+      },
     },
     { encodeValuesOnly: true }
   );

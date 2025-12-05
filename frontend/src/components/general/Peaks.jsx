@@ -1,7 +1,38 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 const Peaks = () => {
+  const [latestPdfUrl, setLatestPdfUrl] = useState(null);
+
+  useEffect(() => {
+    const fetchFactsheet = async () => {
+      try {
+        const res = await fetch(
+          "https://navigas-strapi.syn-tech.ch/api/factsheets?populate=pdf&sort=publishedAt:desc"
+        );
+        if (!res.ok) {
+          throw new Error("Failed to fetch factsheets");
+        }
+
+        const data = await res.json();
+
+        console.log(data.data[0].pdf.url);
+        const pdfUrl = data.data[0].pdf.url;
+
+        if (pdfUrl) {
+          const fullUrl = pdfUrl.startsWith("http")
+            ? pdfUrl
+            : `https://navigas-strapi.syn-tech.ch${pdfUrl}`;
+          setLatestPdfUrl(fullUrl);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchFactsheet();
+  }, []);
+
   const peaksData = [
     {
       id: 1,
@@ -11,7 +42,6 @@ const Peaks = () => {
       description:
         "Mit Navigas FlexRent überbrücken Sie kurzfristige Engpässe in Ihrer Firmenflotte unkompliziert und flexibel. Egal ob bei Auftragsspitzen, Fahrzeugausfällen oder saisonalen Projekten. Wir liefern Ihnen innert 48 Stunden das passende Fahrzeug, inklusive Versicherung, Wartung und Service.",
       cta: "Download Factsheet",
-      pdfUrl: "/FlexRentFactsheetNavigasMobility.pdf",
     },
     {
       id: 2,
@@ -21,7 +51,6 @@ const Peaks = () => {
       description:
         "Statten Sie temporäre oder neue Mitarbeitende schnell und ohne langfristige Bindung mit einem Firmenfahrzeug aus. Navigas FlexRent bietet Ihnen All-Inclusive-Lösungen für Mietdauern von 1 bis 24 Monaten. Ideal bei befristeten Einsätzen, Vertretungen oder Startprojekten.",
       cta: "Download Factsheet",
-      pdfUrl: "/FlexRentFactsheetNavigasMobility.pdf",
     },
     {
       id: 3,
@@ -31,7 +60,6 @@ const Peaks = () => {
       description:
         "Erleben Sie Elektromobilität im Alltag, ohne langfristige Verpflichtung. Mit Navigas FlexRent können Firmen Elektro- und Hybridfahrzeuge flexibel testen und Erfahrungen sammeln, bevor sie sich für eine langfristige Flottenstrategie entscheiden. Nachhaltig, modern und rundum sorglos.",
       cta: "Download Factsheet",
-      pdfUrl: "/FlexRentFactsheetNavigasMobility.pdf",
     },
   ];
 
@@ -93,14 +121,17 @@ const Peaks = () => {
               </motion.p>
 
               <motion.a
-                href={item.pdfUrl} // Link to the specific PDF
-                download // Triggers download instead of opening
-                className="text-sm md:text-base text-[#020106] uppercase font-semibold cursor-pointer group flex items-center"
+                href={latestPdfUrl || "#"}
+                download
+                className="text-sm md:text-base text-[#020106] uppercase font-semibold cursor-pointer group flex items-center disabled:opacity-50"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.5 }}
                 whileHover={{ x: 10 }}
+                onClick={(e) => {
+                  if (!latestPdfUrl) e.preventDefault();
+                }}
               >
                 {item.cta}
                 <motion.span

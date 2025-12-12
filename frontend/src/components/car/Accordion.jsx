@@ -4,7 +4,7 @@ const accordionItems = [
   {
     id: 1,
     title: "Versicherung & Carcare",
-    icon: <img src="/images/icons1.svg" alt="" />,
+    icon: <img src="/images/icons11.svg" alt="" />,
     // We changed this from a string to a JSX object
     content: (
       <div className="space-y-2">
@@ -31,7 +31,7 @@ const accordionItems = [
   {
     id: 2,
     title: "Wartung & Reparaturen",
-    icon: <img src="/images/icons2.svg" alt="" />,
+    icon: <img src="/images/icons22.svg" alt="" />,
     // Simple strings still work fine with this method
     content:
       "Ist ein Service oder eine Reparatur nötig? Keine Sorgen. Alle Wartungs- und Reparaturarbeiten sind im Paket eingeschlossen. Nutzen Sie unser breites Partnernetzwerk von offiziellen Markenvertretungen.",
@@ -39,35 +39,35 @@ const accordionItems = [
   {
     id: 3,
     title: "Fahrzeugsteuer",
-    icon: <img src="/images/icons3.svg" alt="" />,
+    icon: <img src="/images/icons33.svg" alt="" />,
     content:
       "Das Fahrzeug wird in Ihrem Wohnkanton eingelöst. Sie haben keinen Aufwand und keine Extrakosten und Sie erhalten keine Rechnung.",
   },
   {
     id: 4,
     title: "Assistance",
-    icon: <img src="/images/icons4.svg" alt="" />,
+    icon: <img src="/images/icons44.svg" alt="" />,
     content:
       "Sie erhalten bei einer Panne oder einem Unfall garantiert vollumfängliche Unterstützung. Die Experten von Arval Assistance sind 7/24h telefonisch erreichbar. Der Pannen- und Unfalldienst ist für Sie in ganz Europa erreichbar.",
   },
   {
     id: 5,
     title: "Ersatzfahrzeug",
-    icon: <img src="/images/icons5.svg" alt="" />,
+    icon: <img src="/images/icons55.svg" alt="" />,
     content:
       "Ihr Auto ist im Service oder in der Reparatur und Sie benötigen ein Ersatzfahrzeug? Das ist bei uns im Paketpreis inkludiert.",
   },
   {
     id: 6,
     title: "Fahrzeugnutzung",
-    icon: <img src="/images/icons6.svg" alt="" />,
+    icon: <img src="/images/icons66.svg" alt="" />,
     content:
       "Am Vertragsende geben Sie Ihr Auto ganz einfach zurück. Sie tragen kein Risiko, dass Ihr Auto an Wert verloren hat und Sie dieses nun zu einem niedrigen Preis verkaufen müssten.",
   },
   {
     id: 7,
     title: "Zulassung",
-    icon: <img src="/images/icons7.svg" alt="" />,
+    icon: <img src="/images/icons77.svg" alt="" />,
     content:
       "Ihr neues Auto wird in Ihrem Wohnkanton eingelöst. Die Nummernschilder und der Fahrzeugausweis werden für Sie organisiert. Sie haben keinen Aufwand und Null Zusatzkosten.",
   },

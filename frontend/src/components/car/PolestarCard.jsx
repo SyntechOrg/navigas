@@ -206,53 +206,104 @@ export default function PolestarCard({
     // Image
     try {
       const data = await getImageBase64(gallery[0].src);
-      const imgW = 120,
-        imgH = 65,
-        x = (w - imgW) / 2;
+      const imgProps = doc.getImageProperties(data);
+
+      const maxWidth = 120; // Set your maximum width
+      const imgWidth = maxWidth;
+      const imgHeight = (imgProps.height * imgWidth) / imgProps.width; // Calculate height based on aspect ratio
+
+      const w = doc.internal.pageSize.getWidth();
+      const x = (w - imgWidth) / 2;
+
       doc.setDrawColor(8, 71, 164).setLineWidth(0.5);
-      doc.roundedRect(x - 2, y - 2, imgW + 4, imgH + 4, 3, 3);
-      doc.addImage(data, "JPEG", x, y, imgW, imgH);
-      y += imgH + 12;
-    } catch {
+      doc.roundedRect(x - 2, y - 2, imgWidth + 4, imgHeight + 4, 3, 3);
+      doc.addImage(data, "JPEG", x, y, imgWidth, imgHeight);
+
+      y += imgHeight + 12; // Update y position based on the new calculated height
+    } catch (e) {
+      console.error(e);
       y += 45;
     }
 
     // Configuration section
+    // --- Modern Configuration Section ---
+
+    // 1. Header with a modern accent bar (Visual Anchor)
+    doc.setDrawColor(8, 71, 164).setLineWidth(1);
+    doc.line(20, y, 20, y + 5); // Blue vertical accent line
+    doc.setFontSize(12).setFont(undefined, "bold").setTextColor(30, 30, 30);
+    doc.text("Ihre Konfiguration", 24, y + 4); // Text offset from line
+
+    y += 10;
+
+    // 2. Container Box (Lighter, cleaner background)
+    const boxHeight = 35;
+    doc.setFillColor(248, 249, 252); // Very light blue/gray
+    doc.setDrawColor(230, 230, 230); // Subtle border
+    doc.roundedRect(20, y, w - 40, boxHeight, 3, 3, "FD");
+
+    // 3. Grid Layout Calculation
+    // We split the width into 3 equal columns for better symmetry
+    const contentStart = 20;
+    const contentWidth = w - 40;
+    const colWidth = contentWidth / 3;
+
+    // Helper to center text in a column
+    const getColCenter = (colIndex) =>
+      contentStart + colWidth * colIndex + colWidth / 2;
+    const labelY = y + 10;
+    const valueY = y + 22;
+
+    // --- Column 1: Laufzeit (Term) ---
+    doc.setFontSize(9).setFont(undefined, "normal").setTextColor(100, 100, 100); // Muted Label
+    doc.text("LAUFZEIT", getColCenter(0), labelY, { align: "center" });
+
+    doc.setFontSize(12).setFont(undefined, "bold").setTextColor(50, 50, 50); // Dark Value
+    doc.text(`${selectedTerm} Monate`, getColCenter(0), valueY, {
+      align: "center",
+    });
+
+    // Vertical Divider 1
+    doc.setDrawColor(220, 220, 220).setLineWidth(0.1);
+    doc.line(
+      contentStart + colWidth,
+      y + 8,
+      contentStart + colWidth,
+      y + boxHeight - 8
+    );
+
+    // --- Column 2: Laufleistung (KM) ---
+    doc.setFontSize(9).setFont(undefined, "normal").setTextColor(100, 100, 100);
+    doc.text("LAUFLEISTUNG", getColCenter(1), labelY, { align: "center" });
+
+    doc.setFontSize(12).setFont(undefined, "bold").setTextColor(50, 50, 50);
+    doc.text(
+      `${selectedKm.toLocaleString("de-CH")} km/Jahr`,
+      getColCenter(1),
+      valueY,
+      { align: "center" }
+    );
+
+    // Vertical Divider 2
+    doc.line(
+      contentStart + colWidth * 2,
+      y + 8,
+      contentStart + colWidth * 2,
+      y + boxHeight - 8
+    );
+
+    // --- Column 3: Preis (Price) - The "Hero" Element ---
+    doc.setFontSize(9).setFont(undefined, "normal").setTextColor(100, 100, 100);
+    doc.text("MONATLICHE RATE", getColCenter(2), labelY, { align: "center" });
+
+    // Make price larger and use brand color
     doc.setFontSize(14).setFont(undefined, "bold").setTextColor(8, 71, 164);
-    doc.text("Ihre Konfiguration", w / 2, y, { align: "center" });
-    doc
-      .setFillColor(243, 245, 250)
-      .roundedRect(20, y + 3, w - 40, 32, 2, 2, "F");
-    y += 20;
+    doc.text(`CHF ${finalPrice.toFixed(2)}`, getColCenter(2), valueY, {
+      align: "center",
+    });
 
-    doc.setFontSize(10).setFont(undefined, "normal").setTextColor(50, 50, 50);
-    const left = 30,
-      right = w / 2 + 5,
-      off = 55;
-
-    doc
-      .text("Kilometer pro Jahr:", left, y)
-      .setFont(undefined, "bold")
-      .setTextColor(8, 71, 164)
-      .text(`${selectedKm.toLocaleString("de-CH")} km`, left + off, y)
-      .setFont(undefined, "normal")
-      .setTextColor(50, 50, 50)
-      .text("Monatlicher Preis:", left, y + 8)
-      .setFont(undefined, "bold")
-      .setFontSize(11)
-      .setTextColor(8, 71, 164)
-      .text(`CHF ${finalPrice.toFixed(2)}`, left + off, y + 8);
-
-    doc
-      .setFontSize(10)
-      .setFont(undefined, "normal")
-      .setTextColor(50, 50, 50)
-      .text("Vertragslaufzeit:", right, y)
-      .setFont(undefined, "bold")
-      .setTextColor(8, 71, 164)
-      .text(`${selectedTerm} Monate`, right + off, y);
-
-    y += 25;
+    // Move cursor down for next section
+    y += boxHeight + 15;
 
     // Technical specs
     const specs = [
@@ -268,92 +319,167 @@ export default function PolestarCard({
       },
       { label: "Türen", val: carData.turen },
       { label: "Treibstoff", val: carData.Treibstoff },
+      // FIX: Changed from "CO₂-Kategorie" to "CO2-Kategorie" to prevent pdf spacing issues
+      { label: "CO2-Kategorie", val: carData.COKategorie },
     ].filter((s) => s.val && s.val !== "N/A");
 
     if (specs.length > 0) {
-      doc.setFontSize(14).setFont(undefined, "bold").setTextColor(8, 71, 164);
-      doc.text("Technische Daten", w / 2, y, { align: "center" });
-      y += 8;
+      // 1. Consistent Section Header (Blue Accent Line)
+      // This matches the "Ihre Konfiguration" header style
+      doc.setDrawColor(8, 71, 164).setLineWidth(1);
+      doc.line(20, y, 20, y + 5);
+      doc.setFontSize(12).setFont(undefined, "bold").setTextColor(30, 30, 30);
+      doc.text("Technische Daten", 24, y + 4);
+      y += 12;
 
-      const colW = (w - 40) / 3;
-      let row = 0,
-        col = 0;
+      // 2. Grid Configuration
+      const contentStart = 20;
+      const gap = 5; // Gap between cards
+      const totalWidth = w - 40;
+      const colCount = 3;
+      // Calculate exact width for 3 cards + gaps
+      const cardWidth = (totalWidth - gap * (colCount - 1)) / colCount;
+      const cardHeight = 24; // Taller for better breathing room
+
+      let row = 0;
+      let col = 0;
+
       specs.forEach((s) => {
-        const x = 20 + col * colW,
-          yy = y + row * 20;
+        const x = contentStart + col * (cardWidth + gap);
+        const yy = y + row * (cardHeight + gap);
+
+        // Card Background: Flat, Light Gray, No Border
+        doc.setFillColor(248, 249, 252);
+        doc.roundedRect(x, yy, cardWidth, cardHeight, 2, 2, "F");
+
+        // Label: Uppercase, Small, Muted Gray, Centered
         doc
-          .setFillColor(255, 255, 255)
-          .setDrawColor(220, 220, 220)
-          .setLineWidth(0.1)
-          .roundedRect(x, yy, colW - 5, 16, 1, 1, "FD")
-          .setFontSize(9)
-          .setTextColor(100, 100, 100)
+          .setFontSize(7)
           .setFont(undefined, "normal")
-          .text(s.label, x + 3, yy + 6)
-          .setFontSize(10)
-          .setTextColor(0, 0, 0)
-          .setFont(undefined, "bold")
-          .text(s.val, x + 3, yy + 12);
+          .setTextColor(130, 130, 130);
+        doc.text(s.label.toUpperCase(), x + cardWidth / 2, yy + 9, {
+          align: "center",
+        });
+
+        // Value: Larger, Bold, Dark Gray, Centered
+        doc.setFontSize(10).setFont(undefined, "bold").setTextColor(50, 50, 50);
+        // Ensure value is a string to prevent errors
+        doc.text(String(s.val), x + cardWidth / 2, yy + 17, {
+          align: "center",
+        });
+
         col++;
-        if (col === 3) {
+        if (col === colCount) {
           col = 0;
           row++;
         }
       });
 
-      y += Math.ceil(specs.length / 3) * 20 + 20;
+      // Calculate total height used
+      const totalRows = Math.ceil(specs.length / colCount);
+      y += totalRows * (cardHeight + gap) + 15;
     }
 
-    // ========== NEW: Ausstattungen Section ==========
+    // ========== NEW: Ausstattungen Section (2-Column Grid) ==========
     if (carData.ausstattungen && carData.ausstattungen.length > 0) {
-      doc.setFontSize(14).setFont(undefined, "bold").setTextColor(8, 71, 164);
-      doc.text("Ausstattung", w / 2, y, { align: "center" });
-      y += 10;
+      // 1. Main Section Header
+      if (y > h - 50) {
+        doc.addPage();
+        y = 20;
+      } // Ensure header fits
 
-      carData.ausstattungen.forEach((group, groupIndex) => {
-        // Check if we need a new page
-        if (y > h - 60) {
+      doc.setDrawColor(8, 71, 164).setLineWidth(1);
+      doc.line(20, y, 20, y + 5); // Blue Accent Line
+      doc.setFontSize(12).setFont(undefined, "bold").setTextColor(30, 30, 30);
+      doc.text("Ausstattung", 24, y + 4);
+      y += 12;
+
+      carData.ausstattungen.forEach((group) => {
+        // Check space for Group Title
+        if (y > h - 40) {
           doc.addPage();
           y = 20;
         }
 
-        // Group title (e.g., "Evolution", "Techno")
-        doc.setFontSize(12).setFont(undefined, "bold").setTextColor(8, 71, 164);
-        doc.text(group.Title, 20, y);
+        // Group Title (e.g., "TECHNOLOGY") - Uppercase & Blue
+        doc.setFontSize(9).setFont(undefined, "bold").setTextColor(8, 71, 164);
+        doc.text((group.Title || "Allgemein").toUpperCase(), 20, y);
         y += 6;
 
-        // Bullet points
+        // 2. Render Items in 2 Columns (Row by Row)
         if (group.items && group.items.length > 0) {
           doc
-            .setFontSize(10)
+            .setFontSize(9)
             .setFont(undefined, "normal")
-            .setTextColor(50, 50, 50);
+            .setTextColor(60, 60, 60);
 
-          group.items.forEach((item) => {
-            // Wrap text if it's too long
-            const lines = doc.splitTextToSize("• " + item.text, w - 40);
-            doc.text(lines, 25, y);
-            y += lines.length * 5;
-          });
+          const col1X = 20;
+          const col2X = w / 2 + 5; // Start second column just past middle
+          const colWidth = w / 2 - 25; // Width of text column
+
+          for (let i = 0; i < group.items.length; i += 2) {
+            // Check space for this row
+            if (y > h - 20) {
+              doc.addPage();
+              y = 20;
+            }
+
+            // Item 1 (Left Column)
+            const item1 = group.items[i];
+            const text1 = "•  " + (item1.text || item1);
+            const lines1 = doc.splitTextToSize(text1, colWidth);
+            doc.text(lines1, col1X, y);
+
+            // Item 2 (Right Column) - check if it exists
+            let lines2 = [];
+            if (i + 1 < group.items.length) {
+              const item2 = group.items[i + 1];
+              const text2 = "•  " + (item2.text || item2);
+              lines2 = doc.splitTextToSize(text2, colWidth);
+              doc.text(lines2, col2X, y);
+            }
+
+            // Calculate dynamic row height based on the taller item
+            const maxLines = Math.max(lines1.length, lines2.length);
+            y += maxLines * 4.5 + 3; // 4.5 line height + 3 gap
+          }
         }
-
-        y += 5; // Space before next group
+        y += 6; // Spacing between groups
       });
 
-      y += 8; // Space after all groups
+      y += 5; // Final spacing
     }
+
     // ========== END: Ausstattungen Section ==========
 
-    // Beschreibung (Description)
+    // ========== Beschreibung (Editorial Style) ==========
     if (carData.beschreibung) {
-      doc.setFontSize(14).setFont(undefined, "bold").setTextColor(8, 71, 164);
-      doc.text("Beschreibung", w / 2, y, { align: "center" });
-      y += 8;
+      // Check page space
+      if (y > h - 60) {
+        doc.addPage();
+        y = 20;
+      }
 
-      doc.setFontSize(10).setFont(undefined, "normal").setTextColor(50, 50, 50);
-      const descLines = doc.splitTextToSize(carData.beschreibung, w - 40);
-      doc.text(descLines, 20, y);
-      y += descLines.length * 5 + 20;
+      // Header
+      doc.setDrawColor(8, 71, 164).setLineWidth(1);
+      doc.line(20, y, 20, y + 5);
+      doc.setFontSize(12).setFont(undefined, "bold").setTextColor(30, 30, 30);
+      doc.text("Beschreibung", 24, y + 4);
+      y += 10;
+
+      // Content with subtle gray side-line (Editorial look)
+      doc.setFontSize(9).setFont(undefined, "normal").setTextColor(60, 60, 60);
+      const descLines = doc.splitTextToSize(carData.beschreibung, w - 45);
+
+      // Draw a thin gray line alongside the text
+      const textHeight = descLines.length * 4.5;
+      doc.setDrawColor(220, 220, 220).setLineWidth(0.5);
+      doc.line(24, y, 24, y + textHeight); // Indented guide line
+
+      // Text indented slightly from the gray line
+      doc.text(descLines, 28, y + 3.5);
+
+      y += textHeight + 20;
     }
 
     // Footer

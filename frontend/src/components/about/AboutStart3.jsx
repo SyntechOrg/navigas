@@ -17,7 +17,7 @@ const AboutStart3 = ({ src, mobileSrc, title, paragraph }) => {
         <p className="text-center font-medium text-white text-[16px] mt-10 md:text-[24px] z-[99]">
           {paragraph}
         </p>
-        <Link to="/privatkunden">
+        <Link to="/firmenkunden">
           <button className="relative mt-10 text-[14px] md:text-[16px] hover:cursor-pointer bg-transparent border border-white rounded-lg px-5 py-2 text-white font-medium overflow-hidden group transition-all duration-300">
             <span className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
             <span className="relative z-10">Fahrzeuge entdecken</span>

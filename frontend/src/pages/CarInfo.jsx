@@ -55,7 +55,7 @@ const CarInfo = () => {
           // Handle both flat and nested attributes structure
           const attrs = img.attributes || img;
           const formats = attrs.formats || {};
-          
+
           const processFormat = (fmt) =>
             fmt ? { ...fmt, url: toAbsolute(fmt.url) } : null;
 
@@ -105,53 +105,50 @@ const CarInfo = () => {
   );
 
   const info = useMemo(
-    () => [
-      {
-        icon: <img src="/images/fahrzeug1.svg" />,
-        label: "Schaltung",
-        value: car?.Getriebe,
-      },
-      {
-        icon: <img src="/images/fahrzeug2.svg" />,
-        label: "Reichweite",
-        value: car?.reichweite,
-      },
-      {
-        icon: <img src="/images/fahrzeug2.svg" />,
-        label: "CO₂-Kategorie",
-        value: car?.COKategorie,
-      },
-      {
-        icon: <img src="/images/fahrzeug4.svg" />,
-        label: "Leistung",
-        value: car?.leistung ? `${car.leistung} PS` : null,
-      },
-      {
-        icon: <img src="/images/fahrzeug6.svg" />,
-        label: "Verbrauch",
-        value: car?.verbrauch ? `${car.verbrauch} L/100km` : null,
-      },
-      {
-        icon: <img src="/images/fahrzeug7.svg" />,
-        label: "Türen",
-        value: car?.turen,
-      },
-      {
-        icon: <img src="/images/fahrzeug8.svg" />,
-        label: "Treibstoff",
-        value: car?.Treibstoff,
-      },
-    ].filter(item => item.value && item.value !== "N/A"),
+    () =>
+      [
+        {
+          icon: <img src="/images/fahrzeug11.svg" />,
+          label: "Schaltung",
+          value: car?.Getriebe,
+        },
+        {
+          icon: <img src="/images/fahrzeug22.svg" />,
+          label: "Reichweite",
+          value: car?.reichweite,
+        },
+        {
+          icon: <img src="/images/fahrzeug22.svg" />,
+          label: "CO₂-Kategorie",
+          value: car?.COKategorie,
+        },
+        {
+          icon: <img src="/images/fahrzeug44.svg" />,
+          label: "Leistung",
+          value: car?.leistung ? `${car.leistung} PS` : null,
+        },
+        {
+          icon: <img src="/images/fahrzeug66.svg" />,
+          label: "Verbrauch",
+          value: car?.verbrauch ? `${car.verbrauch} L/100km` : null,
+        },
+        {
+          icon: <img src="/images/fahrzeug77.svg" />,
+          label: "Türen",
+          value: car?.turen,
+        },
+        {
+          icon: <img src="/images/fahrzeug88.svg" />,
+          label: "Treibstoff",
+          value: car?.Treibstoff,
+        },
+      ].filter((item) => item.value && item.value !== "N/A"),
     [car]
   );
 
   console.log(car);
 
-  const description = useMemo(
-    () =>
-      car?.beschreibung || "",
-    [car]
-  );
+  const description = useMemo(() => car?.beschreibung || "", [car]);
 
   if (loading)
     return (

@@ -22,12 +22,12 @@ function InfoPill({ icon, label, value }) {
 export default function VehicleDetails({
   info = [
     {
-      icon: <img src="/images/fahrzeug1.svg" alt="" />,
+      icon: <img src="/images/fahrzeug11.svg" alt="" />,
       label: "Schaltung",
       value: "automatik",
     },
     {
-      icon: <img src="/images/fahrzeug2.svg" alt="" />,
+      icon: <img src="/images/fahrzeug22.svg" alt="" />,
       label: "Reichweite",
       value: "596km",
     },
@@ -37,7 +37,7 @@ export default function VehicleDetails({
     //   value: "Elektrisch",
     // },
     {
-      icon: <img src="/images/fahrzeug4.svg" alt="" />,
+      icon: <img src="/images/fahrzeug44.svg" alt="" />,
       label: "Year",
       value: "2023",
     },
@@ -47,17 +47,17 @@ export default function VehicleDetails({
     //   value: "A",
     // },
     {
-      icon: <img src="/images/fahrzeug6.svg" alt="" />,
+      icon: <img src="/images/fahrzeug66.svg" alt="" />,
       label: "Sitze",
       value: "5",
     },
     {
-      icon: <img src="/images/fahrzeug7.svg" alt="" />,
+      icon: <img src="/images/fahrzeug77.svg" alt="" />,
       label: "Türen",
       value: "4",
     },
     {
-      icon: <img src="/images/fahrzeug8.svg" alt="" />,
+      icon: <img src="/images/fahrzeug88.svg" alt="" />,
       label: "Taschen",
       value: "2",
     },

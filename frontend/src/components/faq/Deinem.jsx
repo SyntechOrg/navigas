@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo } from "react";
+import React, { useRef, useState, useMemo, useEffect } from "react";
 
 const Deinem = () => {
   const videoRef = useRef(null);
@@ -9,6 +9,37 @@ const Deinem = () => {
   const [openQuestion, setOpenQuestion] = useState("was-ist-auto-abo");
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchActive, setIsSearchActive] = useState(false);
+
+  const [latestPdfUrl, setLatestPdfUrl] = useState(null);
+
+  useEffect(() => {
+    const fetchFactsheet = async () => {
+      try {
+        const res = await fetch(
+          "https://navigas-strapi.syn-tech.ch/api/faqpdfs?populate=Leitfaden&sort=publishedAt:desc"
+        );
+        if (!res.ok) {
+          throw new Error("Failed to fetch factsheets");
+        }
+
+        const data = await res.json();
+
+        const pdfUrl = data.data[0].Leitfaden.url;
+        console.log(pdfUrl);
+
+        if (pdfUrl) {
+          const fullUrl = pdfUrl.startsWith("http")
+            ? pdfUrl
+            : `https://navigas-strapi.syn-tech.ch${pdfUrl}`;
+          setLatestPdfUrl(fullUrl);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchFactsheet();
+  }, []);
 
   const handleToggle = () => {
     if (isPlaying) {
@@ -170,7 +201,7 @@ const Deinem = () => {
           answer:
             "Normale Gebrauchsspuren sind selbstverständlich kein Problem. Nur übermässige Schäden oder fehlende Teile werden bei der Fahrzeugrückgabe gemäss den vereinbarten Bewertungsrichtlinien verrechnet. Alle Details finden Sie in unserem Leitfaden zur Fahrzeugrückgabe (PDF).",
           button: " Download Fahrzeugrückgabe (PDF) ",
-          pdfUrl: "/Leitfaden Fahrzeugrückgabe Navigas Mobility.pdf",
+          pdfUrl: latestPdfUrl,
         },
         {
           id: "diebstahl",

@@ -183,6 +183,69 @@ export default function PolestarCard({
     });
   }, []);
 
+  const richTextToLines = useCallback((content) => {
+    if (!content) return [];
+
+    if (Array.isArray(content)) {
+      const combined = content
+        .map((block) => {
+          if (typeof block === "string") return block;
+          if (block?.children && Array.isArray(block.children)) {
+            return block.children.map((c) => c.text || "").join("");
+          }
+          return block?.text || "";
+        })
+        .filter(Boolean)
+        .join("\n");
+
+      return combined
+        .split(/\n+/)
+        .map((l) => l.trim())
+        .filter(Boolean);
+    }
+
+    if (typeof content === "string") {
+      const normalized = content
+        .replace(/<br\s*\/?>/gi, "\n")
+        .replace(/<\/(p|div|li|ul|ol)>/gi, "\n")
+        .replace(/<li[^>]*>/gi, "")
+        .replace(/<[^>]+>/g, "");
+
+      return normalized
+        .split(/\n+/)
+        .map((l) => l.trim())
+        .filter(Boolean);
+    }
+
+    return [String(content)];
+  }, []);
+
+  const featureSections = useMemo(() => {
+    if (Array.isArray(carData?.features) && carData.features.length) {
+      return carData.features
+        .map((section) => {
+          const title = section.title || section.Title || "Ausstattung";
+          const lines = richTextToLines(section.features || section.Features);
+          return { title, lines };
+        })
+        .filter((s) => s.lines.length || s.title);
+    }
+
+    if (Array.isArray(carData?.ausstattungen) && carData.ausstattungen.length) {
+      return carData.ausstattungen
+        .map((group) => {
+          const title = group.title || group.Title || "Ausstattung";
+          const lines = (group.items || [])
+            .map((item) => (typeof item === "string" ? item : item?.text || ""))
+            .filter(Boolean);
+          return { title, lines };
+        })
+        .filter((s) => s.lines.length || s.title);
+    }
+
+    return [];
+  }, [carData, richTextToLines]);
+
   const handleDownloadPDF = useCallback(async () => {
     const doc = new jsPDF("p", "mm", "a4");
     const w = doc.internal.pageSize.getWidth();
@@ -380,77 +443,60 @@ export default function PolestarCard({
       y += totalRows * (cardHeight + gap) + 15;
     }
 
-    // ========== NEW: Ausstattungen Section (2-Column Grid) ==========
-    if (carData.ausstattungen && carData.ausstattungen.length > 0) {
-      // 1. Main Section Header
-      if (y > h - 50) {
-        doc.addPage();
-        y = 20;
-      } // Ensure header fits
+    // ========== Ausstattung Features Section ==========
+    // ... previous code (Technische Daten) ...
 
-      doc.setDrawColor(8, 71, 164).setLineWidth(1);
-      doc.line(20, y, 20, y + 5); // Blue Accent Line
-      doc.setFontSize(12).setFont(undefined, "bold").setTextColor(30, 30, 30);
-      doc.text("Ausstattung", 24, y + 4);
-      y += 12;
+    // ========== Ausstattung Features Section (UPDATED) ==========
+    if (featureSections.length > 0) {
+      // We loop through sections immediately.
+      // We do NOT print a generic "Ausstattung" header anymore.
 
-      carData.ausstattungen.forEach((group) => {
-        // Check space for Group Title
+      featureSections.forEach((section) => {
+        // Check for page break
         if (y > h - 40) {
           doc.addPage();
           y = 20;
         }
 
-        // Group Title (e.g., "TECHNOLOGY") - Uppercase & Blue
-        doc.setFontSize(9).setFont(undefined, "bold").setTextColor(8, 71, 164);
-        doc.text((group.Title || "Allgemein").toUpperCase(), 20, y);
-        y += 6;
+        // Render the Title in the "Main Section" style (Vertical Blue Line + Bold Text)
+        if (section.title) {
+          doc.setDrawColor(8, 71, 164).setLineWidth(1);
+          doc.line(20, y, 20, y + 5); // The Blue Vertical Accent
 
-        // 2. Render Items in 2 Columns (Row by Row)
-        if (group.items && group.items.length > 0) {
+          doc
+            .setFontSize(12)
+            .setFont(undefined, "bold")
+            .setTextColor(30, 30, 30);
+          // Render the specific section title (e.g. "Multimedia") instead of generic "Ausstattung"
+          doc.text(section.title, 24, y + 4);
+
+          y += 10; // Add breathing room after the header
+        }
+
+        // Render the content lines
+        if (section.lines.length) {
           doc
             .setFontSize(9)
             .setFont(undefined, "normal")
             .setTextColor(60, 60, 60);
 
-          const col1X = 20;
-          const col2X = w / 2 + 5; // Start second column just past middle
-          const colWidth = w / 2 - 25; // Width of text column
+          const textBlock = section.lines.map((line) => `- ${line}`).join("\n");
+          const wrapped = doc.splitTextToSize(textBlock, w - 40);
+          doc.text(wrapped, 24, y);
 
-          for (let i = 0; i < group.items.length; i += 2) {
-            // Check space for this row
-            if (y > h - 20) {
-              doc.addPage();
-              y = 20;
-            }
+          const dimensions = doc.getTextDimensions(wrapped);
+          const blockHeight =
+            (dimensions && dimensions.h) || wrapped.length * 5 || 8;
 
-            // Item 1 (Left Column)
-            const item1 = group.items[i];
-            const text1 = "•  " + (item1.text || item1);
-            const lines1 = doc.splitTextToSize(text1, colWidth);
-            doc.text(lines1, col1X, y);
-
-            // Item 2 (Right Column) - check if it exists
-            let lines2 = [];
-            if (i + 1 < group.items.length) {
-              const item2 = group.items[i + 1];
-              const text2 = "•  " + (item2.text || item2);
-              lines2 = doc.splitTextToSize(text2, colWidth);
-              doc.text(lines2, col2X, y);
-            }
-
-            // Calculate dynamic row height based on the taller item
-            const maxLines = Math.max(lines1.length, lines2.length);
-            y += maxLines * 4.5 + 3; // 4.5 line height + 3 gap
-          }
+          // Add extra space between this section and the next
+          y += blockHeight + 12;
+        } else {
+          y += 3;
         }
-        y += 6; // Spacing between groups
       });
-
-      y += 5; // Final spacing
     }
 
-    // ========== END: Ausstattungen Section ==========
+    // ========== END: Ausstattung Features Section ==========
 
     // ========== Beschreibung (Editorial Style) ==========
     if (carData.beschreibung) {
@@ -521,6 +567,7 @@ export default function PolestarCard({
     selectedTerm,
     finalPrice,
     carData,
+    featureSections,
     getImageBase64,
     taxLabel,
   ]);

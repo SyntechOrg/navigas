@@ -208,13 +208,7 @@ export const fetchCarById = async (id, pricingType = PRICING_TYPE.NORMAL) => {
     {
       populate: {
         [IMAGE_FIELD]: { fields: ["url", "formats"] },
-        ausstattungen: {
-          populate: {
-            items: {
-              populate: true,
-            },
-          },
-        },
+        features: true,
       },
     },
     { encodeValuesOnly: true }

@@ -51,7 +51,7 @@ const FilteredCarPage = ({ pricingType = PRICING_TYPE.NORMAL }) => {
 
   return (
     <div>
-      {/* <ScrollToTop /> */}
+      <ScrollToTop />
       <AboutStart2
         src="images/filter.png "
         title="Ihr Auto Abo all-inclusive, flexibel und einfach"

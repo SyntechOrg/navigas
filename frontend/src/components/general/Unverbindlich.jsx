@@ -4,8 +4,8 @@ const Unverbindlich = () => {
   const backendURL = import.meta.env.VITE_APP_API_URL;
 
   const [formData, setFormData] = useState({
-    firma: "",
-    ansprechperson: "",
+    firmenname: "",
+    VornameUndName: "",
     email: "",
     telefon: "",
     kategorie: "",
@@ -48,8 +48,8 @@ const Unverbindlich = () => {
 
     // UPDATED: All attributes are now included in the message body on new lines
     const formattedMessage = `
-Firma: ${formData.firma}
-Ansprechperson: ${formData.ansprechperson}
+Firmenname: ${formData.firmenname}
+Vorname Und Name: ${formData.VornameUndName}
 E-Mail: ${formData.email}
 Telefon: ${formData.telefon}
 Kategorie: ${formData.kategorie || "-"}
@@ -86,8 +86,8 @@ ${formData.nachricht || "-"}
           message: "Anfrage erfolgreich gesendet! Wir melden uns umgehend.",
         });
         setFormData({
-          firma: "",
-          ansprechperson: "",
+          firmenname: "",
+          VornameUndName: "",
           email: "",
           telefon: "",
           kategorie: "",
@@ -179,13 +179,15 @@ ${formData.nachricht || "-"}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-white text-sm mb-2">Firma *</label>
+                <label className="block text-white text-sm mb-2">
+                  Firmenname *
+                </label>
                 <input
                   type="text"
-                  name="firma"
-                  value={formData.firma}
+                  name="firmenname"
+                  value={formData.firmenname}
                   onChange={handleChange}
-                  placeholder="Firma Name"
+                  placeholder="Firmenname"
                   required
                   disabled={isSubmitting}
                   className="w-full px-4 py-3 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 transition-colors bg-[#0847A4] disabled:opacity-70"
@@ -193,14 +195,14 @@ ${formData.nachricht || "-"}
               </div>
               <div>
                 <label className="block text-white text-sm mb-2">
-                  Ansprechperson *
+                  Vorname Und Name *
                 </label>
                 <input
                   type="text"
-                  name="ansprechperson"
-                  value={formData.ansprechperson}
+                  name="VornameUndName"
+                  value={formData.VornameUndName}
                   onChange={handleChange}
-                  placeholder="Ansprechperson Name"
+                  placeholder="Vorname Und Name"
                   required
                   disabled={isSubmitting}
                   className="w-full px-4 py-3 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 transition-colors bg-[#0847A4] disabled:opacity-70"

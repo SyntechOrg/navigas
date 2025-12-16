@@ -9,7 +9,6 @@ const Deinem = () => {
   const [openQuestion, setOpenQuestion] = useState("was-ist-auto-abo");
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchActive, setIsSearchActive] = useState(false);
-
   const [latestPdfUrl, setLatestPdfUrl] = useState(null);
 
   useEffect(() => {
@@ -23,7 +22,6 @@ const Deinem = () => {
         }
 
         const data = await res.json();
-
         const pdfUrl = data.data[0].Leitfaden.url;
         console.log(pdfUrl);
 
@@ -178,7 +176,7 @@ const Deinem = () => {
         {
           id: "zusatzfahrer",
           question:
-            "Dürfen andere Personen das Fahrzeug fahren und sind sie versichert??",
+            "Dürfen andere Personen das Fahrzeug fahren und sind sie versichert?",
           answer:
             "Ja, auch andere Personen dürfen Ihr Auto fahren, sofern sie mindestens 20 Jahre alt sind, eine gültige Fahrerlaubnis besitzen und in der Schweiz wohnhaft sind. Alle berechtigten Fahrerinnen und Fahrer sind im Rahmen des Auto Abos versichert.",
         },
@@ -242,7 +240,7 @@ const Deinem = () => {
       ],
     },
     elektrofahrzeuge: {
-      title: "Elektrofahrzeuge & Nachhaltigkeit",
+      title: "Elektrofahrzeuge",
       questions: [
         {
           id: "elektro-verfuegbar",
@@ -303,7 +301,7 @@ const Deinem = () => {
     },
     {
       id: "elektrofahrzeuge",
-      label: "Elektrofahrzeuge & Nachhaltigkeit",
+      label: "Elektrofahrzeuge ",
     },
     {
       id: "laufzeit-kuendigung",
@@ -311,7 +309,6 @@ const Deinem = () => {
     },
   ];
 
-  // Filter questions based on search query
   const filteredQuestions = useMemo(() => {
     if (!searchQuery.trim()) {
       return faqData[activeTab]?.questions || [];
@@ -320,7 +317,6 @@ const Deinem = () => {
     const query = searchQuery.toLowerCase();
     const allQuestions = [];
 
-    // Search through all categories
     Object.entries(faqData).forEach(([categoryId, category]) => {
       category.questions.forEach((question) => {
         const questionText = question.question.toLowerCase();
@@ -344,6 +340,15 @@ const Deinem = () => {
     return allQuestions;
   }, [searchQuery, activeTab, faqData]);
 
+  useEffect(() => {
+    if (isSearchActive && filteredQuestions.length > 0 && resultsRef.current) {
+      resultsRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [isSearchActive, filteredQuestions.length]);
+
   const toggleQuestion = (questionId) => {
     setOpenQuestion(openQuestion === questionId ? null : questionId);
   };
@@ -354,9 +359,6 @@ const Deinem = () => {
     setSearchQuery("");
     setIsSearchActive(false);
 
-    // --- FIX: SCROLLING REMOVED ---
-    // This block was causing the page to scroll/jump when clicking tabs
-    /* 
     if (event.target && tabsRef.current) {
       const button = event.target.closest("button");
       if (button) {
@@ -367,7 +369,6 @@ const Deinem = () => {
         });
       }
     }
-    */
   };
 
   const handleSearchChange = (e) => {
@@ -379,19 +380,6 @@ const Deinem = () => {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     setIsSearchActive(true);
-
-    // --- OPTIONAL: SEARCH SCROLLING DISABLED ---
-    // Uncomment this if you WANT the page to scroll to results after search
-    /*
-    setTimeout(() => {
-      if (resultsRef.current) {
-        resultsRef.current.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
-    }, 100);
-    */
   };
 
   return (
@@ -402,8 +390,8 @@ const Deinem = () => {
             Häufige Fragen zu <br /> Ihrem Auto Abo
           </h1>
           <p className="text-sm sm:text-base">
-            Hier findest du Antworten auf alle Fragen rund um dein Navigas Auto
-            Abo, von Kosten und Versicherung bis hin zu Fahrzeugwahl und
+            Hier finden Sie Antworten auf alle Fragen rund um das Navigas
+            Auto-Abo, von Kosten und Versicherung bis hin zur Fahrzeugwahl und
             Rückgabe.
           </p>
           <div className="w-full">
@@ -553,11 +541,11 @@ const Deinem = () => {
                   </div>
                   {item.button && (
                     <a
-                      href={item.pdfUrl || "#"} // Use pdfUrl from your data item
-                      download // Triggers the browser download behavior
+                      href={item.pdfUrl || "#"}
+                      download
                       className="inline-block px-6 pb-6 text-blue-600 hover:text-black transition-colors cursor-pointer"
                       onClick={(e) => {
-                        if (!item.pdfUrl) e.preventDefault(); // Prevent nav if no URL
+                        if (!item.pdfUrl) e.preventDefault();
                       }}
                     >
                       {item.button}

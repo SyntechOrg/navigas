@@ -3,20 +3,20 @@ import React from "react";
 const Dabei = () => {
   return (
     <div className="container mx-auto px-4">
-      <h1 className="text-[#010101] text-3xl sm:text-4xl md:text-5xl lg:text-[54px] font-semibold text-center leading-snug">
+      <h1 className="text-[#010101] text-2xl sm:text-3xl md:text-5xl lg:text-[54px] font-semibold text-center leading-snug">
         Finden Sie das passende Fahrzeug für Ihr Unternehmen
       </h1>
 
-      <div className="flex items-center justify-center mt-10">
+      <div className="flex items-center justify-center mt-0 sm:-mt-20  md:-mt-40">
         <img
           src="/images/veturat.png"
           alt="Auto Abo Pro"
-          className="hidden md:block w-full h-auto"
+          className="hidden lg:block w-[70%] h-auto"
         />
         <img
           src="/images/veturat.png"
           alt="Auto Abo Pro Mobile"
-          className="block md:hidden w-full h-auto"
+          className="block lg:hidden w-full h-auto"
         />
       </div>
 

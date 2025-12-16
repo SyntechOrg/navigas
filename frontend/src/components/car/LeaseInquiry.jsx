@@ -22,7 +22,7 @@ const INITIAL_FORM_STATE = {
 const STEPS = [
   { label: "Fahrzeug wählen" },
   { label: "Anfrage senden" },
-  { label: "Lieferung" },
+  { label: "Prüfung & Vertragsabschluss" },
 ];
 
 const Input = ({
@@ -299,7 +299,7 @@ export default function LeaseInquiry({ car }) {
             className="rounded-2xl lg:max-w-[40%] bg-[#F3F5FA] p-5 shadow-sm sm:p-10 flex flex-col justify-center"
           >
             <h3 className="lg:text-[34px] text-[24px] max-sm:mx-auto font-semibold text-gray-900">
-              Ihre Anfragen
+              Ihre Anfrage
             </h3>
 
             <div className="mt-5 flex flex-col items-center gap-7">
@@ -322,7 +322,7 @@ export default function LeaseInquiry({ car }) {
                   autoComplete="given-name"
                   value={form.firstName}
                   onChange={handleChange("firstName")}
-                  placeholder="Ihren Vorname"
+                  placeholder="Ihr Vorname"
                   error={errors.firstName}
                 />
                 <Input
@@ -331,19 +331,19 @@ export default function LeaseInquiry({ car }) {
                   autoComplete="family-name"
                   value={form.lastName}
                   onChange={handleChange("lastName")}
-                  placeholder="Ihren Nachname"
-                  error={errors.lastName}
+                  placeholder="Ihr Nachname"
+                  error="Nachname ist erforderlich"
                 />
               </div>
               <div className="flex flex-col items-center w-full gap-7">
                 <Input
-                  label="E‑mail Adresse"
+                  label="E-Mail-Adresse"
                   required
                   type="email"
                   autoComplete="email"
                   value={form.email}
                   onChange={handleChange("email")}
-                  placeholder="Ihre E-Mail-Adressen"
+                  placeholder="Ihre E-Mail-Adresse"
                   error={errors.email}
                 />
                 <Input
@@ -395,9 +395,9 @@ export default function LeaseInquiry({ car }) {
                 Super Wahl – Ihr {car?.name || "Fahrzeug"} wartet auf Sie!
               </h1>
               <p className="text-[#474747] text-[13px]">
-                Füllen Sie bitte noch kurz das Anfrage-Formular aus. Danach
-                senden wir Ihnen einen Registrierungslink für Ihre Bestellung
-                und die Bonitätsprüfung.
+                Füllen Sie bitte das Anfrage-Formular aus. Wir melden uns
+                umgehend bei Ihnen, um Sie unverbindlich durch die nächsten
+                Schritte zu begleiten.
               </p>
               <h1 className="text-[#010101] text-[32px] font-semibold py-[31px] border-[#DCDCDC] border-t border-b w-[95%]">
                 {car?.name || "Fahrzeug"}

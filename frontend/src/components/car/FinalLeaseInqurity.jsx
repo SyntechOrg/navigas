@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const STEPS = [
   { label: "Fahrzeug wählen" },
   { label: "Anfrage senden" },
-  { label: "Lieferung" },
+  { label: "Prüfung & Vertragsabschluss" },
 ];
 
 const FinalLeaseInquiry = ({ car }) => {
@@ -120,17 +120,12 @@ const FinalLeaseInquiry = ({ car }) => {
           className="w-12 h-12 sm:w-14 sm:h-14 lg:w-auto lg:h-auto"
         />
         <h1 className="text-[#010101] text-[24px] sm:text-[28px] lg:text-[32px] font-semibold">
-          Buchung erfolgreich!
+          Anfrage erfolgreich übermittelt!
         </h1>
         <p className="text-[#474747] text-[12px] sm:text-[13px] leading-6 sm:leading-8 max-w-3xl">
-          Vielen Dank – Ihre Buchung war erfolgreich.{" "}
+          Vielen Dank. Wir haben Ihre Anfrage erhalten.
           <br className="hidden sm:block" />
-          Sie erhalten in Kürze eine E-Mail mit allen wichtigen Informationen,
-          Ihrem Vertrag sowie den nächsten Schritten.{" "}
-          <br className="hidden sm:block" /> Sollten Sie Fragen haben, steht
-          Ihnen unser Team jederzeit gerne zur Verfügung.{" "}
-          <br className="hidden sm:block" /> 👉 Wir wünschen Ihnen schon jetzt
-          viel Freude mit Ihrem neuen Auto!
+          Wir melden uns, um Sie durch die nächsten Schritte zu begleiten.
         </p>
       </div>
 

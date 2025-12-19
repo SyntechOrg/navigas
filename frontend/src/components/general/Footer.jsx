@@ -166,15 +166,15 @@ const Footer = () => {
               className="group"
             >
               <h1 className="text-[19px] font-medium text-white text-center md:text-start">
-                Standort
+                Kontakt
               </h1>
-              <p className="text-[#727578] text-[17px] text-center md:text-start group-hover:text-[#2860B7] transition-colors">
+              {/* <p className="text-[#727578] text-[17px] text-center md:text-start group-hover:text-[#2860B7] transition-colors">
                 Navigas Services GmbH
                 <br />
                 Chüsseberg 19
                 <br />
                 CH-3267 Seedorf BE
-              </p>
+              </p> */}
             </a>
             <a
               href="mailto:info@navigas-mobility.ch"

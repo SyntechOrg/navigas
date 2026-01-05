@@ -64,10 +64,6 @@ export const transformStrapiPricing = (
     }
   });
 
-  // Ensure base configuration (24-5000) is represented in pricing
-  // This handles the case where we are in COMPANY mode, but no explicit company price (PreisFurUnternehmen) exists.
-  // We calculate the reduced base price and insert it as the 24-5000 option.
-  // This ensures PolestarCard can find it in the pricing map.
   if (pricingType === PRICING_TYPE.COMPANY && !pricing["24-5000"]) {
     const basePrice = parseInt(car.preis) || 0;
     if (basePrice > 0) {
@@ -119,12 +115,15 @@ export const transformPricingOptions = (car) => {
 };
 
 export const getPrice = (car, pricingType = PRICING_TYPE.NORMAL) => {
+  const base =
+    parseInt(car.tenthVariable) || parseInt(car.preis) || 0;
+
   if (pricingType === PRICING_TYPE.COMPANY) {
     // User requested to apply 8.1% discount even if PreisFurUnternehmen is set
-    const base = parseInt(car.PreisFurUnternehmen) || parseInt(car.preis) || 0;
     return Math.round(base / 1.081);
   }
-  return parseInt(car.preis) || 0;
+
+  return base;
 };
 
 export const fetchCars = async (

@@ -1,4 +1,5 @@
 import React, { useRef, useState, useMemo, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
 
 const Deinem = () => {
   const videoRef = useRef(null);
@@ -164,7 +165,7 @@ const Deinem = () => {
           question: "Wie bin ich versichert?",
           answer: "",
           answer1:
-            "Bei uns sind Sie optimal geschützt, ohne komplizierte oder intransparente Tarifmodelle.Folgende Leistungen sind in jedem Auto Abo automatisch enthalten:",
+            "Bei uns sind Sie optimal geschützt, ohne komplizierte oder intransparente Tarifmodelle. Folgende Leistungen sind in jedem Auto Abo automatisch enthalten:",
           li1: "Haftpflichtversicherung ohne Selbstbeteiligung",
           li2: "Vollkaskoversicherung mit Grobfahrlässigkeitsschutz",
           li3: "Kollisionsschutz mit einer Selbstbeteiligung von",
@@ -246,7 +247,7 @@ const Deinem = () => {
           id: "elektro-verfuegbar",
           question: "Sind Elektrofahrzeuge auch im Angebot?",
           answer:
-            "Ja, wir bieten eine grosse Auswahl an Elektro- und Hybridfahrzeugen und erweitern unser Angebot kontinuierlich. Damit fördern wir eine nachhaltige und zukunftsorientierte Mobilität in der Schweiz. Link auf Angebote für Privatkunden",
+            "Ja, wir bieten eine grosse Auswahl an Elektro- und Hybridfahrzeugen und erweitern unser Angebot kontinuierlich. Damit fördern wir eine nachhaltige und zukunftsorientierte Mobilität in der Schweiz. ",
         },
         {
           id: "nachhaltigkeit",
@@ -380,6 +381,50 @@ const Deinem = () => {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     setIsSearchActive(true);
+  };
+  // Add this function inside your component, before the return statement
+  const parseAnswerWithLinks = (text) => {
+    const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+    const parts = [];
+    let lastIndex = 0;
+    let match;
+
+    while ((match = linkRegex.exec(text)) !== null) {
+      // Add text before the link
+      if (match.index > lastIndex) {
+        parts.push(
+          <React.Fragment key={`text-${lastIndex}`}>
+            {text.substring(lastIndex, match.index)}
+          </React.Fragment>
+        );
+      }
+
+      // Add the link
+      parts.push(
+        <a
+          key={`link-${match.index}`}
+          href={match[2]}
+          className="text-[#0847A4] underline hover:text-black transition-colors"
+          target={match[2].startsWith("http") ? "_blank" : undefined}
+          rel={match[2].startsWith("http") ? "noopener noreferrer" : undefined}
+        >
+          {match[1]}
+        </a>
+      );
+
+      lastIndex = linkRegex.lastIndex;
+    }
+
+    // Add remaining text
+    if (lastIndex < text.length) {
+      parts.push(
+        <React.Fragment key={`text-${lastIndex}`}>
+          {text.substring(lastIndex)}
+        </React.Fragment>
+      );
+    }
+
+    return parts.length > 0 ? parts : text;
   };
 
   return (
@@ -536,8 +581,8 @@ const Deinem = () => {
                   } overflow-hidden`}
                 >
                   <div className="px-6 pb-6 text-gray-600 leading-relaxed">
-                    {item.answer}
-                    {item.answer1}
+                    {parseAnswerWithLinks(item.answer)}
+                    {item.answer1 && parseAnswerWithLinks(item.answer1)}
                   </div>
                   {item.button && (
                     <a

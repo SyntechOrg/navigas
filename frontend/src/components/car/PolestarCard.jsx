@@ -68,6 +68,10 @@ export default function PolestarCard({
   pricingType = PRICING_TYPE.NORMAL,
 }) {
   const [imageIndex, setImageIndex] = useState(0);
+  const lieferfrist =
+    carData?.lieferfrist ||
+    carData?.Lieferfrist ||
+    "Lieferung ist nicht gesetzt";
 
   // Helper to find default or fallback
   const getDefaultKm = useCallback(
@@ -262,7 +266,7 @@ export default function PolestarCard({
     doc.setFont(undefined, "normal");
     doc.text(subtitle, w / 2, 20, { align: "center" });
     doc.setFontSize(8);
-    doc.text("Sofort verfügbar", w / 2, 26, { align: "center" });
+    doc.text(lieferfrist, w / 2, 26, { align: "center" });
 
     let y = 38;
 
@@ -630,7 +634,7 @@ export default function PolestarCard({
         <div className="md:w-[30%] w-full">
           <div className="mt-7 flex flex-col gap-2">
             <p className="text-xs text-[#0847A4] bg-[#0847A41A] py-1 px-4 rounded-xl w-fit">
-              Sofort verfügbar
+              {lieferfrist}
             </p>
             <h1 className="mt-1 lg:text-[40px] text-[30px] font-semibold text-gray-900">
               {title}

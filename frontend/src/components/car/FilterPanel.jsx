@@ -121,7 +121,7 @@ export const FilterPanel = ({ filters, setFilters }) => {
               options={FILTER_OPTIONS.fahrzeugart}
             />
             <FilterGroup
-              title="Fahrzeugtypen"
+              title="Fahrzeugtypen:"
               category="treibstoff"
               options={FILTER_OPTIONS.treibstoff}
             />

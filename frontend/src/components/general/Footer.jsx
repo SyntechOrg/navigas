@@ -245,14 +245,13 @@ const Footer = () => {
                   disabled={isLoading}
                 />
                 <h1 className="text-[#8E8E8E] text-[12px]">
-                  Ich stimme zu, dass die{" "}
-                  <Link
-                    to="/datenschutz"
-                    className="text-[#E8EBF1] underline hover:text-[#2860B7]"
-                  >
-                    Datenschutzrichtlinie
+                  Ich stimme der Verarbeitung meiner Daten gemäss der{" "}
+                  <Link to="/datenschutz">
+                    <span className="text-[#CAD9EF] underline">
+                      Datenschutzrichtlinie
+                    </span>
                   </Link>{" "}
-                  gilt.
+                  zu.
                 </h1>
               </div>
 

@@ -195,14 +195,14 @@ ${formData.nachricht || "-"}
               </div>
               <div>
                 <label className="block text-white text-sm mb-2">
-                  Vorname Und Name *
+                  Vorname und Name *
                 </label>
                 <input
                   type="text"
                   name="VornameUndName"
                   value={formData.VornameUndName}
                   onChange={handleChange}
-                  placeholder="Vorname Und Name"
+                  placeholder="Vorname und Name"
                   required
                   disabled={isSubmitting}
                   className="w-full px-4 py-3 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 transition-colors bg-[#0847A4] disabled:opacity-70"

@@ -7,7 +7,7 @@ const Fragen = () => {
     {
       question: "Worin unterscheidet sich FlexRent vom Auto Abo?",
       answer:
-        "FlexRent ist die kurzfristige Mobilitätslösung für Unternehmen und Privatkunden, die nur für wenige Wochen oder Monate ein Fahrzeug benötigen. Das Auto Abo eignet sich hingegen für längere, planbare Laufzeiten. Mit FlexRent bleiben Sie maximal flexibel, ab 1 Monat und ohne langfristige Verpflichtungen.",
+        "FlexRent ist die kurzfristige Mobilitätslösung für Unternehmen, die nur für wenige Wochen oder Monate ein Fahrzeug benötigen. Das Auto Abo eignet sich hingegen für längere, planbare Laufzeiten. Mit FlexRent bleiben Sie maximal flexibel, ab 1 Monat und ohne langfristige Verpflichtungen.",
     },
     {
       question: "Wie schnell kann das Fahrzeug geliefert werden?",

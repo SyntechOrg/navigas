@@ -68,12 +68,13 @@ function Abonnieren() {
                 <div className="flex flex-row items-center justify-start gap-1">
                   <input type="checkbox" required />
                   <h1 className="text-[#879EC0] text-[10px] md:text-[14px]">
-                    Ich stimme zu, dass die{" "}
+                    Ich stimme der Verarbeitung meiner Daten gemäss der{" "}
                     <Link to="/datenschutz">
                       <span className="text-[#CAD9EF] underline">
-                        Datenschutzrichtlinie .
+                        Datenschutzrichtlinie
                       </span>
-                    </Link>
+                    </Link>{" "}
+                    zu.
                   </h1>
                 </div>
               </div>

@@ -15,7 +15,7 @@ const Flexible = () => {
     },
     {
       image: "/images/bg3.svg",
-      title: "Fahrzeugtausch moglich",
+      title: "Fahrzeugtausch möglich",
       description: "Modell wechseln, wenn sich der Einsatz ändert.",
     },
     {

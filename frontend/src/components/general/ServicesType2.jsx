@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 const data = [
   {
     image: "/images/img1.svg",
-    title: "Service & Reparturen",
+    title: "Service & Reparaturen",
   },
   {
     image: "/images/img2.svg",

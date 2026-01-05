@@ -17,8 +17,8 @@ const FlexRent = () => {
       <AboutStart2
         src="/images/VideoBG.png"
         mobileSrc="/images/mobileFlex.png"
-        title="FlexRent: Top-Auto fur Ihr KMU"
-        paragraph="Maximale Mobilitat mit minimalem Aufwand: Fahrzeuge ab 1 Monat inklusive Lieferung an Ihre Wunschadresse.Schnell, flexibel, alles drin."
+        title="FlexRent: Top-Auto für Ihr KMU"
+        paragraph="Maximale Mobilität mit minimalem Aufwand: Fahrzeuge ab 1 Monat inklusive Lieferung an Ihre Wunschadresse. Schnell, flexibel, alles drin."
       />
       <Flexible />
       <Peaks />

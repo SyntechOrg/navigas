@@ -83,6 +83,25 @@ const reports = [
     link: "/blogs/blog6",
     category: "Medien",
   },
+  {
+    img: "/images/blog7.jpg",
+    title: "Die Zukunft des Ladens von Elektrofahrzeugen",
+    description:
+      "Smart Charging, V2G und V2X als Schlüssel zur nachhaltigen Mobilität ",
+    date: "19 Dezember 2025",
+    comments: 0,
+    link: "/blogs/blog7",
+    category: "Teknology",
+  },
+  {
+    img: "/images/blog8.jpg",
+    title: "Fleet & Mobility Barometer 2025 ",
+    description: "Wie Unternehmen ihre Flotten strategisch weiterentwickeln  ",
+    date: "23 November 2025",
+    comments: 0,
+    link: "/blogs/blog8",
+    category: "Teknology",
+  },
 ];
 
 const Berichte = () => {
@@ -146,52 +165,60 @@ const Berichte = () => {
           ) => (
             <MotionDiv
               key={index}
-              className="flex flex-col justify-between gap-6 py-6 px-4 border border-[#D3D3D3] group"
+              className="border border-[#D3D3D3] group"
               {...(!isMobile && {
                 variants: cardVariants,
               })}
             >
-              <div className="relative overflow-hidden rounded-lg">
-                <MotionImg
-                  src={img}
-                  alt={title}
-                  className="w-full"
-                  {...(!isMobile && {
-                    whileHover: { scale: 1.05, opacity: 0.9 },
-                    transition: { duration: 0.4 },
-                  })}
-                />
-                <div className="absolute top-4 left-4 border-white rounded-xl bg-white px-7 py-1">
-                  <h1 className="font-medium">{category}</h1>
-                </div>
-              </div>
-
-              <h2 className="text-[24px] text-black font-semibold">{title}</h2>
-
-              <p className="text-[18px] text-[#909491]">{description}</p>
-
-              <div className="flex items-center justify-between">
-                <div className="flex space-x-4 text-[#909491]">
-                  <span>{date}</span>
-                  <span>{comments} Comments</span>
-                </div>
-
-                <Link to={link}>
-                  <MotionDiv
-                    className="bg-[#E8EBF1] p-3 rounded flex items-center justify-center"
+              {/* ✅ Wrap entire content in Link to make it clickable */}
+              <Link
+                to={link}
+                className="flex flex-col justify-between gap-6 py-6 px-4 h-full block hover:bg-gray-50 transition-colors"
+              >
+                {/* ✅ Fixed image container with consistent aspect ratio */}
+                <div className="relative overflow-hidden rounded-lg w-full aspect-[16/10]">
+                  <MotionImg
+                    src={img}
+                    alt={title}
+                    className="w-full h-full object-cover" // ✅ Added object-cover for consistent sizing
                     {...(!isMobile && {
-                      whileHover: { backgroundColor: "#D8DBE6" },
+                      whileHover: { scale: 1.05, opacity: 0.9 },
+                      transition: { duration: 0.4 },
+                    })}
+                  />
+                  <div className="absolute top-4 left-4 border-white rounded-xl bg-white px-7 py-1">
+                    <h1 className="font-medium">{category}</h1>
+                  </div>
+                </div>
+
+                <h2 className="text-[24px] text-black font-semibold group-hover:text-[#0847A4] transition-colors">
+                  {title}
+                </h2>
+
+                <p className="text-[18px] text-[#909491]">{description}</p>
+
+                <div className="flex items-center justify-between">
+                  <div className="flex space-x-4 text-[#909491]">
+                    <span>{date}</span>
+                    <span>{comments} Comments</span>
+                  </div>
+
+                  {/* ✅ Arrow icon - removed nested Link */}
+                  <MotionDiv
+                    className="bg-[#E8EBF1] p-3 rounded flex items-center justify-center group-hover:bg-[#0847A4] transition-colors"
+                    {...(!isMobile && {
+                      whileHover: { scale: 1.1 },
                       transition: { duration: 0.2 },
                     })}
                   >
                     <img
                       src="/images/rightArroww.svg"
                       alt="arrow icon"
-                      className="h-3"
+                      className="h-3 group-hover:brightness-0 group-hover:invert transition-all"
                     />
                   </MotionDiv>
-                </Link>
-              </div>
+                </div>
+              </Link>
             </MotionDiv>
           )
         )}

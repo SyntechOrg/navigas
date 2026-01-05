@@ -241,15 +241,14 @@ const Subscribe = () => {
               disabled={isLoading}
               className="cursor-pointer mt-1 disabled:cursor-not-allowed"
             />
-            <p className="text-sm text-gray-600">
-              Ich stimme zu, dass die{" "}
-              <Link
-                to="/datenschutz"
-                className="text-[#0A1424] underline hover:text-blue-600"
-              >
-                Datenschutzrichtlinie
+            <p className="text-[12px] text-gray-600">
+              Ich stimme der Verarbeitung meiner Daten gemäss der{" "}
+              <Link to="/datenschutz">
+                <span className="text-[#CAD9EF] underline">
+                  Datenschutzrichtlinie
+                </span>
               </Link>{" "}
-              gilt.
+              zu.
             </p>
           </div>
 

@@ -25,11 +25,37 @@ export const FilterPanel = ({ filters, setFilters }) => {
     [setFilters]
   );
 
+  // ✅ NEW: Handle "Alle" checkbox for NeuOderOccasion
+  const handleAlleChange = useCallback(
+    (category, options) => {
+      setFilters((prev) => {
+        const currentSelection = prev[category] || [];
+        const allSelected = options.every((opt) =>
+          currentSelection.includes(opt)
+        );
+
+        // If all are selected, deselect all. Otherwise, select all.
+        const newSelection = allSelected ? [] : [...options];
+        return { ...prev, [category]: newSelection };
+      });
+    },
+    [setFilters]
+  );
+
+  // ✅ NEW: Check if all options are selected
+  const isAlleSelected = useCallback(
+    (category, options) => {
+      const currentSelection = filters[category] || [];
+      return options.every((opt) => currentSelection.includes(opt));
+    },
+    [filters]
+  );
+
   const toggleOpen = useCallback(() => setIsOpen(!isOpen), [isOpen]);
 
   const FilterGroup = useMemo(
     () =>
-      ({ title, category, options }) =>
+      ({ title, category, options, showAlle = false }) =>
         (
           <motion.div
             className="mb-6"
@@ -41,13 +67,39 @@ export const FilterPanel = ({ filters, setFilters }) => {
               {title}
             </h3>
             <div className="space-y-2">
+              {/* ✅ Show "Alle" checkbox if enabled */}
+              {showAlle && (
+                <motion.label
+                  className="flex items-center text-gray-700 cursor-pointer group font-semibold"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3 }}
+                  whileHover={{ x: 4 }}
+                >
+                  <motion.input
+                    type="checkbox"
+                    className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                    checked={isAlleSelected(category, options)}
+                    onChange={() => handleAlleChange(category, options)}
+                    whileTap={{ scale: 0.9 }}
+                  />
+                  <span className="ml-2 group-hover:text-gray-900 transition-colors">
+                    Alle
+                  </span>
+                </motion.label>
+              )}
+
+              {/* Individual options */}
               {options.map((option, index) => (
                 <motion.label
                   key={option}
                   className="flex items-center text-gray-700 cursor-pointer group"
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
+                  transition={{
+                    duration: 0.3,
+                    delay: (index + (showAlle ? 1 : 0)) * 0.05,
+                  }}
                   whileHover={{ x: 4 }}
                 >
                   <motion.input
@@ -65,7 +117,7 @@ export const FilterPanel = ({ filters, setFilters }) => {
             </div>
           </motion.div>
         ),
-    [filters, handleCheckboxChange]
+    [filters, handleCheckboxChange, handleAlleChange, isAlleSelected]
   );
 
   return (
@@ -126,9 +178,10 @@ export const FilterPanel = ({ filters, setFilters }) => {
               options={FILTER_OPTIONS.treibstoff}
             />
             <FilterGroup
-              title="Spezifikationen:"
-              category="getriebe"
-              options={FILTER_OPTIONS.getriebe}
+              title="Neu Oder Occasion:"
+              category="NeuOderOccasion"
+              options={FILTER_OPTIONS.NeuOderOccasion}
+              showAlle={true} // ✅ Enable "Alle" checkbox for this group
             />
           </motion.div>
         )}

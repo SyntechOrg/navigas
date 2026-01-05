@@ -155,7 +155,7 @@ const blogContent = {
   },
   blog6: {
     headings: [
-      "Technology",
+      "Medien",
       "Hybrid-, Plug-in-Hybrid- oder Elektrofahrzeuge mit Range-Extender",
       "Eintauchen in das High-Tech-Umfeld von hybriden Antriebsalternativen",
       "Hybridisierung",
@@ -200,6 +200,66 @@ const blogContent = {
     images: [
       {
         src: "/images/image77.jpg",
+        alt: "Titelbild",
+        className: "w-full mb-8 md:mb-[56px]",
+      },
+    ],
+  },
+  blog7: {
+    headings: [
+      "Technology ",
+      "Die Zukunft des Ladens von Elektrofahrzeugen ",
+      "Smart Charging, V2G und V2X als Schlüssel zur nachhaltigen Mobilität ",
+      "Herausforderungen für das Stromnetz ",
+      "Smart Charging: Intelligentes und bedarfsgerechtes Laden ",
+      "Vehicle-to-Grid (V2G): Fahrzeuge als Energiespeicher ",
+      "Vehicle-to-Everything (V2X): Energie flexibel einsetzen ",
+      "Mehrwert für Unternehmen ",
+      "Fazit ",
+    ],
+    data: ["19 Dezember 2025"],
+    paragraph: [
+      "Elektrofahrzeuge sind längst ein zentraler Bestandteil der Mobilitätswende. Mit der steigenden Anzahl von E-Autos wächst jedoch auch der Anspruch an eine leistungsfähige, intelligente Ladeinfrastruktur. Entscheidend ist dabei nicht nur die Anzahl der Ladepunkte, sondern vor allem wie und wann geladen wird. Genau hier setzen innovative Technologien wie Smart Charging, Vehicle-to-Grid (V2G) und Vehicle-to-Everything (V2X) an. ",
+      "Wenn viele Elektrofahrzeuge gleichzeitig laden, etwa am frühen Abend, entstehen Lastspitzen, die das Stromnetz stark belasten können. Ohne intelligente Steuerung führt dies langfristig zu höheren Kosten für den Netzausbau und einer ineffizienten Nutzung vorhandener Ressourcen. Besonders mit zunehmender Elektrifizierung wird eine smarte Lösung unverzichtbar.",
+      "Smart Charging ermöglicht es, Ladevorgänge dynamisch zu steuern. Fahrzeuge laden bevorzugt dann, wenn die Netzbelastung gering ist oder besonders viel erneuerbare Energie zur Verfügung steht. Das Ergebnis: \n\ngeringere Energiekosten \nweniger Lastspitzen im Netz \nbessere Nutzung von Solar- und Windenergie \n \n weniger Lastspitzen im Netz \n bessere Nutzung von Solar- und Windenergie \n Für Unternehmen bedeutet dies mehr Effizienz und Planungssicherheit, bei gleichzeitig reduziertem ökologischem Fussabdruck.",
+      "Mit Vehicle-to-Grid können Elektrofahrzeuge nicht nur Strom beziehen, sondern diesen auch wieder ins Stromnetz zurückspeisen. Die Fahrzeugbatterie wird damit zu einem mobilen Energiespeicher. In Zeiten hoher Nachfrage kann gespeicherte Energie zur Netzstabilisierung beitragen. Perspektivisch eröffnen sich dadurch neue wirtschaftliche Möglichkeiten. ",
+      "V2X erweitert dieses Konzept nochmals: Fahrzeuge können Energie nicht nur ins Stromnetz, sondern auch direkt an Gebäude, Ladeinfrastrukturen oder andere Verbraucher abgeben. So können beispielsweise Bürogebäude, Logistikstandorte oder ganze Areale temporär mit Energie versorgt werden. Elektrofahrzeuge werden damit zu einem aktiven Bestandteil moderner Energiesysteme. ",
+      "Gerade für Unternehmen ergeben sich durch diese Technologien klare Vorteile: \n optimierte Ladezeiten und geringere Betriebskosten  \n höhere Versorgungssicherheit  \n bessere Integration erneuerbarer Energien \n neue, flexible Energiekonzepte  \n In Zusammenarbeit mit Mobilitätspartnern wie navigas mobility und Arval lassen sich diese Lösungen nahtlos in bestehende Mobilitäts- und Flottenstrategien integrieren. ",
+      "Die Zukunft der Elektromobilität liegt im intelligenten, vernetzten Laden. Smart Charging, V2G und V2X sind entscheidende Bausteine, um Elektromobilität effizient, wirtschaftlich und nachhaltig in unser Energiesystem einzubinden. Unternehmen, die frühzeitig auf diese Technologien setzen, sichern sich langfristige Vorteile ökologisch wie ökonomisch. ",
+    ],
+    images: [
+      {
+        src: "/images/blog7.jpg",
+        alt: "Titelbild",
+        className: "w-full mb-8 md:mb-[56px]",
+      },
+    ],
+  },
+  blog8: {
+    headings: [
+      "Medien ",
+      "Fleet & Mobility Barometer 2025 ",
+      "Wie Unternehmen ihre Flotten strategisch weiterentwickeln  ",
+      "Flotten bleiben stabil oder wachsen weiter  ",
+      "Elektrifizierung: Fortschritte mit klaren Herausforderungen  ",
+      "Gebrauchtfahrzeuge gewinnen an Bedeutung  ",
+      "Full-Service-Leasing bleibt der Standard  ",
+      "Mobilitätsrichtlinien im Wandel  ",
+      "Fazit ",
+    ],
+    data: ["23 November 2025"],
+    paragraph: [
+      "Trotz anhaltender globaler Unsicherheiten blicken Unternehmen weltweit zuversichtlich in die Zukunft ihrer Fahrzeugflotten. Das zeigt das Fleet and Mobility Barometer 2025, eine internationale Studie des Arval Mobility Observatory in Zusammenarbeit mit Ipsos, basierend auf Befragungen von über 8’000 Unternehmen in 28 Ländern. ",
+      "Weltweit erwarten 91% der befragten Unternehmen, dass ihre Flotten in den kommenden drei Jahren stabil bleiben oder weiter wachsen. Treiber dieses Wachstums sind vor allem geschäftliche Expansion sowie HR-bezogene Faktoren wie Mitarbeiterbindung, Rekrutierung und attraktive Mobilitätsangebote. Der Firmenwagen bleibt damit ein zentrales Element moderner Arbeitgeberstrategien. ",
+      "Die Elektrifizierung von Unternehmensflotten schreitet weiter voran, allerdings mit deutlichen regionalen Unterschieden. Europa nimmt weiterhin eine Vorreiterrolle ein, während andere Regionen langsamer nachziehen. \nGleichzeitig zeigt die Studie klar: Die Ladeinfrastruktur ist der grösste Engpass. Rund zwei Drittel der Unternehmen nennen fehlende oder unzureichende Lademöglichkeiten als zentrales Hindernis für eine breitere Einführung von Elektrofahrzeugen. Entsprechend gewinnen Lade-Strategien am Firmenstandort sowie beim Mitarbeitenden zu Hause stark an Bedeutung. ",
+      "Ein klarer Trend ist die zunehmende Integration von Occasion-Fahrzeugen in Unternehmensflotten. Viele Unternehmen nutzen oder prüfen den Einsatz gebrauchter Personenwagen und leichter Nutzfahrzeuge sowohl aus Kostengründen als auch zur Unterstützung der Kreislaufwirtschaft. Dieser Ansatz ermöglicht eine effizientere Nutzung bestehender Ressourcen und trägt zur Reduktion des ökologischen Fussabdrucks bei. ",
+      "Beim Thema Finanzierung bestätigt das Barometer die dominante Rolle von Full-Service-Leasing. Rund jedes zweite Unternehmen setzt weltweit auf dieses Modell. Besonders in Europa bleibt Full-Service-Leasing der bevorzugte Ansatz, da er Kostentransparenz, Risikominimierung und operative Entlastung vereint.  ",
+      "Immer mehr Unternehmen verfügen über klar definierte Mobilitäts- und Nachhaltigkeitsrichtlinien. Zwar ist das Bewusstsein für Dekarbonisierung hoch, doch bleibt in der Praxis häufig der Total Cost of Ownership (TCO) der entscheidende Faktor bei der Fahrzeugwahl. Nachhaltigkeit und Wirtschaftlichkeit werden zunehmend gemeinsam gedacht. ",
+      "Das Fleet and Mobility Barometer 2025 zeigt deutlich: Unternehmensflotten entwickeln sich von einer reinen Fahrzeugverwaltung hin zu einem strategischen Steuerungsinstrument. Elektrifizierung, intelligente Lade-Strategien, flexible Finanzierungsmodelle und der Einsatz von Gebrauchtfahrzeugen prägen die Zukunft der Mobilität. ",
+    ],
+    images: [
+      {
+        src: "/images/blog8.jpg",
         alt: "Titelbild",
         className: "w-full mb-8 md:mb-[56px]",
       },

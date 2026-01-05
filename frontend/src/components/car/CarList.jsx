@@ -43,7 +43,15 @@ export const CarList = ({ filters, pricingType = PRICING_TYPE.NORMAL }) => {
         controller.signal,
         type
       );
-      setCars(fetched);
+
+      // Sort the fetched cars by price (low to high)
+      const sortedCars = fetched.sort((a, b) => {
+        const priceA = a.preis || a.price || 0;
+        const priceB = b.preis || b.price || 0;
+        return priceA - priceB; // Low to high
+      });
+
+      setCars(sortedCars);
       setPageCount(count);
     } catch (e) {
       if (!controller.signal.aborted) {
@@ -68,6 +76,7 @@ export const CarList = ({ filters, pricingType = PRICING_TYPE.NORMAL }) => {
       filters.fahrzeugart,
       filters.treibstoff,
       filters.getriebe,
+      filters.NeuOderOccasion,
       debouncedAutoname,
       pricingType,
     ],
@@ -75,6 +84,7 @@ export const CarList = ({ filters, pricingType = PRICING_TYPE.NORMAL }) => {
       filters.fahrzeugart,
       filters.treibstoff,
       filters.getriebe,
+      filters.NeuOderOccasion,
       debouncedAutoname,
       pricingType,
     ]

@@ -14,29 +14,25 @@ const INITIAL_FILTERS = {
   fahrzeugart: [],
   treibstoff: [],
   getriebe: [],
+  NeuOderOccasion: [],
 };
 
 const FilteredCarPage = ({ pricingType = PRICING_TYPE.NORMAL }) => {
   const [searchParams] = useSearchParams();
   const [filters, setFilters] = useState(INITIAL_FILTERS);
 
+  // Combined useEffect for all URL params
   useEffect(() => {
     const fahrzeugart = searchParams.get("fahrzeugart");
-    if (fahrzeugart) {
-      setFilters((prev) => ({
-        ...prev,
-        fahrzeugart: [fahrzeugart],
-      }));
-    }
-  }, [searchParams]);
-  useEffect(() => {
     const treibstoff = searchParams.get("treibstoff");
-    if (treibstoff) {
-      setFilters((prev) => ({
-        ...prev,
-        treibstoff: [treibstoff],
-      }));
-    }
+    const NeuOderOccasion = searchParams.get("NeuOderOccasion");
+
+    setFilters((prev) => ({
+      ...prev,
+      ...(fahrzeugart && { fahrzeugart: [fahrzeugart] }),
+      ...(treibstoff && { treibstoff: [treibstoff] }),
+      ...(NeuOderOccasion && { NeuOderOccasion: [NeuOderOccasion] }),
+    }));
   }, [searchParams]);
 
   const memoizedFilters = useMemo(
@@ -46,6 +42,7 @@ const FilteredCarPage = ({ pricingType = PRICING_TYPE.NORMAL }) => {
       filters.fahrzeugart,
       filters.treibstoff,
       filters.getriebe,
+      filters.NeuOderOccasion,
     ]
   );
 

@@ -48,7 +48,7 @@ export const CarCard = memo(({ car, pricingType = PRICING_TYPE.NORMAL }) => {
           <h1 className="text-white font-medium text-[15px] truncate">
             {car.marke} {car.modell}
           </h1>
-          <h1 className="text-[#C0C0C1] text-[14px]">{car.Getriebe}</h1>
+          <h1 className="text-[#C0C0C1] text-[14px]">{car.NeuOderOccasion}</h1>
         </div>
         <div className="py-3 w-[80%] mx-auto flex justify-between">
           {[

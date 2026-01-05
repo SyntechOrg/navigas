@@ -52,7 +52,7 @@ const CarCard = memo(function CarCard({ car }) {
             {car.marke} {car.modell}
           </h1>
           <h1 className="text-[#C0C0C1] text-[14px] font-regular">
-            {car.schaltung}
+            {car.NeuOderOccasion}
           </h1>
         </div>
 
@@ -146,7 +146,7 @@ const CarList = ({ refreshTrigger }) => {
             "updatedAt",
             "Autokategorien",
             "Fahrzeugtypen",
-            "Spezifikationen",
+            "NeuOderOccasion",
             "preis",
           ],
           populate: {

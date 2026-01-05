@@ -39,23 +39,18 @@ export const transformStrapiPricing = (
   const pricing = {};
 
   Object.entries(PRICING_VARIABLE_MAP).forEach(([varName, { term, km }]) => {
-    // If specific company price field
     if (varName === "PreisFurUnternehmen") {
-      // Only include if we are in company mode
       if (pricingType === PRICING_TYPE.COMPANY && car[varName]) {
         const key = `${term}-${km}`;
-        // User requested to apply 8.1% discount on this field as well
         pricing[key] = Math.round(Number(car[varName]) / 1.081);
       }
       return;
     }
 
-    // For other variables
     if (car[varName] !== undefined && car[varName] !== null) {
       const key = `${term}-${km}`;
       let val = Number(car[varName]);
 
-      // If company mode, apply 8.1% reduction to standard variable prices
       if (pricingType === PRICING_TYPE.COMPANY) {
         val = Math.round(val / 1.081);
       }
@@ -74,7 +69,6 @@ export const transformStrapiPricing = (
   return pricing;
 };
 
-// UPDATED: Transform pricing to get available km and term options
 export const transformPricingOptions = (car) => {
   if (!car) return { kmOptions: [], termOptions: [] };
 
@@ -82,7 +76,6 @@ export const transformPricingOptions = (car) => {
   const keys = Object.keys(pricing);
 
   if (keys.length === 0) {
-    // Fallback to default options if no pricing data
     return {
       kmOptions: [
         { km: 5000 },
@@ -115,11 +108,9 @@ export const transformPricingOptions = (car) => {
 };
 
 export const getPrice = (car, pricingType = PRICING_TYPE.NORMAL) => {
-  const base =
-    parseInt(car.tenthVariable) || parseInt(car.preis) || 0;
+  const base = parseInt(car.tenthVariable) || parseInt(car.preis) || 0;
 
   if (pricingType === PRICING_TYPE.COMPANY) {
-    // User requested to apply 8.1% discount even if PreisFurUnternehmen is set
     return Math.round(base / 1.081);
   }
 
@@ -134,6 +125,7 @@ export const fetchCars = async (
 ) => {
   const strapiFilters = {};
 
+  // Search by car name
   if (filters.autoname) {
     strapiFilters.$or = [
       { marke: { $containsi: filters.autoname } },
@@ -141,6 +133,7 @@ export const fetchCars = async (
     ];
   }
 
+  // Handle standard filters (fahrzeugart, treibstoff, getriebe)
   Object.keys(UI_TO_SCHEMA_KEY).forEach((uiKey) => {
     const selected = (filters[uiKey] || []).map((v) =>
       normalizeEnumValue(uiKey, v)
@@ -150,37 +143,15 @@ export const fetchCars = async (
     }
   });
 
+  // ✅ ADD: Handle neuOderOccasion filter
+  if (filters.NeuOderOccasion && filters.NeuOderOccasion.length > 0) {
+    strapiFilters.NeuOderOccasion = { $in: filters.NeuOderOccasion };
+  }
+
   const query = qs.stringify(
     {
       pagination: { page, pageSize: PAGE_SIZE, withCount: true },
       sort: ["updatedAt:desc"],
-      // fields: [
-      //   "marke",
-      //   "modell",
-      //   "Getriebe",
-      //   "leistung",
-      //   "COKategorie",
-      //   "Treibstoff",
-      //   "verbrauch",
-      //   "beschreibung",
-      //   "preis",
-      //   "PreisFurUnternehmen",
-      //   "firstVariable",
-      //   "secondVariable",
-      //   "thirdVariable",
-      //   "fourthVariable",
-      //   "fifthVariable",
-      //   "sixthVariable",
-      //   "seventhVariable",
-      //   "eighthVariable",
-      //   "ninthVariable",
-      //   "tenthVariable",
-      //   "eleventhVariable",
-      //   "twelfthVariable",
-      //   "thirteenthVariable",
-      //   "fourteenthVariable",
-      //   "extraPreisAutos",
-      // ],
       populate: { [IMAGE_FIELD]: { fields: ["url", "formats"] } },
       filters: Object.keys(strapiFilters).length ? strapiFilters : undefined,
     },
@@ -193,7 +164,7 @@ export const fetchCars = async (
     ...car,
     displayPrice: getPrice(car, pricingType),
     pricingType,
-    pricing: transformStrapiPricing(car, pricingType), // ADDED: Transform pricing variables
+    pricing: transformStrapiPricing(car, pricingType),
   }));
 
   return {
@@ -239,18 +210,15 @@ export const fetchTopCategories = async () => {
   );
 
   try {
-    // Assuming the single type is named 'top-kategorie'.
-    // If it has a different name, please update the endpoint.
     const { data } = await axios.get(`${API_BASE}/api/top-kategorie?${query}`);
 
-    // The 'car' relation in a single type is usually in data.data.attributes.car
     const carData = data?.data?.attributes?.car?.data;
 
     if (!carData) return [];
 
     return normalizeCarData(carData).map((car) => ({
       ...car,
-      displayPrice: getPrice(car), // Use default pricing
+      displayPrice: getPrice(car),
       pricing: transformStrapiPricing(car),
     }));
   } catch (error) {

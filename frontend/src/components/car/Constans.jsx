@@ -11,10 +11,12 @@ export const FILTER_OPTIONS = {
   fahrzeugart: ["Kleinwagen", "Kompakt", "Mittelklasse", "SUV"],
   treibstoff: ["Elektrisch", "Hybrid", "Benzin"],
   getriebe: ["Automatik", "Handschaltung"],
+  NeuOderOccasion: ["Neu", "Occasion"],
 };
 
 export const UI_TO_SCHEMA_KEY = {
   fahrzeugart: "Fahrzeugart",
   treibstoff: "Treibstoff",
   getriebe: "Getriebe",
+  NeuOderOccasion: "NeuOderOccasion",
 };

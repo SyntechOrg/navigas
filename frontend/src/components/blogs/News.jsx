@@ -45,6 +45,20 @@ const articles = [
     date: "4 Oktober 2021",
     link: "/blogs/blog4",
   },
+  {
+    id: 7,
+    img: "/images/blog7.jpg",
+    title: `Die Zukunft des Ladens von Elektrofahrzeugen`,
+    date: "19 Dezember 2025",
+    link: "/blogs/blog7",
+  },
+  {
+    id: 8,
+    img: "/images/blog8.jpg",
+    title: `Wie Unternehmen ihre Flotten strategisch weiterentwickeln `,
+    date: "23 November 2025",
+    link: "/blogs/blog8",
+  },
 ];
 
 const News = () => {

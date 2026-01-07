@@ -64,7 +64,7 @@ const LogoSlider = () => {
     e.stopPropagation();
     console.log("Clicked car with documentId:", documentId);
     console.log("Navigating to:", `api/cars/${documentId}?pricing=normal`);
-    window.location.href = `api /cars/${documentId}?pricing=normal`;
+    window.location.href = `api/cars/${documentId}?pricing=normal`;
   };
 
   if (featuredCars.length === 0) {

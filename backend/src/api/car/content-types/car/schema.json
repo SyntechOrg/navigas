@@ -38,39 +38,21 @@
     "Image": {
       "type": "media",
       "multiple": true,
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
-      ]
+      "allowedTypes": ["images", "files", "videos", "audios"]
     },
     "Fahrzeugart": {
       "type": "enumeration",
-      "enum": [
-        "Kleinwagen",
-        "Kompakt",
-        "Mittelklasse",
-        "SUV",
-        "Premium"
-      ]
+      "enum": ["Kleinwagen", "Kompakt", "Mittelklasse", "SUV"]
     },
     "Treibstoff": {
       "type": "enumeration",
-      "enum": [
-        "Elektrisch",
-        "Hybrid",
-        "Gas"
-      ]
+      "enum": ["Elektrisch", "Hybrid", "Gas"]
     },
     "Getriebe": {
       "type": "enumeration",
-      "enum": [
-        "Automatik",
-        "Handschaltung",
-        "Allrad"
-      ]
+      "enum": ["Automatik", "Handschaltung", "Allrad"]
     },
+
     "preis": {
       "type": "string"
     },

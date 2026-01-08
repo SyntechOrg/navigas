@@ -4,6 +4,20 @@ import { useNavigate } from "react-router-dom"; // Add this import
 
 const articles = [
   {
+    id: 1,
+    img: "/images/blog7.jpg",
+    title: `Die Zukunft des Ladens von Elektrofahrzeugen`,
+    date: "19 Dezember 2025",
+    link: "/blogs/blog7",
+  },
+  {
+    id: 2,
+    img: "/images/blog8.jpg",
+    title: `Wie Unternehmen ihre Flotten strategisch weiterentwickeln `,
+    date: "23 November 2025",
+    link: "/blogs/blog8",
+  },
+  {
     id: 7,
     img: "/images/blog1.png",
     title: `Hybrid-, Plug-in-Hybrid- oder Elektrofahrzeuge mit Range-Extender`,
@@ -44,20 +58,6 @@ const articles = [
     title: `Medienmitteilung navigas mobility`,
     date: "4 Oktober 2021",
     link: "/blogs/blog4",
-  },
-  {
-    id: 1,
-    img: "/images/blog7.jpg",
-    title: `Die Zukunft des Ladens von Elektrofahrzeugen`,
-    date: "19 Dezember 2025",
-    link: "/blogs/blog7",
-  },
-  {
-    id: 2,
-    img: "/images/blog8.jpg",
-    title: `Wie Unternehmen ihre Flotten strategisch weiterentwickeln `,
-    date: "23 November 2025",
-    link: "/blogs/blog8",
   },
 ];
 

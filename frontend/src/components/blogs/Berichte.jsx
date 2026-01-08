@@ -30,7 +30,7 @@ const reports = [
     date: "19 Dezember 2025",
     comments: 0,
     link: "/blogs/blog7",
-    category: "Teknology",
+    category: "Technology",
   },
   {
     img: "/images/blog8.jpg",
@@ -39,7 +39,7 @@ const reports = [
     date: "23 November 2025",
     comments: 0,
     link: "/blogs/blog8",
-    category: "Teknology",
+    category: "Technology",
   },
   {
     img: "/images/blogPhoto3.png",

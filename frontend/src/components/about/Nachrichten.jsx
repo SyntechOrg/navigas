@@ -5,22 +5,21 @@ import { Link } from "react-router-dom";
 const Nachrichten = () => {
   const newsItems = [
     {
-      image: "/images/image 16.png",
-      category: "Auto repair",
+      image: "/images/blog7.jpg",
+      category: "Die Zukunft des Ladens von Elektrofahrzeugen",
       title:
-        "solicare ermöglicht eine Entlöhnung und professionelle Unterstützung für p...",
-      date: "Sep. 5, 2022",
+        "Smart Charging, V2G und V2X als Schlüssel zur nachhaltigen Mobilität",
+      date: "19 Dezember 2025",
       comments: "0 Comments",
-      link: "/blogs/blog2",
+      link: "/blogs/blog7",
     },
     {
-      image: "/images/image 15.png",
-      category: "Auto repair",
-      title:
-        "Hybrid-, Plug-in-Hybrid- oder Elektrofahrzeuge mit Range-Extender",
-      date: "Jan. 21, 2022",
+      image: "/images/blog8.jpg",
+      category: "Fleet & Mobility Barometer 2025",
+      title: "Wie Unternehmen ihre Flotten strategisch weiterentwickeln",
+      date: "23 November 2025",
       comments: "0 Comments",
-      link: "/blogs/blog6",
+      link: "/blogs/blog8",
     },
     {
       image: "/images/image 17.png",
@@ -33,7 +32,7 @@ const Nachrichten = () => {
   ];
 
   return (
-    <div className="flex flex-col items-start justify-between mt-10 md:mt-[110px]  relative pb-5 md:pb-100">
+    <div className="flex flex-col items-start justify-between mt-10 md:mt-[110px] relative pb-5 md:pb-100">
       <img
         src="/images/banesa.png"
         alt="banesa"
@@ -104,7 +103,8 @@ const Nachrichten = () => {
                     "@2x.png"
                   )} 2x, ${item.image.replace(".png", "@3x.png")} 3x`}
                   alt={item.title}
-                  className="w-full h-auto object-cover transition-transform duration-500"
+                  /* CHANGED: h-auto -> h-[280px] to ensure equal height */
+                  className="w-full h-[280px] object-cover transition-transform duration-500"
                   loading="lazy"
                   decoding="async"
                   whileHover={{ scale: 1.1 }}

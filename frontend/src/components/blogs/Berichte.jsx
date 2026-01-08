@@ -23,25 +23,23 @@ const useIsMobile = () => {
 
 const reports = [
   {
-    img: "/images/blogPhoto1.png",
-    title: "Mobilität und Immobilien",
+    img: "/images/blog7.jpg",
+    title: "Die Zukunft des Ladens von Elektrofahrzeugen",
     description:
-      "Die Mobilität erfordert heute Anpassungen der Infrastruktur. Abstellplätze für gemeinschaftlich genutzte Verkehrsmittel, Ladestationen für Elektrofahrzeuge, Motorroller und Fahrräder, Ausrüstung für fahrerlose Maschinen sind nur einige der neuen Faktoren, die nicht mehr übersehen werden können.",
-    date: "2 Juni 2021",
+      "Smart Charging, V2G und V2X als Schlüssel zur nachhaltigen Mobilität ",
+    date: "19 Dezember 2025",
     comments: 0,
-    link: "/blogs/blog1",
-    category: "Mobility",
+    link: "/blogs/blog7",
+    category: "Teknology",
   },
   {
-    img: "/images/blogPhoto2.png",
-    title:
-      "solicare ermöglicht eine Entlöhnung und professionelle Unterstützung für pflegende Angehörige",
-    description:
-      "Überall auf der Welt ist die informelle Pflege von Angehörigen zu einem unverzichtbaren Grundpfeiler im Gesundheitswesen geworden. Gemäss Umfrage des Bundesamtes für Gesundheit (BAG) betreuen und pflegen in der Schweiz mindestens 600'000 Personen nahestehende Menschen.",
-    date: "5 September 2022",
+    img: "/images/blog8.jpg",
+    title: "Fleet & Mobility Barometer 2025 ",
+    description: "Wie Unternehmen ihre Flotten strategisch weiterentwickeln  ",
+    date: "23 November 2025",
     comments: 0,
-    link: "/blogs/blog2",
-    category: "News",
+    link: "/blogs/blog8",
+    category: "Teknology",
   },
   {
     img: "/images/blogPhoto3.png",
@@ -83,24 +81,27 @@ const reports = [
     link: "/blogs/blog6",
     category: "Medien",
   },
+
   {
-    img: "/images/blog7.jpg",
-    title: "Die Zukunft des Ladens von Elektrofahrzeugen",
+    img: "/images/blogPhoto1.png",
+    title: "Mobilität und Immobilien",
     description:
-      "Smart Charging, V2G und V2X als Schlüssel zur nachhaltigen Mobilität ",
-    date: "19 Dezember 2025",
+      "Die Mobilität erfordert heute Anpassungen der Infrastruktur. Abstellplätze für gemeinschaftlich genutzte Verkehrsmittel, Ladestationen für Elektrofahrzeuge, Motorroller und Fahrräder, Ausrüstung für fahrerlose Maschinen sind nur einige der neuen Faktoren, die nicht mehr übersehen werden können.",
+    date: "2 Juni 2021",
     comments: 0,
-    link: "/blogs/blog7",
-    category: "Teknology",
+    link: "/blogs/blog1",
+    category: "Mobility",
   },
   {
-    img: "/images/blog8.jpg",
-    title: "Fleet & Mobility Barometer 2025 ",
-    description: "Wie Unternehmen ihre Flotten strategisch weiterentwickeln  ",
-    date: "23 November 2025",
+    img: "/images/blogPhoto2.png",
+    title:
+      "solicare ermöglicht eine Entlöhnung und professionelle Unterstützung für pflegende Angehörige",
+    description:
+      "Überall auf der Welt ist die informelle Pflege von Angehörigen zu einem unverzichtbaren Grundpfeiler im Gesundheitswesen geworden. Gemäss Umfrage des Bundesamtes für Gesundheit (BAG) betreuen und pflegen in der Schweiz mindestens 600'000 Personen nahestehende Menschen.",
+    date: "5 September 2022",
     comments: 0,
-    link: "/blogs/blog8",
-    category: "Teknology",
+    link: "/blogs/blog2",
+    category: "News",
   },
 ];
 

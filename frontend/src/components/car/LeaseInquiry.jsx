@@ -138,7 +138,7 @@ export default function LeaseInquiry({ car }) {
       e.companyName = "Firmenname ist erforderlich.";
     }
     if (!form.firstName.trim()) e.firstName = "Vorname ist erforderlich.";
-    if (!form.lastName.trim()) e.lastName = "Name ist erforderlich.";
+    if (!form.lastName.trim()) e.lastName = "Nachname ist erforderlich.";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim() || ""))
       e.email = "Gültige E-Mail angeben.";
     if (!/^[+()0-9\s-]{6,}$/.test(form.phone.trim() || ""))
@@ -332,7 +332,7 @@ export default function LeaseInquiry({ car }) {
                   value={form.lastName}
                   onChange={handleChange("lastName")}
                   placeholder="Ihr Nachname"
-                  error="Nachname ist erforderlich"
+                  error={errors.lastName}
                 />
               </div>
               <div className="flex flex-col items-center w-full gap-7">

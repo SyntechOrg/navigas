@@ -177,8 +177,7 @@ const Subscribe = () => {
             Entdecken Sie die Welt der modernen Mobilität <br />
             —mit aktuellen News, spannenden Trends und praktischen Tipps, die{" "}
             <br />
-            informieren, inspirieren und den Blick in die Zukunft ermöglichen
-            anstatt öffnen.
+            informieren, inspirieren und den Blick in die Zukunft ermöglichen.
           </Paragraph>
         </div>
 

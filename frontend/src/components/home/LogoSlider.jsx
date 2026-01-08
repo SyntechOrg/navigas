@@ -37,7 +37,7 @@ const LogoSlider = () => {
             .filter(Boolean)
             .join(" ")
             .trim();
-          const price = car.preis || car.price;
+          const price = car.tenthVariable || car.price;
 
           return {
             id: car.documentId || car.id || model,

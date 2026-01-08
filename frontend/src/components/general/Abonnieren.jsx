@@ -26,9 +26,7 @@ function Abonnieren() {
       const data = await res.json();
 
       if (res.ok) {
-        setMessage(
-          "Danke! Ihre Anfrage wurde erfolgreich übermittelt. Sie erhalten in Kürze eine Bestätigung per E-Mail."
-        );
+        setMessage("Danke! Ihre Anfrage wurde erfolgreich übermittelt.");
         setEmail("");
       } else {
         console.error(data);

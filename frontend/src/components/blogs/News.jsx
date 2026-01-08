@@ -4,14 +4,14 @@ import { useNavigate } from "react-router-dom"; // Add this import
 
 const articles = [
   {
-    id: 1,
+    id: 7,
     img: "/images/blog1.png",
     title: `Hybrid-, Plug-in-Hybrid- oder Elektrofahrzeuge mit Range-Extender`,
     date: "21 Januar 2022",
     link: "/blogs/blog6",
   },
   {
-    id: 2,
+    id: 8,
     img: "/images/blog2.png",
     title: `Die Elektrifizierungsstrategie der Fahrzeughersteller`,
     date: "4 Oktober 2021",
@@ -46,14 +46,14 @@ const articles = [
     link: "/blogs/blog4",
   },
   {
-    id: 7,
+    id: 1,
     img: "/images/blog7.jpg",
     title: `Die Zukunft des Ladens von Elektrofahrzeugen`,
     date: "19 Dezember 2025",
     link: "/blogs/blog7",
   },
   {
-    id: 8,
+    id: 2,
     img: "/images/blog8.jpg",
     title: `Wie Unternehmen ihre Flotten strategisch weiterentwickeln `,
     date: "23 November 2025",
@@ -110,7 +110,7 @@ const News = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           News, Trends und Geschichten, die <br className="hidden lg:block" />
-          Sie bewegen — seit 2025
+          Sie bewegen
         </motion.h1>
 
         <motion.h1

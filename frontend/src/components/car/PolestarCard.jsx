@@ -112,7 +112,7 @@ export default function PolestarCard({
       setSelectedTerm(getDefaultTerm());
     }
   }, [termPricingOptions, getDefaultTerm]);
-
+  console.log("carData pricing:", carData?.pricing);
   // UPDATED: Fixed pricing lookup function (no calculations)
   const getPriceForCombination = useCallback(
     (term, km) => {
@@ -163,6 +163,9 @@ export default function PolestarCard({
       finalPrice,
     });
   }, [onSelect, selectedKm, selectedTerm, imageIndex, finalPrice]);
+
+  console.log("pricing keys:", Object.keys(carData?.pricing || {}));
+  console.log("selected key:", `${selectedTerm}-${selectedKm}`);
 
   const next = () => setImageIndex((i) => (i + 1) % gallery.length);
   const prev = () =>

@@ -38,32 +38,35 @@ export const transformStrapiPricing = (
 ) => {
   const pricing = {};
 
+  // ✅ Add 24-5000 from `preis` for NORMAL pricing (preis is string, convert to number)
+  if (pricingType === PRICING_TYPE.NORMAL) {
+    const base = Number.parseInt(String(car.preis ?? ""), 10);
+    if (Number.isFinite(base) && base > 0) {
+      pricing["24-5000"] = base;
+    }
+  }
+
   Object.entries(PRICING_VARIABLE_MAP).forEach(([varName, { term, km }]) => {
     if (varName === "PreisFurUnternehmen") {
-      if (pricingType === PRICING_TYPE.COMPANY && car[varName]) {
+      if (pricingType === PRICING_TYPE.COMPANY && car[varName] != null) {
         const key = `${term}-${km}`;
         pricing[key] = Math.round(Number(car[varName]) / 1.081);
       }
       return;
     }
 
-    if (car[varName] !== undefined && car[varName] !== null) {
+    if (car[varName] != null) {
       const key = `${term}-${km}`;
       let val = Number(car[varName]);
-
-      if (pricingType === PRICING_TYPE.COMPANY) {
-        val = Math.round(val / 1.081);
-      }
-
+      if (pricingType === PRICING_TYPE.COMPANY) val = Math.round(val / 1.081);
       pricing[key] = val;
     }
   });
 
+  // keep your existing company fallback if needed
   if (pricingType === PRICING_TYPE.COMPANY && !pricing["24-5000"]) {
-    const basePrice = parseInt(car.preis) || 0;
-    if (basePrice > 0) {
-      pricing["24-5000"] = Math.round(basePrice / 1.081);
-    }
+    const basePrice = Number.parseInt(String(car.preis ?? ""), 10) || 0;
+    if (basePrice > 0) pricing["24-5000"] = Math.round(basePrice / 1.081);
   }
 
   return pricing;
@@ -151,7 +154,8 @@ export const fetchCars = async (
   const query = qs.stringify(
     {
       pagination: { page, pageSize: PAGE_SIZE, withCount: true },
-      sort: ["updatedAt:desc"],
+      // sort first, then paginate (Strapi does this on the DB query)
+      sort: ["tenthVariable:asc", "updatedAt:desc"],
       populate: { [IMAGE_FIELD]: { fields: ["url", "formats"] } },
       filters: Object.keys(strapiFilters).length ? strapiFilters : undefined,
     },

@@ -23,7 +23,7 @@ const KontaktInfo = () => {
         </div>
         <div className="flex flex-col items-start justify-between gap-6 lg:gap-[24px] w-full">
           <a
-            href="tel:+417803133"
+            href="tel:+41417803133"
             className="flex flex-row items-start justify-start gap-4 group transition-all duration-300 hover:translate-x-2"
           >
             <div className="transition-transform duration-300 group-hover:scale-110">

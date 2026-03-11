@@ -189,6 +189,7 @@ export const fetchCarById = async (id, pricingType = PRICING_TYPE.NORMAL) => {
   );
 
   const { data } = await axios.get(`${API_BASE}/api/cars/${id}?${query}`);
+  
   const normalized = normalizeCarData([data.data])[0];
 
   return {

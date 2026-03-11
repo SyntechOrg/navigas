@@ -11,6 +11,7 @@ import { PRICING_TYPE } from "../components/car/Constans";
 import AboutStart from "../components/about/AboutStart";
 import Abonnieren from "../components/general/Abonnieren";
 import Nachrichten from "../components/about/Nachrichten";
+import SEO from "../components/general/SEO";
 
 const CarInfo = () => {
   const { id } = useParams();
@@ -169,12 +170,13 @@ const CarInfo = () => {
 
   return (
     <div className="relative ">
-      {/* <AboutStart
-        src="images/filter.png "
-        title="Privatkunden"
-        mobileSrc="images/filterMobile.png"
-      /> */}
-
+      {car && (
+        <SEO 
+          title={`${car.marke} ${car.modell} Auto Abo | Navigas Mobility`}
+          description={car.beschreibung || `Abonnieren Sie den ${car.marke} ${car.modell} ${car.Fahrzeugart || "Fahrzeug"} im flexiblen Auto Abo. Versicherung, Service und Reifen inklusive.`}
+          image={images.length > 0 ? images[0].src : null}
+        />
+      )}
       <div className="pt-50">
         <PolestarCard
           title={`${car.marke} ${car.modell}`}

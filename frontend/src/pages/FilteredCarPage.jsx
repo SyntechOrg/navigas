@@ -1,5 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
+import { fetchPageData } from "../services/pageService";
+import SEO from "../components/general/SEO";
 import { FilterPanel } from "../components/car/FilterPanel";
 import { CarList } from "../components/car/CarList";
 import { PRICING_TYPE } from "../components/car/Constans";
@@ -20,6 +22,17 @@ const INITIAL_FILTERS = {
 const FilteredCarPage = ({ pricingType = PRICING_TYPE.NORMAL }) => {
   const [searchParams] = useSearchParams();
   const [filters, setFilters] = useState(INITIAL_FILTERS);
+  const [seoData, setSeoData] = useState(null);
+
+  useEffect(() => {
+    if (pricingType === PRICING_TYPE.NORMAL) {
+      fetchPageData("privatkunde", "Privatkunden Page").then(data => {
+        if (data) {
+          setSeoData(data);
+        }
+      });
+    }
+  }, [pricingType]);
 
   // Combined useEffect for all URL params
   useEffect(() => {
@@ -48,6 +61,13 @@ const FilteredCarPage = ({ pricingType = PRICING_TYPE.NORMAL }) => {
 
   return (
     <div>
+      {seoData && pricingType === PRICING_TYPE.NORMAL && (
+        <SEO 
+          title={seoData.metaTitle || seoData.seo?.metaTitle || seoData.defaultSeo?.metaTitle} 
+          description={seoData.metaDescription || seoData.seo?.metaDescription || seoData.defaultSeo?.metaDescription} 
+          image={seoData.shareImage?.url || seoData.seo?.shareImage?.url || seoData.shareImage?.[0]?.url ? `${seoData.shareImage?.url || seoData.seo?.shareImage?.url || seoData.shareImage?.[0]?.url}` : null} 
+        />
+      )}
       <ScrollToTop />
       <AboutStart2
         src="images/filter.png "

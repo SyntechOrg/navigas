@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { fetchPageData } from "../services/pageService";
+import SEO from "../components/general/SEO";
 import HomeStart from "../components/home/HomeStart";
 import LogoSlider from "../components/home/LogoSlider";
 import HoverCategories from "../components/home/HoverCategories";
@@ -12,6 +14,16 @@ import Abonnieren from "../components/general/Abonnieren";
 import ScrollToTop from "../components/general/ScrollToTop";
 
 function Home() {
+  const [seoData, setSeoData] = useState(null);
+
+  useEffect(() => {
+    fetchPageData("global", "Global / Home Page").then(data => {
+      if (data && data.defaultSeo) {
+        setSeoData(data.defaultSeo);
+      }
+    });
+  }, []);
+
   // const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   // const handleUploadSuccess = () => {
@@ -20,6 +32,13 @@ function Home() {
 
   return (
     <div className="">
+      {seoData && (
+        <SEO 
+          title={seoData.metaTitle} 
+          description={seoData.metaDescription} 
+          image={seoData.shareImage?.url ? `${seoData.shareImage.url}` : null} 
+        />
+      )}
       <ScrollToTop />
       <HomeStart />
       <LogoSlider />

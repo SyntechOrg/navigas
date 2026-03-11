@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { fetchPageData } from "../services/pageService";
+import SEO from "../components/general/SEO";
 import AboutStart from "../components/about/AboutStart";
 import HoverCategories2 from "../components/costumer/HoverCategories2";
 import Effizienz from "../components/costumer/Effizienz";
@@ -12,13 +14,30 @@ import ScrollToTop from "../components/general/ScrollToTop";
 import AboutStart3 from "../components/about/AboutStart3";
 
 const Customer = () => {
+  const [seoData, setSeoData] = useState(null);
+
+  useEffect(() => {
+    fetchPageData("auto-abo-pro", "Auto Abo Pro").then(data => {
+      if (data) {
+        setSeoData(data);
+      }
+    });
+  }, []);
+
   return (
     <div>
+      {seoData && (
+        <SEO 
+          title={seoData.metaTitle} 
+          description={seoData.metaDescription} 
+          image={seoData.shareImage?.url ? `${seoData.shareImage.url}` : null} 
+        />
+      )}
       <ScrollToTop />
       <AboutStart3
         src="/images/autoBg.png"
-        title="Auto Abo Pro"
-        paragraph="Mit Navigas bleiben Sie und Ihr Unternehmen jederzeit mobil, ohne langfristige Verpflichtungen"
+        title={seoData?.content?.[0]?.children?.[0]?.text || seoData?.title || "Auto Abo Pro"}
+        paragraph={seoData?.content?.[1]?.children?.[0]?.text || "Mit Navigas bleiben Sie und Ihr Unternehmen jederzeit mobil, ohne langfristige Verpflichtungen"}
         mobileSrc="images/mobileAuto.png"
       />
       {/* <HoverCategories2 /> */}

@@ -200,6 +200,38 @@ export const fetchCarById = async (id, pricingType = PRICING_TYPE.NORMAL) => {
   };
 };
 
+export const fetchCarBySlug = async (slugOrId, pricingType = PRICING_TYPE.NORMAL) => {
+  const query = qs.stringify(
+    {
+      filters: { 
+        $or: [
+          { slug: { $eq: slugOrId } },
+          { documentId: { $eq: slugOrId } }
+        ]
+      },
+      populate: {
+        [IMAGE_FIELD]: { fields: ["url", "formats"] },
+        features: true,
+      },
+    },
+    { encodeValuesOnly: true }
+  );
+
+  const { data } = await axios.get(`${API_BASE}/api/cars?${query}`);
+
+  const entry = data?.data?.[0];
+  if (!entry) throw new Error(`Car not found for slug or ID: ${slugOrId}`);
+
+  const normalized = normalizeCarData([entry])[0];
+
+  return {
+    ...normalized,
+    displayPrice: getPrice(normalized, pricingType),
+    pricingType,
+    pricing: transformStrapiPricing(normalized, pricingType),
+  };
+};
+
 export const fetchTopCategories = async () => {
   const query = qs.stringify(
     {

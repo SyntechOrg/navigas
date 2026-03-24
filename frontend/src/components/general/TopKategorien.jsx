@@ -53,6 +53,7 @@ const TopKategorien = () => {
 
             return {
               id: item?.documentId || item?.id || name,
+              slug: attrs?.slug || "",
               imageUrl: toAbsolute(imageUrl) || "/images/container1.png",
               price: formattedPrice,
               name: name || "Car",
@@ -69,10 +70,10 @@ const TopKategorien = () => {
   }, []);
 
   const handleCardClick = (car) => {
-    const id = car.documentId || car.id;
-    if (!id) return;
+    const routeParam = (car.slug && car.slug !== "null") ? car.slug : car.id;
+    if (!routeParam) return;
 
-    navigate(`/api/cars/${id}?pricing=${PRICING_TYPE.NORMAL}`);
+    navigate(`/fahrzeuge/${routeParam}?pricing=${PRICING_TYPE.NORMAL}`);
   };
 
   const getOptimizedImageUrl = (car) => {

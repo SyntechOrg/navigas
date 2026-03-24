@@ -3,7 +3,7 @@ import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import PolestarCard from "../components/car/PolestarCard";
 import VehicleDetails from "../components/car/VehicleDetails";
 import {
-  fetchCarById,
+  fetchCarBySlug,
   transformPricingOptions,
 } from "../components/car/carService";
 import { toAbsolute, pickBestUrl } from "../components/car/ImageHelpers";
@@ -14,7 +14,7 @@ import Nachrichten from "../components/about/Nachrichten";
 import SEO from "../components/general/SEO";
 
 const CarInfo = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const pricingType = searchParams.get("pricing") || PRICING_TYPE.NORMAL;
@@ -28,8 +28,7 @@ const CarInfo = () => {
       try {
         setLoading(true);
         setError(null);
-        const data = await fetchCarById(id, pricingType);
-        // No need to transform - fetchCarById already includes pricing object
+        const data = await fetchCarBySlug(slug, pricingType);
         setCar(data);
       } catch (e) {
         console.error("Failed to fetch car:", e);
@@ -38,8 +37,8 @@ const CarInfo = () => {
         setLoading(false);
       }
     };
-    if (id) load();
-  }, [id, pricingType]);
+    if (slug) load();
+  }, [slug, pricingType]);
 
   const images = useMemo(() => {
     // Try to use the raw Image array (or object with data) to preserve formats

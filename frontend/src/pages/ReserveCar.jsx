@@ -4,6 +4,7 @@ import LeaseInquiry from "../components/car/LeaseInquiry";
 import FinalLeaseInquiry from "../components/car/FinalLeaseInqurity";
 import Abonnieren from "../components/general/Abonnieren";
 import Nachrichten from "../components/about/Nachrichten";
+import ScrollToTop from "../components/general/ScrollToTop";
 
 const ReserveCar = ({ isFinal = false }) => {
   const location = useLocation();
@@ -31,6 +32,7 @@ const ReserveCar = ({ isFinal = false }) => {
   return (
     <div className="md:pt-30 pt-20">
       <LeaseComponent car={carData} />
+      <ScrollToTop />
       <Abonnieren />
       <Nachrichten />
     </div>

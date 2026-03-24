@@ -8,6 +8,7 @@ import "./App.css";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import CarInfo from "./pages/CarInfo";
+import OldCarRedirect from "./components/car/OldCarRedirect";
 import FilteredCarPage from "./pages/FilteredCarPage";
 import ReserveCar from "./pages/ReserveCar";
 import Faq from "./pages/Faq";
@@ -26,7 +27,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/uberUns" element={<About />} />
-        <Route path="/api/cars/:id" element={<CarInfo />} />
+        <Route path="/fahrzeuge/:slug" element={<CarInfo />} />
+        {/* Redirect old ID-based URLs — can be removed later */}
+        <Route path="/api/cars/:id" element={<OldCarRedirect />} />
         <Route
           path="/firmenkunden"
           element={<FilteredCarPage pricingType={PRICING_TYPE.COMPANY} />}

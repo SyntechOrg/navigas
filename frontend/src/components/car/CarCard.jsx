@@ -7,8 +7,9 @@ export const CarCard = memo(({ car, pricingType = PRICING_TYPE.NORMAL }) => {
   const navigate = useNavigate();
 
   const handleClick = useCallback(() => {
-    navigate(`/api/cars/${car.documentId}?pricing=${pricingType}`);
-  }, [navigate, car.documentId, pricingType]);
+    const routeParam = (car.slug && car.slug !== "null") ? car.slug : car.documentId;
+    navigate(`/fahrzeuge/${routeParam}?pricing=${pricingType}`);
+  }, [navigate, car.slug, car.documentId, pricingType]);
   console.log("my car " + JSON.stringify(car, null, 2));
 
   const handleImgError = (e) => (e.target.src = "/images/car.png");
